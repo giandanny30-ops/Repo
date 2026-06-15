@@ -2,10 +2,6 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "node index.mjs"
+startCommand = "python bot.py"
 restartPolicyType = "on_failure"
-restartPolicyMaxRetries = 5
-
-[[deploy.healthChecks]]
-type = "http"
-path = "/api/healthz"
+restartPolicyMaxRetries = 10
