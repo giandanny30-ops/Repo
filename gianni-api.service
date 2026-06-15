@@ -1,0 +1,17 @@
+[Unit]
+Description=GIANNI Bot Panel API Server
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/gianni/api-server
+ExecStart=/usr/bin/node dist/index.mjs
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+Environment=PORT=5000
+EnvironmentFile=/var/www/gianni/.env
+
+[Install]
+WantedBy=multi-user.target
