@@ -20488,27 +20488,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router14;
+    module.exports = Router13;
     module.exports.Route = Route;
-    function Router14(options) {
-      if (!(this instanceof Router14)) {
-        return new Router14(options);
+    function Router13(options) {
+      if (!(this instanceof Router13)) {
+        return new Router13(options);
       }
       const opts = options || {};
-      function router14(req, res, next) {
-        router14.handle(req, res, next);
+      function router13(req, res, next) {
+        router13.handle(req, res, next);
       }
-      Object.setPrototypeOf(router14, this);
-      router14.caseSensitive = opts.caseSensitive;
-      router14.mergeParams = opts.mergeParams;
-      router14.params = {};
-      router14.strict = opts.strict;
-      router14.stack = [];
-      return router14;
+      Object.setPrototypeOf(router13, this);
+      router13.caseSensitive = opts.caseSensitive;
+      router13.mergeParams = opts.mergeParams;
+      router13.params = {};
+      router13.strict = opts.strict;
+      router13.stack = [];
+      return router13;
     }
-    Router14.prototype = function() {
+    Router13.prototype = function() {
     };
-    Router14.prototype.param = function param2(name2, fn) {
+    Router13.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20528,7 +20528,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router14.prototype.handle = function handle(req, res, callback) {
+    Router13.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20655,7 +20655,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router14.prototype.use = function use(handler) {
+    Router13.prototype.use = function use(handler) {
       let offset = 0;
       let path7 = "/";
       if (typeof handler !== "function") {
@@ -20688,7 +20688,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router14.prototype.route = function route(path7) {
+    Router13.prototype.route = function route(path7) {
       const route2 = new Route(path7);
       const layer = new Layer(path7, {
         sensitive: this.caseSensitive,
@@ -20703,7 +20703,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router14.prototype[method] = function(path7) {
+      Router13.prototype[method] = function(path7) {
         const route = this.route(path7);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -20886,13 +20886,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router14 = require_router();
+    var Router13 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router14 = null;
+      var router13 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -20901,13 +20901,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router14 === null) {
-            router14 = new Router14({
+          if (router13 === null) {
+            router13 = new Router13({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router14;
+          return router13;
         }
       });
     };
@@ -20978,15 +20978,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router14 = this.router;
+      var router13 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router14.use(path7, fn2);
+          return router13.use(path7, fn2);
         }
         debug(".use app under %s", path7);
         fn2.mountpath = path7;
         fn2.parent = this;
-        router14.use(path7, function mounted_app(req, res, next) {
+        router13.use(path7, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -23513,7 +23513,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router14 = require_router();
+    var Router13 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23535,8 +23535,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router14.Route;
-    exports.Router = Router14;
+    exports.Route = Router13.Route;
+    exports.Router = Router13;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -33709,7 +33709,7 @@ var require_utils_webcrypto = __commonJS({
     var nodeCrypto = __require("crypto");
     module.exports = {
       postgresMd5PasswordHash,
-      randomBytes: randomBytes2,
+      randomBytes,
       deriveKey,
       sha256,
       hashByName,
@@ -33719,7 +33719,7 @@ var require_utils_webcrypto = __commonJS({
     var webCrypto = nodeCrypto.webcrypto || globalThis.crypto;
     var subtleCrypto = webCrypto.subtle;
     var textEncoder = new TextEncoder();
-    function randomBytes2(length) {
+    function randomBytes(length) {
       return webCrypto.getRandomValues(Buffer.alloc(length));
     }
     async function md5(string) {
@@ -52392,7 +52392,7 @@ var require_lucide = __commonJS({
       ["path", { d: "M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" }],
       ["circle", { cx: "18", cy: "5", r: "3" }]
     ];
-    var Router14 = [
+    var Router13 = [
       ["rect", { width: "20", height: "8", x: "2", y: "14", rx: "2" }],
       ["path", { d: "M6.01 18H6" }],
       ["path", { d: "M10.01 18H10" }],
@@ -57462,7 +57462,7 @@ var require_lucide = __commonJS({
       RotateCwSquare,
       Route,
       RouteOff,
-      Router: Router14,
+      Router: Router13,
       Rows: Rows2,
       Rows2,
       Rows3,
@@ -59460,7 +59460,7 @@ var require_lucide = __commonJS({
     exports.RotateCwSquare = RotateCwSquare;
     exports.Route = Route;
     exports.RouteOff = RouteOff;
-    exports.Router = Router14;
+    exports.Router = Router13;
     exports.Rows = Rows2;
     exports.Rows2 = Rows2;
     exports.Rows3 = Rows3;
@@ -59982,7 +59982,7 @@ var require_lucide = __commonJS({
 });
 
 // src/app.ts
-var import_express14 = __toESM(require_express2(), 1);
+var import_express13 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 import path6 from "path";
@@ -65782,12 +65782,9 @@ function cacheGet(key) {
 function cacheSet(key, data, ttlMs) {
   _cache.set(key, { data, expiresAt: Date.now() + ttlMs });
 }
-var EMOJI_CACHE_TTL_MS = 60 * 60 * 1e3;
 function loadEmojiCache() {
   try {
     if (fs2.existsSync(EMOJI_CACHE_FILE)) {
-      const stat = fs2.statSync(EMOJI_CACHE_FILE);
-      if (Date.now() - stat.mtimeMs > EMOJI_CACHE_TTL_MS) return null;
       const raw = fs2.readFileSync(EMOJI_CACHE_FILE, "utf-8");
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) return parsed;
@@ -66333,27 +66330,18 @@ router6.post("/discord/channels/:channelId/send-embed", async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 });
-function clearEmojiCache() {
-  try {
-    if (fs2.existsSync(EMOJI_CACHE_FILE)) fs2.unlinkSync(EMOJI_CACHE_FILE);
-  } catch {
-  }
-}
 router6.post("/discord/emojis/upload", async (req, res) => {
-  const body = req.body;
-  const { name: name2 } = body;
-  const imageData = body.image ?? body.imageBase64;
-  if (!name2 || !imageData) return res.status(400).json({ error: "name and image required" });
+  const { name: name2, imageBase64 } = req.body;
+  if (!name2 || !imageBase64) return res.status(400).json({ error: "name and imageBase64 required" });
   try {
     const r = await fetch(`${DISCORD_API}/applications/${APPLICATION_ID}/emojis`, {
       method: "POST",
       headers: botHeaders(),
-      body: JSON.stringify({ name: name2, image: imageData })
+      body: JSON.stringify({ name: name2, image: imageBase64 })
     });
     const data = await r.json();
     if (!r.ok) return res.status(r.status).json({ error: data });
     req.log.info({ name: name2, id: data.id }, "Uploaded app emoji");
-    clearEmojiCache();
     return res.json({ id: data.id, name: data.name, animated: data.animated });
   } catch (err) {
     return res.status(500).json({ error: err.message });
@@ -66367,7 +66355,6 @@ router6.delete("/discord/emojis/:emojiId", async (req, res) => {
       headers: botHeaders()
     });
     if (!r.ok) return res.status(r.status).json({ error: "Delete failed" });
-    clearEmojiCache();
     return res.json({ ok: true });
   } catch (err) {
     return res.status(500).json({ error: err.message });
@@ -66555,6 +66542,7 @@ var routes_default = router10;
 // src/routes/icons.ts
 var import_express11 = __toESM(require_express2(), 1);
 var import_lucide = __toESM(require_lucide(), 1);
+import { Resvg } from "@resvg/resvg-js";
 var router11 = (0, import_express11.Router)();
 function buildSvg(iconName, bg, color) {
   const iconNodes = import_lucide.icons[iconName];
@@ -66573,7 +66561,7 @@ function buildSvg(iconName, bg, color) {
 </svg>`;
 }
 var cache = /* @__PURE__ */ new Map();
-router11.get("/api/icons/:name", async (req, res) => {
+router11.get("/api/icons/:name", (req, res) => {
   const { name: name2 } = req.params;
   const bg = (req.query.bg ?? "18103a").replace(/^#/, "");
   const color = (req.query.color ?? "ffffff").replace(/^#/, "");
@@ -66590,17 +66578,12 @@ router11.get("/api/icons/:name", async (req, res) => {
     return;
   }
   try {
-    const { Resvg } = await import("@resvg/resvg-js");
     const resvg = new Resvg(svg, { fitTo: { mode: "original" } });
     const png = Buffer.from(resvg.render().asPng());
     cache.set(cacheKey, png);
     res.set({ "Content-Type": "image/png", "Cache-Control": "public, max-age=31536000, immutable" });
     res.send(png);
-  } catch (err) {
-    if (err?.code === "ERR_MODULE_NOT_FOUND" || err?.message?.includes("resvg")) {
-      res.status(503).json({ error: "Icon render nije dostupan (@resvg/resvg-js nije instaliran)" });
-      return;
-    }
+  } catch {
     res.status(500).json({ error: "Render failed" });
   }
 });
@@ -66609,6 +66592,7 @@ var icons_default = router11;
 // src/routes/welcome-card.ts
 var import_express12 = __toESM(require_express2(), 1);
 var import_lucide2 = __toESM(require_lucide(), 1);
+import { Resvg as Resvg2 } from "@resvg/resvg-js";
 var router12 = (0, import_express12.Router)();
 function esc(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -66854,8 +66838,7 @@ ${star4(316, 488, 4, "#8855a0", "0.85")}
 ${star4(584, 488, 4, "#8855a0", "0.85")}
 </svg>`;
   try {
-    const { Resvg } = await import("@resvg/resvg-js");
-    const resvg = new Resvg(svg, {
+    const resvg = new Resvg2(svg, {
       fitTo: { mode: "original" },
       font: { loadSystemFonts: true }
     });
@@ -66863,361 +66846,10 @@ ${star4(584, 488, 4, "#8855a0", "0.85")}
     res.set({ "Content-Type": "image/png", "Cache-Control": "no-cache" });
     res.send(png);
   } catch (err) {
-    if (err?.code === "ERR_MODULE_NOT_FOUND" || err?.message?.includes("resvg")) {
-      return res.status(503).json({ error: "Welcome card nije dostupan na ovom serveru (@resvg/resvg-js nije instaliran)" });
-    }
     res.status(500).json({ error: "Render failed", detail: String(err) });
   }
 });
 var welcome_card_default = router12;
-
-// src/routes/games-play.ts
-var import_express13 = __toESM(require_express2(), 1);
-import { randomBytes } from "crypto";
-var router13 = (0, import_express13.Router)();
-var unoRooms = /* @__PURE__ */ new Map();
-function makeUnoDeck() {
-  const colors = ["red", "green", "blue", "yellow"];
-  const cards = [];
-  let id = 0;
-  for (const c of colors) {
-    cards.push({ id: `${id++}`, color: c, value: "0" });
-    for (const v of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "skip", "reverse", "draw2"]) {
-      cards.push({ id: `${id++}`, color: c, value: v });
-      cards.push({ id: `${id++}`, color: c, value: v });
-    }
-  }
-  for (let i = 0; i < 4; i++) {
-    cards.push({ id: `${id++}`, color: "wild", value: "wild" });
-    cards.push({ id: `${id++}`, color: "wild", value: "wild4" });
-  }
-  return shuffle(cards);
-}
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-function canPlay(card, top, pendingColor) {
-  const effectiveColor = pendingColor ?? top.color;
-  if (card.value === "wild" || card.value === "wild4") return true;
-  return card.color === effectiveColor || card.value === top.value;
-}
-function drawCard(room) {
-  if (room.deck.length === 0) {
-    const top = room.discard[room.discard.length - 1];
-    room.deck = shuffle(room.discard.slice(0, -1));
-    room.discard = [top];
-  }
-  return room.deck.pop();
-}
-function nextIdx(room, skip = false) {
-  const n = room.players.length;
-  let idx = (room.currentIdx + room.direction + n) % n;
-  if (skip) idx = (idx + room.direction + n) % n;
-  return idx;
-}
-router13.post("/play/uno", (req, res) => {
-  const code = randomBytes(3).toString("hex").toUpperCase();
-  const room = {
-    code,
-    players: [],
-    deck: makeUnoDeck(),
-    discard: [],
-    currentIdx: 0,
-    direction: 1,
-    drawStack: 0,
-    pendingColor: null,
-    state: "waiting",
-    winner: null,
-    lastAction: "Soba kreirana",
-    createdAt: Date.now()
-  };
-  unoRooms.set(code, room);
-  res.json({ code });
-});
-router13.post("/play/uno/:code/join", (req, res) => {
-  const room = unoRooms.get(req.params.code);
-  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
-  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
-  if (room.players.length >= 10) return res.status(400).json({ error: "Soba je puna" });
-  const { name: name2 } = req.body;
-  if (!name2?.trim()) return res.status(400).json({ error: "Ime je obavezno" });
-  const id = randomBytes(4).toString("hex");
-  room.players.push({ id, name: name2.trim(), hand: [], saidUno: false, connected: Date.now() });
-  room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
-  res.json({ playerId: id, roomCode: room.code });
-});
-router13.post("/play/uno/:code/start", (req, res) => {
-  const room = unoRooms.get(req.params.code);
-  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
-  if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
-  room.deck = makeUnoDeck();
-  for (const p of room.players) {
-    p.hand = [];
-    for (let i = 0; i < 7; i++) p.hand.push(drawCard(room));
-  }
-  let first;
-  do {
-    first = drawCard(room);
-  } while (first.value === "wild" || first.value === "wild4");
-  room.discard = [first];
-  room.currentIdx = 0;
-  room.state = "playing";
-  room.lastAction = "Igra je po\u010Dela!";
-  res.json({ ok: true });
-});
-router13.get("/play/uno/:code", (req, res) => {
-  const room = unoRooms.get(req.params.code);
-  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
-  const { playerId } = req.query;
-  const safeRoom = {
-    code: room.code,
-    state: room.state,
-    currentIdx: room.currentIdx,
-    direction: room.direction,
-    pendingColor: room.pendingColor,
-    drawStack: room.drawStack,
-    topCard: room.discard[room.discard.length - 1],
-    winner: room.winner,
-    lastAction: room.lastAction,
-    players: room.players.map((p) => ({
-      id: p.id,
-      name: p.name,
-      handCount: p.hand.length,
-      saidUno: p.saidUno,
-      hand: p.id === playerId ? p.hand : void 0
-    }))
-  };
-  res.json(safeRoom);
-});
-router13.post("/play/uno/:code/action", (req, res) => {
-  const room = unoRooms.get(req.params.code);
-  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
-  if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
-  const { playerId, action, cardIdx, chosenColor } = req.body;
-  const pIdx = room.players.findIndex((p) => p.id === playerId);
-  if (pIdx === -1) return res.status(400).json({ error: "Nisi u sobi" });
-  const isCurrentPlayer = pIdx === room.currentIdx;
-  const player = room.players[pIdx];
-  if (action === "draw") {
-    if (!isCurrentPlayer) return res.status(400).json({ error: "Nije tvoj red" });
-    const count2 = room.drawStack > 0 ? room.drawStack : 1;
-    for (let i = 0; i < count2; i++) player.hand.push(drawCard(room));
-    room.drawStack = 0;
-    room.currentIdx = nextIdx(room);
-    room.pendingColor = null;
-    room.lastAction = `${player.name} je uzeo/la ${count2} kart${count2 === 1 ? "u" : "e"}`;
-    return res.json({ ok: true });
-  }
-  if (action === "play") {
-    if (!isCurrentPlayer) return res.status(400).json({ error: "Nije tvoj red" });
-    if (cardIdx === void 0 || cardIdx < 0 || cardIdx >= player.hand.length)
-      return res.status(400).json({ error: "Nevalidna karta" });
-    const card = player.hand[cardIdx];
-    const top = room.discard[room.discard.length - 1];
-    if (room.drawStack > 0 && card.value !== "draw2" && card.value !== "wild4")
-      return res.status(400).json({ error: "Mora\u0161 staviti +2/+4 ili uzeti karte" });
-    if (!canPlay(card, top, room.pendingColor))
-      return res.status(400).json({ error: "Ne mo\u017Ee\u0161 igrati tu kartu" });
-    player.hand.splice(cardIdx, 1);
-    room.discard.push(card);
-    room.pendingColor = null;
-    player.saidUno = false;
-    if (player.hand.length === 0) {
-      room.state = "finished";
-      room.winner = player.name;
-      room.lastAction = `\u{1F3C6} ${player.name} je pobijedio/la!`;
-      return res.json({ ok: true });
-    }
-    let skip = false;
-    if (card.value === "skip") {
-      skip = true;
-      room.lastAction = `${player.name} stavio/la Skip`;
-    } else if (card.value === "reverse") {
-      room.direction = room.direction === 1 ? -1 : 1;
-      if (room.players.length === 2) skip = true;
-      room.lastAction = `${player.name} promijenio/la smjer`;
-    } else if (card.value === "draw2") {
-      room.drawStack += 2;
-      skip = true;
-      room.lastAction = `${player.name} stavio/la +2`;
-    } else if (card.value === "wild") {
-      if (!chosenColor) return res.status(400).json({ error: "Odaberi boju" });
-      room.pendingColor = chosenColor;
-      room.lastAction = `${player.name} odabrao/la ${chosenColor}`;
-    } else if (card.value === "wild4") {
-      if (!chosenColor) return res.status(400).json({ error: "Odaberi boju" });
-      room.pendingColor = chosenColor;
-      room.drawStack += 4;
-      skip = true;
-      room.lastAction = `${player.name} stavio/la +4 ${chosenColor}`;
-    } else {
-      room.lastAction = `${player.name} igrao/la ${card.color} ${card.value}`;
-    }
-    room.currentIdx = nextIdx(room, skip);
-    return res.json({ ok: true });
-  }
-  if (action === "uno") {
-    if (player.hand.length === 1) player.saidUno = true;
-    return res.json({ ok: true });
-  }
-  return res.status(400).json({ error: "Nepoznata akcija" });
-});
-var ludoRooms = /* @__PURE__ */ new Map();
-var LUDO_COLORS = ["red", "blue", "green", "yellow"];
-var LUDO_START = { red: 0, blue: 13, green: 26, yellow: 39 };
-var SAFE_SQUARES = [0, 8, 13, 21, 26, 34, 39, 47];
-function ludoAbsPos(color, relPos) {
-  return (LUDO_START[color] + relPos) % 52;
-}
-router13.post("/play/ludo", (req, res) => {
-  const code = randomBytes(3).toString("hex").toUpperCase();
-  const room = {
-    code,
-    players: [],
-    state: "waiting",
-    currentIdx: 0,
-    dice: null,
-    diceRolled: false,
-    winner: null,
-    lastAction: "Soba kreirana",
-    createdAt: Date.now()
-  };
-  ludoRooms.set(code, room);
-  res.json({ code });
-});
-router13.post("/play/ludo/:code/join", (req, res) => {
-  const room = ludoRooms.get(req.params.code);
-  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
-  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
-  if (room.players.length >= 4) return res.status(400).json({ error: "Soba je puna (max 4)" });
-  const { name: name2 } = req.body;
-  if (!name2?.trim()) return res.status(400).json({ error: "Ime je obavezno" });
-  const id = randomBytes(4).toString("hex");
-  const color = LUDO_COLORS[room.players.length];
-  room.players.push({
-    id,
-    name: name2.trim(),
-    color,
-    pieces: [
-      { pos: -1, home: true, finished: false },
-      { pos: -1, home: true, finished: false },
-      { pos: -1, home: true, finished: false },
-      { pos: -1, home: true, finished: false }
-    ]
-  });
-  room.lastAction = `${name2.trim()} se pridru\u017Eio/la kao ${color}`;
-  res.json({ playerId: id, color, roomCode: room.code });
-});
-router13.post("/play/ludo/:code/start", (req, res) => {
-  const room = ludoRooms.get(req.params.code);
-  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
-  if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
-  room.state = "playing";
-  room.lastAction = "Igra je po\u010Dela!";
-  res.json({ ok: true });
-});
-router13.get("/play/ludo/:code", (req, res) => {
-  const room = ludoRooms.get(req.params.code);
-  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
-  res.json(room);
-});
-router13.post("/play/ludo/:code/action", (req, res) => {
-  const room = ludoRooms.get(req.params.code);
-  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
-  if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
-  const { playerId, action, pieceIdx } = req.body;
-  const pIdx = room.players.findIndex((p) => p.id === playerId);
-  if (pIdx === -1) return res.status(400).json({ error: "Nisi u sobi" });
-  if (pIdx !== room.currentIdx) return res.status(400).json({ error: "Nije tvoj red" });
-  const player = room.players[pIdx];
-  if (action === "roll") {
-    if (room.diceRolled) return res.status(400).json({ error: "Ve\u0107 si bacio kockicu" });
-    room.dice = Math.floor(Math.random() * 6) + 1;
-    room.diceRolled = true;
-    room.lastAction = `${player.name} bacio/la ${room.dice}`;
-    const canMove = player.pieces.some((p, i) => {
-      if (p.finished) return false;
-      if (p.home) return room.dice === 6;
-      return true;
-    });
-    if (!canMove) {
-      room.diceRolled = false;
-      room.dice = null;
-      room.currentIdx = (room.currentIdx + 1) % room.players.length;
-      room.lastAction += " \u2014 nema mogu\u0107eg poteza, prelazi se red";
-    }
-    return res.json({ ok: true, dice: room.dice });
-  }
-  if (action === "move") {
-    if (!room.diceRolled || room.dice === null) return res.status(400).json({ error: "Prvo baci kockicu" });
-    if (pieceIdx === void 0 || pieceIdx < 0 || pieceIdx > 3) return res.status(400).json({ error: "Nevalidna figura" });
-    const piece = player.pieces[pieceIdx];
-    if (piece.finished) return res.status(400).json({ error: "Figura je ve\u0107 zavr\u0161ila" });
-    const dice = room.dice;
-    if (piece.home) {
-      if (dice !== 6) return res.status(400).json({ error: "Treba\u0161 6 za izlazak" });
-      piece.home = false;
-      piece.pos = 0;
-      room.lastAction = `${player.name} izbacio/la figuru ${pieceIdx + 1}`;
-    } else {
-      const newRel = piece.pos + dice;
-      if (newRel > 56) return res.status(400).json({ error: "Ne mo\u017Ee\u0161 se pomjeriti" });
-      if (newRel === 56) {
-        piece.finished = true;
-        piece.pos = 56;
-        room.lastAction = `${player.name} doveo/la figuru ${pieceIdx + 1} ku\u0107i! \u{1F3E0}`;
-      } else {
-        piece.pos = newRel;
-        const absPos = ludoAbsPos(player.color, newRel <= 51 ? newRel : newRel);
-        if (newRel < 52 && !SAFE_SQUARES.includes(absPos)) {
-          for (const other of room.players) {
-            if (other.id === player.id) continue;
-            for (const op of other.pieces) {
-              if (!op.home && !op.finished && op.pos < 52) {
-                const otherAbs = ludoAbsPos(other.color, op.pos);
-                if (otherAbs === absPos) {
-                  op.home = true;
-                  op.pos = -1;
-                  room.lastAction = `${player.name} sru\u0161io/la figuru igra\u010Da ${other.name}! \u{1F4A5}`;
-                }
-              }
-            }
-          }
-        }
-        room.lastAction = room.lastAction || `${player.name} pomijerio/la figuru ${pieceIdx + 1}`;
-      }
-    }
-    if (player.pieces.every((p) => p.finished)) {
-      room.state = "finished";
-      room.winner = player.name;
-      room.lastAction = `\u{1F3C6} ${player.name} je pobijedio/la!`;
-      room.diceRolled = false;
-      return res.json({ ok: true });
-    }
-    if (dice === 6) {
-      room.diceRolled = false;
-      room.dice = null;
-      room.lastAction += " (baci ponovo \u2014 pao je 6!)";
-    } else {
-      room.diceRolled = false;
-      room.dice = null;
-      room.currentIdx = (room.currentIdx + 1) % room.players.length;
-    }
-    return res.json({ ok: true });
-  }
-  return res.status(400).json({ error: "Nepoznata akcija" });
-});
-setInterval(() => {
-  const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
-  for (const [k, v] of unoRooms) if (v.createdAt < cutoff) unoRooms.delete(k);
-  for (const [k, v] of ludoRooms) if (v.createdAt < cutoff) ludoRooms.delete(k);
-}, 30 * 60 * 1e3);
-var games_play_default = router13;
 
 // src/lib/logger.ts
 var import_pino = __toESM(require_pino(), 1);
@@ -67238,7 +66870,7 @@ var logger = (0, import_pino.default)({
 });
 
 // src/app.ts
-var app = (0, import_express14.default)();
+var app = (0, import_express13.default)();
 app.use(
   (0, import_pino_http.default)({
     logger,
@@ -67259,15 +66891,14 @@ app.use(
   })
 );
 app.use((0, import_cors.default)());
-app.use(import_express14.default.json());
-app.use(import_express14.default.urlencoded({ extended: true }));
+app.use(import_express13.default.json());
+app.use(import_express13.default.urlencoded({ extended: true }));
 app.use(icons_default);
 app.use(welcome_card_default);
-app.use("/api", games_play_default);
 app.use("/api", authMiddleware, routes_default);
 var staticDir = path6.join(process.cwd(), "public");
 if (fs6.existsSync(staticDir)) {
-  app.use(import_express14.default.static(staticDir));
+  app.use(import_express13.default.static(staticDir));
   app.use((_req, res) => {
     res.sendFile(path6.join(staticDir, "index.html"));
   });
