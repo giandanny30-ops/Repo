@@ -21112,13 +21112,13 @@ var require_application = __commonJS({
       tryRender(view, renderOptions, done);
     };
     app2.listen = function listen() {
-      var server = http.createServer(this);
+      var server2 = http.createServer(this);
       var args = slice.call(arguments);
       if (typeof args[args.length - 1] === "function") {
         var done = args[args.length - 1] = once(args[args.length - 1]);
-        server.once("error", done);
+        server2.once("error", done);
       }
-      return server.listen.apply(server, args);
+      return server2.listen.apply(server2, args);
     };
     function logerror(err) {
       if (this.get("env") !== "test") console.error(err.stack || err.toString());
@@ -67289,6 +67289,19 @@ var port = Number(rawPort);
 if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
+process.on("uncaughtException", (err) => {
+  logger.error({ err }, "uncaughtException \u2014 keeping process alive");
+});
+process.on("unhandledRejection", (reason) => {
+  logger.error({ reason }, "unhandledRejection \u2014 keeping process alive");
+});
+var server = app_default.listen(port, "0.0.0.0", () => {
+  logger.info({ port }, "Server listening");
+});
+server.on("error", (err) => {
+  logger.error({ err }, "Server failed to listen on port");
+  process.exit(1);
+});
 async function runMigration() {
   if (!process.env["DATABASE_URL"]) {
     logger.warn("DATABASE_URL not set \u2014 skipping DB migration, using in-memory defaults");
@@ -67296,6 +67309,9 @@ async function runMigration() {
   }
   try {
     const { pool: pool2 } = await Promise.resolve().then(() => (init_src(), src_exports));
+    pool2.on("error", (err) => {
+      logger.error({ err }, "pg pool idle client error \u2014 connection will be replaced");
+    });
     await pool2.query(`
       CREATE TABLE IF NOT EXISTS embeds (
         name        TEXT PRIMARY KEY,
@@ -67305,32 +67321,11 @@ async function runMigration() {
     `);
     logger.info("DB migration OK \u2014 embeds table ready");
   } catch (err) {
-    logger.error({ err }, "DB migration failed \u2014 server will start but embeds may not persist");
+    logger.error({ err }, "DB migration failed \u2014 server running, embeds may not persist");
   }
 }
-process.on("uncaughtException", (err) => {
-  logger.error({ err }, "uncaughtException \u2014 keeping process alive");
-});
-process.on("unhandledRejection", (reason) => {
-  logger.error({ reason }, "unhandledRejection \u2014 keeping process alive");
-});
-runMigration().then(async () => {
-  if (process.env["DATABASE_URL"]) {
-    try {
-      const { pool: pool2 } = await Promise.resolve().then(() => (init_src(), src_exports));
-      pool2.on("error", (err) => {
-        logger.error({ err }, "pg pool idle client error \u2014 connection will be replaced");
-      });
-    } catch (_) {
-    }
-  }
-  app_default.listen(port, (err) => {
-    if (err) {
-      logger.error({ err }, "Error listening on port");
-      process.exit(1);
-    }
-    logger.info({ port }, "Server listening");
-  });
+runMigration().catch((err) => {
+  logger.error({ err }, "runMigration unexpected error");
 });
 /*! Bundled license information:
 
