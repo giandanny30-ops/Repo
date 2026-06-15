@@ -20488,27 +20488,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router14;
+    module.exports = Router15;
     module.exports.Route = Route;
-    function Router14(options) {
-      if (!(this instanceof Router14)) {
-        return new Router14(options);
+    function Router15(options) {
+      if (!(this instanceof Router15)) {
+        return new Router15(options);
       }
       const opts = options || {};
-      function router14(req, res, next) {
-        router14.handle(req, res, next);
+      function router15(req, res, next) {
+        router15.handle(req, res, next);
       }
-      Object.setPrototypeOf(router14, this);
-      router14.caseSensitive = opts.caseSensitive;
-      router14.mergeParams = opts.mergeParams;
-      router14.params = {};
-      router14.strict = opts.strict;
-      router14.stack = [];
-      return router14;
+      Object.setPrototypeOf(router15, this);
+      router15.caseSensitive = opts.caseSensitive;
+      router15.mergeParams = opts.mergeParams;
+      router15.params = {};
+      router15.strict = opts.strict;
+      router15.stack = [];
+      return router15;
     }
-    Router14.prototype = function() {
+    Router15.prototype = function() {
     };
-    Router14.prototype.param = function param2(name2, fn) {
+    Router15.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20528,7 +20528,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router14.prototype.handle = function handle(req, res, callback) {
+    Router15.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20655,7 +20655,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router14.prototype.use = function use(handler) {
+    Router15.prototype.use = function use(handler) {
       let offset = 0;
       let path4 = "/";
       if (typeof handler !== "function") {
@@ -20688,7 +20688,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router14.prototype.route = function route(path4) {
+    Router15.prototype.route = function route(path4) {
       const route2 = new Route(path4);
       const layer = new Layer(path4, {
         sensitive: this.caseSensitive,
@@ -20703,7 +20703,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router14.prototype[method] = function(path4) {
+      Router15.prototype[method] = function(path4) {
         const route = this.route(path4);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -20886,13 +20886,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router14 = require_router();
+    var Router15 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router14 = null;
+      var router15 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -20901,13 +20901,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router14 === null) {
-            router14 = new Router14({
+          if (router15 === null) {
+            router15 = new Router15({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router14;
+          return router15;
         }
       });
     };
@@ -20978,15 +20978,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router14 = this.router;
+      var router15 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router14.use(path4, fn2);
+          return router15.use(path4, fn2);
         }
         debug(".use app under %s", path4);
         fn2.mountpath = path4;
         fn2.parent = this;
-        router14.use(path4, function mounted_app(req, res, next) {
+        router15.use(path4, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -23513,7 +23513,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router14 = require_router();
+    var Router15 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23535,8 +23535,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router14.Route;
-    exports.Router = Router14;
+    exports.Route = Router15.Route;
+    exports.Router = Router15;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -52409,7 +52409,7 @@ var require_lucide = __commonJS({
       ["path", { d: "M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" }],
       ["circle", { cx: "18", cy: "5", r: "3" }]
     ];
-    var Router14 = [
+    var Router15 = [
       ["rect", { width: "20", height: "8", x: "2", y: "14", rx: "2" }],
       ["path", { d: "M6.01 18H6" }],
       ["path", { d: "M10.01 18H10" }],
@@ -57479,7 +57479,7 @@ var require_lucide = __commonJS({
       RotateCwSquare,
       Route,
       RouteOff,
-      Router: Router14,
+      Router: Router15,
       Rows: Rows2,
       Rows2,
       Rows3,
@@ -59477,7 +59477,7 @@ var require_lucide = __commonJS({
     exports.RotateCwSquare = RotateCwSquare;
     exports.Route = Route;
     exports.RouteOff = RouteOff;
-    exports.Router = Router14;
+    exports.Router = Router15;
     exports.Rows = Rows2;
     exports.Rows2 = Rows2;
     exports.Rows3 = Rows3;
@@ -59999,7 +59999,7 @@ var require_lucide = __commonJS({
 });
 
 // src/app.ts
-var import_express14 = __toESM(require_express2(), 1);
+var import_express15 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 import path3 from "path";
@@ -67310,6 +67310,228 @@ setInterval(() => {
 }, 30 * 60 * 1e3);
 var games_play_default = router13;
 
+// src/routes/spotify.ts
+var import_express14 = __toESM(require_express2(), 1);
+import { randomUUID } from "crypto";
+var router14 = (0, import_express14.Router)();
+var KEY5 = "spotify_tokens";
+var STATE_KEY = "spotify_oauth_states";
+var STATE_TTL = 10 * 60 * 1e3;
+var SCOPES = [
+  "streaming",
+  "user-read-email",
+  "user-read-private",
+  "user-read-playback-state",
+  "user-modify-playback-state",
+  "user-read-currently-playing",
+  "playlist-read-private",
+  "user-library-read"
+].join(" ");
+function clientCreds() {
+  const id = process.env.SPOTIFY_CLIENT_ID;
+  const secret = process.env.SPOTIFY_CLIENT_SECRET;
+  if (!id || !secret) return null;
+  return { id, secret };
+}
+function redirectUri(req) {
+  const env = process.env.PANEL_PUBLIC_URL;
+  if (env) return `${env.replace(/\/$/, "")}/api/spotify/callback`;
+  const proto = (req.headers["x-forwarded-proto"] || req.protocol).split(",")[0].trim();
+  const host = (req.headers["x-forwarded-host"] || req.get("host") || "").split(",")[0].trim();
+  return `${proto}://${host}/api/spotify/callback`;
+}
+function requirePanel(req, res) {
+  const secret = process.env.PANEL_SECRET;
+  if (!secret) return true;
+  const auth = req.headers.authorization ?? "";
+  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  if (!token || token !== makeToken(secret)) {
+    res.status(401).json({ error: "Neautorizovano \u2014 prijava obavezna." });
+    return false;
+  }
+  return true;
+}
+async function addState(state, ruri) {
+  const map = await readConfig(STATE_KEY) ?? {};
+  const now = Date.now();
+  for (const k of Object.keys(map)) {
+    if (now - map[k].ts > STATE_TTL) delete map[k];
+  }
+  map[state] = { redirectUri: ruri, ts: now };
+  await writeConfig(STATE_KEY, map);
+}
+async function takeState(state) {
+  const map = await readConfig(STATE_KEY) ?? {};
+  const entry = map[state];
+  if (!entry) return null;
+  delete map[state];
+  await writeConfig(STATE_KEY, map);
+  if (Date.now() - entry.ts > STATE_TTL) return null;
+  return { redirectUri: entry.redirectUri };
+}
+async function loadTokens() {
+  const t = await readConfig(KEY5);
+  if (!t || !t.refresh_token) return null;
+  return t;
+}
+async function refreshTokens(creds, tokens) {
+  const body = new URLSearchParams({
+    grant_type: "refresh_token",
+    refresh_token: tokens.refresh_token
+  });
+  const basic = Buffer.from(`${creds.id}:${creds.secret}`).toString("base64");
+  const r = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${basic}`,
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body
+  });
+  if (!r.ok) {
+    const text2 = await r.text().catch(() => "");
+    throw new Error(`Spotify refresh failed: ${r.status} ${text2.slice(0, 200)}`);
+  }
+  const j = await r.json();
+  const updated = {
+    access_token: j.access_token,
+    refresh_token: j.refresh_token || tokens.refresh_token,
+    expires_at: Date.now() + j.expires_in * 1e3 - 6e4,
+    scope: j.scope || tokens.scope
+  };
+  await writeConfig(KEY5, updated);
+  return updated;
+}
+async function getValidToken(creds) {
+  let tokens = await loadTokens();
+  if (!tokens) return null;
+  if (Date.now() >= tokens.expires_at) {
+    tokens = await refreshTokens(creds, tokens);
+  }
+  return tokens;
+}
+router14.post("/spotify/auth-url", async (req, res) => {
+  if (!requirePanel(req, res)) return;
+  const creds = clientCreds();
+  if (!creds) {
+    res.status(400).json({ error: "Spotify nije pode\u0161en \u2014 nedostaju SPOTIFY_CLIENT_ID i SPOTIFY_CLIENT_SECRET." });
+    return;
+  }
+  const state = randomUUID();
+  const ruri = redirectUri(req);
+  await addState(state, ruri);
+  const url = new URL("https://accounts.spotify.com/authorize");
+  url.searchParams.set("client_id", creds.id);
+  url.searchParams.set("response_type", "code");
+  url.searchParams.set("redirect_uri", ruri);
+  url.searchParams.set("scope", SCOPES);
+  url.searchParams.set("state", state);
+  res.json({ url: url.toString(), redirectUri: ruri });
+});
+router14.get("/spotify/callback", async (req, res) => {
+  const dest = (suffix) => res.redirect(`/spotify${suffix}`);
+  const creds = clientCreds();
+  if (!creds) return dest("?error=not_configured");
+  const code = req.query.code;
+  const state = req.query.state;
+  const err = req.query.error;
+  if (err) return dest(`?error=${encodeURIComponent(err)}`);
+  if (!code || !state) return dest("?error=missing_code");
+  const pending = await takeState(state);
+  if (!pending) return dest("?error=bad_state");
+  try {
+    const body = new URLSearchParams({
+      grant_type: "authorization_code",
+      code,
+      redirect_uri: pending.redirectUri
+    });
+    const basic = Buffer.from(`${creds.id}:${creds.secret}`).toString("base64");
+    const r = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: { Authorization: `Basic ${basic}`, "Content-Type": "application/x-www-form-urlencoded" },
+      body
+    });
+    if (!r.ok) {
+      const text2 = await r.text().catch(() => "");
+      req.log.error({ status: r.status, text: text2.slice(0, 200) }, "Spotify token exchange failed");
+      return dest("?error=token_exchange");
+    }
+    const j = await r.json();
+    const tokens = {
+      access_token: j.access_token,
+      refresh_token: j.refresh_token,
+      expires_at: Date.now() + j.expires_in * 1e3 - 6e4,
+      scope: j.scope
+    };
+    await writeConfig(KEY5, tokens);
+    req.log.info("Spotify connected");
+    return dest("?connected=1");
+  } catch (e) {
+    req.log.error({ err: String(e) }, "Spotify callback error");
+    return dest("?error=server");
+  }
+});
+router14.get("/spotify/status", async (req, res) => {
+  if (!requirePanel(req, res)) return;
+  const creds = clientCreds();
+  if (!creds) {
+    res.json({ connected: false, configured: false });
+    return;
+  }
+  try {
+    const tokens = await getValidToken(creds);
+    if (!tokens) {
+      res.json({ connected: false, configured: true });
+      return;
+    }
+    const pr = await fetch("https://api.spotify.com/v1/me", {
+      headers: { Authorization: `Bearer ${tokens.access_token}` }
+    });
+    if (!pr.ok) {
+      res.json({ connected: false, configured: true });
+      return;
+    }
+    const profile = await pr.json();
+    res.json({
+      connected: true,
+      configured: true,
+      profile: {
+        name: profile.display_name ?? "Spotify",
+        product: profile.product ?? "unknown",
+        image: profile.images?.[0]?.url ?? null
+      }
+    });
+  } catch (e) {
+    req.log.error({ err: String(e) }, "Spotify status error");
+    res.json({ connected: false, configured: true });
+  }
+});
+router14.get("/spotify/token", async (req, res) => {
+  if (!requirePanel(req, res)) return;
+  const creds = clientCreds();
+  if (!creds) {
+    res.status(400).json({ error: "not_configured" });
+    return;
+  }
+  try {
+    const tokens = await getValidToken(creds);
+    if (!tokens) {
+      res.status(404).json({ error: "not_connected" });
+      return;
+    }
+    res.json({ access_token: tokens.access_token, expires_at: tokens.expires_at });
+  } catch (e) {
+    req.log.error({ err: String(e) }, "Spotify token error");
+    res.status(500).json({ error: "token_failed" });
+  }
+});
+router14.post("/spotify/logout", async (req, res) => {
+  if (!requirePanel(req, res)) return;
+  await writeConfig(KEY5, null);
+  res.json({ ok: true });
+});
+var spotify_default = router14;
+
 // src/lib/logger.ts
 var import_pino = __toESM(require_pino(), 1);
 var usePretty = process.env.LOG_PRETTY === "true";
@@ -67329,7 +67551,7 @@ var logger = (0, import_pino.default)({
 });
 
 // src/app.ts
-var app = (0, import_express14.default)();
+var app = (0, import_express15.default)();
 app.use(
   (0, import_pino_http.default)({
     logger,
@@ -67350,15 +67572,16 @@ app.use(
   })
 );
 app.use((0, import_cors.default)());
-app.use(import_express14.default.json());
-app.use(import_express14.default.urlencoded({ extended: true }));
+app.use(import_express15.default.json());
+app.use(import_express15.default.urlencoded({ extended: true }));
 app.use(icons_default);
 app.use(welcome_card_default);
 app.use("/api", games_play_default);
+app.use("/api", spotify_default);
 app.use("/api", authMiddleware, routes_default);
 var staticDir = path3.join(process.cwd(), "public");
 if (fs3.existsSync(staticDir)) {
-  app.use(import_express14.default.static(staticDir));
+  app.use(import_express15.default.static(staticDir));
   app.use((_req, res) => {
     res.sendFile(path3.join(staticDir, "index.html"));
   });
