@@ -67401,7 +67401,14 @@ async function runMigration() {
         updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
     `);
-    logger.info("DB migration OK \u2014 embeds table ready");
+    await pool2.query(`
+      CREATE TABLE IF NOT EXISTS config (
+        key         TEXT PRIMARY KEY,
+        data        JSONB NOT NULL,
+        updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `);
+    logger.info("DB migration OK \u2014 embeds + config tables ready");
   } catch (err) {
     logger.error({ err }, "DB migration failed \u2014 server running, embeds may not persist");
   }
