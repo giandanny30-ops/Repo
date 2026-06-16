@@ -15331,7 +15331,7 @@ var require_type_is = __commonJS({
     module.exports = typeofrequest;
     module.exports.is = typeis;
     module.exports.hasBody = hasbody;
-    module.exports.normalize = normalize;
+    module.exports.normalize = normalize2;
     module.exports.match = mimeMatch;
     function typeis(value, types_) {
       var i;
@@ -15351,7 +15351,7 @@ var require_type_is = __commonJS({
       }
       var type;
       for (i = 0; i < types3.length; i++) {
-        if (mimeMatch(normalize(type = types3[i]), val)) {
+        if (mimeMatch(normalize2(type = types3[i]), val)) {
           return type[0] === "+" || type.indexOf("*") !== -1 ? val : type;
         }
       }
@@ -15366,7 +15366,7 @@ var require_type_is = __commonJS({
       var value = req.headers["content-type"];
       return typeis(value, types3);
     }
-    function normalize(type) {
+    function normalize2(type) {
       if (typeof type !== "string") {
         return false;
       }
@@ -20488,27 +20488,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router15;
+    module.exports = Router21;
     module.exports.Route = Route;
-    function Router15(options) {
-      if (!(this instanceof Router15)) {
-        return new Router15(options);
+    function Router21(options) {
+      if (!(this instanceof Router21)) {
+        return new Router21(options);
       }
       const opts = options || {};
-      function router15(req, res, next) {
-        router15.handle(req, res, next);
+      function router21(req, res, next) {
+        router21.handle(req, res, next);
       }
-      Object.setPrototypeOf(router15, this);
-      router15.caseSensitive = opts.caseSensitive;
-      router15.mergeParams = opts.mergeParams;
-      router15.params = {};
-      router15.strict = opts.strict;
-      router15.stack = [];
-      return router15;
+      Object.setPrototypeOf(router21, this);
+      router21.caseSensitive = opts.caseSensitive;
+      router21.mergeParams = opts.mergeParams;
+      router21.params = {};
+      router21.strict = opts.strict;
+      router21.stack = [];
+      return router21;
     }
-    Router15.prototype = function() {
+    Router21.prototype = function() {
     };
-    Router15.prototype.param = function param2(name2, fn) {
+    Router21.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20528,7 +20528,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router15.prototype.handle = function handle(req, res, callback) {
+    Router21.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20655,7 +20655,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router15.prototype.use = function use(handler) {
+    Router21.prototype.use = function use(handler) {
       let offset = 0;
       let path4 = "/";
       if (typeof handler !== "function") {
@@ -20688,7 +20688,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router15.prototype.route = function route(path4) {
+    Router21.prototype.route = function route(path4) {
       const route2 = new Route(path4);
       const layer = new Layer(path4, {
         sensitive: this.caseSensitive,
@@ -20703,7 +20703,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router15.prototype[method] = function(path4) {
+      Router21.prototype[method] = function(path4) {
         const route = this.route(path4);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -20886,13 +20886,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router15 = require_router();
+    var Router21 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router15 = null;
+      var router21 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -20901,13 +20901,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router15 === null) {
-            router15 = new Router15({
+          if (router21 === null) {
+            router21 = new Router21({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router15;
+          return router21;
         }
       });
     };
@@ -20978,15 +20978,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router15 = this.router;
+      var router21 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router15.use(path4, fn2);
+          return router21.use(path4, fn2);
         }
         debug(".use app under %s", path4);
         fn2.mountpath = path4;
         fn2.parent = this;
-        router15.use(path4, function mounted_app(req, res, next) {
+        router21.use(path4, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -22396,7 +22396,7 @@ var require_send = __commonJS({
     var util2 = __require("util");
     var extname = path4.extname;
     var join = path4.join;
-    var normalize = path4.normalize;
+    var normalize2 = path4.normalize;
     var resolve = path4.resolve;
     var sep = path4.sep;
     var BYTES_RANGE_REGEXP = /^ *bytes=/;
@@ -22559,7 +22559,7 @@ var require_send = __commonJS({
       var parts;
       if (root !== null) {
         if (path5) {
-          path5 = normalize("." + sep + path5);
+          path5 = normalize2("." + sep + path5);
         }
         if (UP_PATH_REGEXP.test(path5)) {
           debug('malicious path "%s"', path5);
@@ -22567,14 +22567,14 @@ var require_send = __commonJS({
           return res;
         }
         parts = path5.split(sep);
-        path5 = normalize(join(root, path5));
+        path5 = normalize2(join(root, path5));
       } else {
         if (UP_PATH_REGEXP.test(path5)) {
           debug('malicious path "%s"', path5);
           this.error(403);
           return res;
         }
-        parts = normalize(path5).split(sep);
+        parts = normalize2(path5).split(sep);
         path5 = resolve(path5);
       }
       if (containsDotFile(parts)) {
@@ -23513,7 +23513,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router15 = require_router();
+    var Router21 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23535,8 +23535,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router15.Route;
-    exports.Router = Router15;
+    exports.Route = Router21.Route;
+    exports.Router = Router21;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -28021,11 +28021,11 @@ var require_pino = __commonJS({
       depthLimit: 5,
       edgeLimit: 100
     };
-    var normalize = createArgsNormalizer(defaultOptions);
+    var normalize2 = createArgsNormalizer(defaultOptions);
     var serializers = Object.assign(/* @__PURE__ */ Object.create(null), stdSerializers);
     function pino2(...args) {
       const instance = {};
-      const { opts, stream } = normalize(instance, caller(), ...args);
+      const { opts, stream } = normalize2(instance, caller(), ...args);
       if (opts.level && typeof opts.level === "string" && DEFAULT_LEVELS[opts.level.toLowerCase()] !== void 0) opts.level = opts.level.toLowerCase();
       const {
         redact,
@@ -33709,7 +33709,7 @@ var require_utils_webcrypto = __commonJS({
     var nodeCrypto = __require("crypto");
     module.exports = {
       postgresMd5PasswordHash,
-      randomBytes: randomBytes2,
+      randomBytes: randomBytes8,
       deriveKey,
       sha256,
       hashByName,
@@ -33719,7 +33719,7 @@ var require_utils_webcrypto = __commonJS({
     var webCrypto = nodeCrypto.webcrypto || globalThis.crypto;
     var subtleCrypto = webCrypto.subtle;
     var textEncoder = new TextEncoder();
-    function randomBytes2(length) {
+    function randomBytes8(length) {
       return webCrypto.getRandomValues(Buffer.alloc(length));
     }
     async function md5(string) {
@@ -52409,7 +52409,7 @@ var require_lucide = __commonJS({
       ["path", { d: "M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" }],
       ["circle", { cx: "18", cy: "5", r: "3" }]
     ];
-    var Router15 = [
+    var Router21 = [
       ["rect", { width: "20", height: "8", x: "2", y: "14", rx: "2" }],
       ["path", { d: "M6.01 18H6" }],
       ["path", { d: "M10.01 18H10" }],
@@ -57479,7 +57479,7 @@ var require_lucide = __commonJS({
       RotateCwSquare,
       Route,
       RouteOff,
-      Router: Router15,
+      Router: Router21,
       Rows: Rows2,
       Rows2,
       Rows3,
@@ -59477,7 +59477,7 @@ var require_lucide = __commonJS({
     exports.RotateCwSquare = RotateCwSquare;
     exports.Route = Route;
     exports.RouteOff = RouteOff;
-    exports.Router = Router15;
+    exports.Router = Router21;
     exports.Rows = Rows2;
     exports.Rows2 = Rows2;
     exports.Rows3 = Rows3;
@@ -59999,7 +59999,7 @@ var require_lucide = __commonJS({
 });
 
 // src/app.ts
-var import_express15 = __toESM(require_express2(), 1);
+var import_express21 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 import path3 from "path";
@@ -67310,9 +67310,1482 @@ setInterval(() => {
 }, 30 * 60 * 1e3);
 var games_play_default = router13;
 
-// src/routes/youtube.ts
+// src/routes/play-crtanje.ts
 var import_express14 = __toESM(require_express2(), 1);
+import { randomBytes as randomBytes2 } from "crypto";
 var router14 = (0, import_express14.Router)();
+var rooms = /* @__PURE__ */ new Map();
+var CHOOSE_TIME = 15e3;
+var DRAW_TIME = 7e4;
+var INTERMISSION_TIME = 8e3;
+var TOTAL_ROUNDS = 2;
+var WORDS = [
+  "pas",
+  "ma\u010Dka",
+  "konj",
+  "krava",
+  "ovca",
+  "koza",
+  "svinja",
+  "koko\u0161",
+  "patka",
+  "guska",
+  "lav",
+  "tigar",
+  "slon",
+  "\u017Eirafa",
+  "majmun",
+  "medvjed",
+  "vuk",
+  "lisica",
+  "zec",
+  "je\u017E",
+  "mi\u0161",
+  "vjeverica",
+  "delfin",
+  "kit",
+  "ajkula",
+  "riba",
+  "rak",
+  "hobotnica",
+  "leptir",
+  "p\u010Dela",
+  "mrav",
+  "pauk",
+  "zmija",
+  "kornja\u010Da",
+  "\u017Eaba",
+  "orao",
+  "sova",
+  "papagaj",
+  "pingvin",
+  "kameleon",
+  "jabuka",
+  "banana",
+  "kru\u0161ka",
+  "jagoda",
+  "lubenica",
+  "gro\u017E\u0111e",
+  "limun",
+  "narand\u017Ea",
+  "tre\u0161nja",
+  "breskva",
+  "hljeb",
+  "sir",
+  "mlijeko",
+  "jaje",
+  "pica",
+  "burek",
+  "\u0107evapi",
+  "sladoled",
+  "\u010Dokolada",
+  "kola\u010D",
+  "kafa",
+  "\u010Daj",
+  "supa",
+  "salata",
+  "krompir",
+  "paradajz",
+  "paprika",
+  "krastavac",
+  "luk",
+  "mrkva",
+  "sto",
+  "stolica",
+  "krevet",
+  "lampa",
+  "sat",
+  "ogledalo",
+  "knjiga",
+  "olovka",
+  "ki\u0161obran",
+  "nao\u010Dale",
+  "telefon",
+  "ra\u010Dunar",
+  "televizor",
+  "klju\u010D",
+  "torba",
+  "cipela",
+  "\u0161e\u0161ir",
+  "rukavice",
+  "\u010Darapa",
+  "ko\u0161ulja",
+  "auto",
+  "bicikl",
+  "motor",
+  "avion",
+  "voz",
+  "brod",
+  "autobus",
+  "helikopter",
+  "raketa",
+  "balon",
+  "ku\u0107a",
+  "\u0161kola",
+  "bolnica",
+  "crkva",
+  "most",
+  "toranj",
+  "zamak",
+  "pla\u017Ea",
+  "planina",
+  "rijeka",
+  "more",
+  "jezero",
+  "\u0161uma",
+  "drvo",
+  "cvijet",
+  "sunce",
+  "mjesec",
+  "zvijezda",
+  "oblak",
+  "ki\u0161a",
+  "snijeg",
+  "duga",
+  "vatra",
+  "led",
+  "vjetar",
+  "gitara",
+  "klavir",
+  "bubanj",
+  "lopta",
+  "zastava"
+];
+function shuffle2(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function normalize(s) {
+  return s.trim().toLowerCase().replace(/[čć]/g, "c").replace(/[š]/g, "s").replace(/[ž]/g, "z").replace(/[đ]/g, "d").replace(/\s+/g, " ");
+}
+function pickWords() {
+  return shuffle2(WORDS).slice(0, 3);
+}
+function letterIndices(word) {
+  const idx = [];
+  for (let i = 0; i < word.length; i++) if (word[i] !== " ") idx.push(i);
+  return idx;
+}
+function startTurn(room) {
+  const drawerIdx = room.turnIndex % room.players.length;
+  room.drawerId = room.players[drawerIdx].id;
+  room.wordChoices = pickWords();
+  room.word = null;
+  room.revealOrder = [];
+  room.strokes = [];
+  room.correctCount = 0;
+  for (const p of room.players) p.guessedThisTurn = false;
+  room.phase = "choosing";
+  room.phaseEndsAt = Date.now() + CHOOSE_TIME;
+  const drawerName = room.players[drawerIdx].name;
+  const roundNum = Math.floor(room.turnIndex / room.players.length) + 1;
+  room.chat = [{
+    id: randomBytes2(3).toString("hex"),
+    name: "",
+    text: `Runda ${roundNum} \u2014 ${drawerName} bira rije\u010D...`,
+    correct: false,
+    system: true
+  }];
+  room.lastAction = `${drawerName} bira rije\u010D`;
+}
+function beginDrawing(room, word) {
+  room.word = word;
+  room.revealOrder = shuffle2(letterIndices(word));
+  room.phase = "drawing";
+  room.phaseEndsAt = Date.now() + DRAW_TIME;
+}
+function endTurn(room) {
+  room.phase = "intermission";
+  room.phaseEndsAt = Date.now() + INTERMISSION_TIME;
+  room.chat.push({
+    id: randomBytes2(3).toString("hex"),
+    name: "",
+    text: `Rije\u010D je bila: ${room.word ?? "?"}`,
+    correct: false,
+    system: true
+  });
+}
+function advanceTurn(room) {
+  room.turnIndex++;
+  if (room.turnIndex >= TOTAL_ROUNDS * room.players.length) {
+    room.state = "finished";
+    room.phase = "intermission";
+    const top = [...room.players].sort((a, b) => b.score - a.score)[0];
+    room.winner = top ? top.name : null;
+    room.lastAction = "Igra zavr\u0161ena";
+    return;
+  }
+  startTurn(room);
+}
+function advance(room) {
+  if (room.state !== "playing") return;
+  const now = Date.now();
+  let guard = 0;
+  while (now >= room.phaseEndsAt && room.state === "playing" && guard < 5) {
+    guard++;
+    if (room.phase === "choosing") {
+      beginDrawing(room, room.word ?? room.wordChoices[0]);
+    } else if (room.phase === "drawing") {
+      endTurn(room);
+    } else if (room.phase === "intermission") {
+      advanceTurn(room);
+    }
+  }
+}
+var HOST = (room) => room.players[0]?.id;
+router14.post("/play/crtanje", (_req, res) => {
+  const code = randomBytes2(3).toString("hex").toUpperCase();
+  const room = {
+    code,
+    players: [],
+    state: "waiting",
+    phase: "choosing",
+    totalRounds: TOTAL_ROUNDS,
+    turnIndex: 0,
+    drawerId: null,
+    wordChoices: [],
+    word: null,
+    revealOrder: [],
+    strokes: [],
+    chat: [],
+    phaseEndsAt: 0,
+    correctCount: 0,
+    winner: null,
+    lastAction: "Soba kreirana",
+    createdAt: Date.now()
+  };
+  rooms.set(code, room);
+  res.json({ code });
+});
+router14.post("/play/crtanje/:code/join", (req, res) => {
+  const room = rooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 8) return res.status(400).json({ error: "Soba je puna (max 8)" });
+  const { name: name2 } = req.body;
+  if (!name2?.trim()) return res.status(400).json({ error: "Ime je obavezno" });
+  const id = randomBytes2(4).toString("hex");
+  room.players.push({ id, name: name2.trim(), score: 0, guessedThisTurn: false, connected: Date.now() });
+  room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
+  return res.json({ playerId: id, roomCode: room.code });
+});
+router14.post("/play/crtanje/:code/start", (req, res) => {
+  const room = rooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
+  for (const p of room.players) p.score = 0;
+  room.state = "playing";
+  room.turnIndex = 0;
+  room.winner = null;
+  startTurn(room);
+  room.lastAction = "Igra je po\u010Dela!";
+  return res.json({ ok: true });
+});
+router14.get("/play/crtanje/:code", (req, res) => {
+  const room = rooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  advance(room);
+  const { playerId } = req.query;
+  const isDrawer = playerId != null && playerId === room.drawerId;
+  const now = Date.now();
+  const remaining = Math.max(0, room.phaseEndsAt - now);
+  let wordPattern = "";
+  let revealedWord = null;
+  if (room.word) {
+    if (room.phase === "intermission") {
+      revealedWord = room.word;
+    } else if (isDrawer) {
+      revealedWord = room.word;
+    } else {
+      let revealCount = 0;
+      if (room.phase === "drawing") {
+        const frac = remaining / DRAW_TIME;
+        if (frac < 0.35) revealCount = Math.floor(room.revealOrder.length * 0.3);
+        else if (frac < 0.6) revealCount = Math.floor(room.revealOrder.length * 0.15);
+      }
+      const revealed = new Set(room.revealOrder.slice(0, revealCount));
+      wordPattern = [...room.word].map((ch, i) => ch === " " ? "/" : revealed.has(i) ? ch : "_").join(" ");
+    }
+  }
+  const safe = {
+    code: room.code,
+    state: room.state,
+    phase: room.phase,
+    round: room.players.length > 0 ? Math.floor(room.turnIndex / room.players.length) + 1 : 1,
+    totalRounds: room.totalRounds,
+    drawerId: room.drawerId === playerId ? playerId : null,
+    isDrawer,
+    timeLeft: Math.ceil(remaining / 1e3),
+    wordLength: room.word ? room.word.length : 0,
+    wordPattern,
+    word: revealedWord,
+    wordChoices: isDrawer && room.phase === "choosing" ? room.wordChoices : [],
+    strokes: room.strokes,
+    chat: room.chat,
+    winner: room.winner,
+    lastAction: room.lastAction,
+    hostId: HOST(room) === playerId ? HOST(room) : "anon0",
+    players: [...room.players].sort((a, b) => b.score - a.score).map((p) => ({
+      id: p.id === playerId ? p.id : "anon" + room.players.indexOf(p),
+      name: p.name,
+      score: p.score,
+      guessed: p.guessedThisTurn,
+      isDrawer: p.id === room.drawerId
+    }))
+  };
+  return res.json(safe);
+});
+router14.post("/play/crtanje/:code/action", (req, res) => {
+  const room = rooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId, action } = req.body;
+  const player = room.players.find((p) => p.id === playerId);
+  if (!player) return res.status(400).json({ error: "Nisi u sobi" });
+  if (action === "restart") {
+    if (player.id !== HOST(room)) return res.status(400).json({ error: "Samo doma\u0107in mo\u017Ee restartovati" });
+    if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
+    for (const p of room.players) {
+      p.score = 0;
+      p.guessedThisTurn = false;
+    }
+    room.state = "playing";
+    room.turnIndex = 0;
+    room.winner = null;
+    startTurn(room);
+    room.lastAction = "Nova igra!";
+    return res.json({ ok: true });
+  }
+  advance(room);
+  if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
+  const isDrawer = player.id === room.drawerId;
+  if (action === "choose") {
+    if (!isDrawer) return res.status(400).json({ error: "Nisi crta\u010D" });
+    if (room.phase !== "choosing") return res.status(400).json({ error: "Rije\u010D je ve\u0107 odabrana" });
+    const { word } = req.body;
+    if (!word || !room.wordChoices.includes(word)) return res.status(400).json({ error: "Nevalidna rije\u010D" });
+    beginDrawing(room, word);
+    room.lastAction = `${player.name} crta`;
+    return res.json({ ok: true });
+  }
+  if (action === "stroke") {
+    if (!isDrawer) return res.status(400).json({ error: "Samo crta\u010D mo\u017Ee crtati" });
+    if (room.phase !== "drawing") return res.status(400).json({ error: "Nije vrijeme za crtanje" });
+    const { stroke } = req.body;
+    if (!stroke || !Array.isArray(stroke.points) || stroke.points.length === 0)
+      return res.status(400).json({ error: "Nevalidan potez" });
+    const clean = {
+      color: typeof stroke.color === "string" ? stroke.color.slice(0, 24) : "#ffffff",
+      size: Math.max(1, Math.min(48, Number(stroke.size) || 4)),
+      points: stroke.points.slice(0, 800).map((p) => ({
+        x: Math.max(0, Math.min(1, Number(p.x) || 0)),
+        y: Math.max(0, Math.min(1, Number(p.y) || 0))
+      }))
+    };
+    if (room.strokes.length < 4e3) room.strokes.push(clean);
+    return res.json({ ok: true });
+  }
+  if (action === "clear") {
+    if (!isDrawer) return res.status(400).json({ error: "Samo crta\u010D mo\u017Ee brisati" });
+    if (room.phase !== "drawing") return res.status(400).json({ error: "Nije vrijeme za crtanje" });
+    room.strokes = [];
+    return res.json({ ok: true });
+  }
+  if (action === "guess") {
+    if (isDrawer) return res.status(400).json({ error: "Crta\u010D ne mo\u017Ee poga\u0111ati" });
+    if (room.phase !== "drawing") return res.status(400).json({ error: "Nije vrijeme za poga\u0111anje" });
+    const { text: text2 } = req.body;
+    if (!text2?.trim()) return res.status(400).json({ error: "Prazna poruka" });
+    const guess = text2.trim().slice(0, 60);
+    const isWord = room.word != null && normalize(guess) === normalize(room.word);
+    if (player.guessedThisTurn) {
+      if (!isWord) {
+        room.chat.push({ id: randomBytes2(3).toString("hex"), name: player.name, text: guess, correct: false, system: false });
+      }
+      return res.json({ ok: true });
+    }
+    if (isWord) {
+      player.guessedThisTurn = true;
+      room.correctCount++;
+      const remaining = Math.max(0, room.phaseEndsAt - Date.now());
+      const speedBonus = Math.round(remaining / DRAW_TIME * 100);
+      const orderPenalty = Math.min(40, (room.correctCount - 1) * 10);
+      player.score += Math.max(20, 60 + speedBonus - orderPenalty);
+      const drawer = room.players.find((p) => p.id === room.drawerId);
+      if (drawer) drawer.score += 25;
+      room.chat.push({
+        id: randomBytes2(3).toString("hex"),
+        name: "",
+        text: `\u2705 ${player.name} je pogodio/la rije\u010D!`,
+        correct: true,
+        system: true
+      });
+      room.lastAction = `${player.name} je pogodio/la!`;
+      if (room.correctCount >= room.players.length - 1) endTurn(room);
+      return res.json({ ok: true });
+    }
+    room.chat.push({ id: randomBytes2(3).toString("hex"), name: player.name, text: guess, correct: false, system: false });
+    if (room.chat.length > 60) room.chat = room.chat.slice(-60);
+    return res.json({ ok: true });
+  }
+  return res.status(400).json({ error: "Nepoznata akcija" });
+});
+setInterval(() => {
+  const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
+  for (const [k, v] of rooms) if (v.createdAt < cutoff) rooms.delete(k);
+}, 30 * 60 * 1e3);
+var play_crtanje_default = router14;
+
+// src/routes/play-spoji4.ts
+var import_express15 = __toESM(require_express2(), 1);
+import { randomBytes as randomBytes3 } from "crypto";
+var router15 = (0, import_express15.Router)();
+var COLS = 7;
+var ROWS = 6;
+var rooms2 = /* @__PURE__ */ new Map();
+function emptyBoard() {
+  return Array.from({ length: ROWS }, () => Array.from({ length: COLS }, () => 0));
+}
+function checkWin(board, disc) {
+  const dirs = [
+    [0, 1],
+    [1, 0],
+    [1, 1],
+    [1, -1]
+  ];
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (board[r][c] !== disc) continue;
+      for (const [dr, dc] of dirs) {
+        const line2 = [[r, c]];
+        let rr = r + dr;
+        let cc = c + dc;
+        while (rr >= 0 && rr < ROWS && cc >= 0 && cc < COLS && board[rr][cc] === disc) {
+          line2.push([rr, cc]);
+          rr += dr;
+          cc += dc;
+        }
+        if (line2.length >= 4) return line2.slice(0, 4);
+      }
+    }
+  }
+  return null;
+}
+function isBoardFull(board) {
+  return board[0].every((c) => c !== 0);
+}
+function resetRoom(room) {
+  room.board = emptyBoard();
+  room.currentIdx = 0;
+  room.state = "playing";
+  room.winner = null;
+  room.winnerDisc = 0;
+  room.winningCells = [];
+  room.draw = false;
+  room.lastAction = "Nova partija \u2014 crveni igra prvi";
+}
+router15.post("/play/spoji4", (_req, res) => {
+  const code = randomBytes3(3).toString("hex").toUpperCase();
+  const room = {
+    code,
+    players: [],
+    board: emptyBoard(),
+    currentIdx: 0,
+    state: "waiting",
+    winner: null,
+    winnerDisc: 0,
+    winningCells: [],
+    draw: false,
+    lastAction: "Soba kreirana",
+    createdAt: Date.now()
+  };
+  rooms2.set(code, room);
+  return res.json({ code });
+});
+router15.post("/play/spoji4/:code/join", (req, res) => {
+  const room = rooms2.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 2) return res.status(400).json({ error: "Soba je puna (max 2)" });
+  const { name: name2 } = req.body;
+  if (!name2?.trim()) return res.status(400).json({ error: "Ime je obavezno" });
+  const id = randomBytes3(4).toString("hex");
+  const disc = room.players.length === 0 ? 1 : 2;
+  room.players.push({ id, name: name2.trim(), disc });
+  room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
+  return res.json({ playerId: id, roomCode: room.code, disc });
+});
+router15.post("/play/spoji4/:code/start", (req, res) => {
+  const room = rooms2.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.players.length < 2) return res.status(400).json({ error: "Potrebna su 2 igra\u010Da" });
+  resetRoom(room);
+  return res.json({ ok: true });
+});
+router15.get("/play/spoji4/:code", (req, res) => {
+  const room = rooms2.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId } = req.query;
+  return res.json({
+    code: room.code,
+    state: room.state,
+    board: room.board,
+    currentIdx: room.currentIdx,
+    winner: room.winner,
+    winnerDisc: room.winnerDisc,
+    winningCells: room.winningCells,
+    draw: room.draw,
+    lastAction: room.lastAction,
+    players: room.players.map((p) => ({ id: p.id === playerId ? p.id : "anon" + room.players.indexOf(p), name: p.name, disc: p.disc }))
+  });
+});
+router15.post("/play/spoji4/:code/action", (req, res) => {
+  const room = rooms2.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId, action, col } = req.body;
+  const pIdx = room.players.findIndex((p) => p.id === playerId);
+  if (pIdx === -1) return res.status(400).json({ error: "Nisi u sobi" });
+  const player = room.players[pIdx];
+  if (action === "rematch") {
+    if (room.state !== "finished") return res.status(400).json({ error: "Partija jo\u0161 traje" });
+    resetRoom(room);
+    return res.json({ ok: true });
+  }
+  if (action === "drop") {
+    if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
+    if (pIdx !== room.currentIdx) return res.status(400).json({ error: "Nije tvoj red" });
+    if (col === void 0 || col < 0 || col >= COLS)
+      return res.status(400).json({ error: "Nevalidna kolona" });
+    if (room.board[0][col] !== 0)
+      return res.status(400).json({ error: "Kolona je puna" });
+    let landRow = -1;
+    for (let r = ROWS - 1; r >= 0; r--) {
+      if (room.board[r][col] === 0) {
+        room.board[r][col] = player.disc;
+        landRow = r;
+        break;
+      }
+    }
+    const win = checkWin(room.board, player.disc);
+    if (win) {
+      room.state = "finished";
+      room.winner = player.name;
+      room.winnerDisc = player.disc;
+      room.winningCells = win;
+      room.lastAction = `\u{1F3C6} ${player.name} je spojio/la 4!`;
+      return res.json({ ok: true });
+    }
+    if (isBoardFull(room.board)) {
+      room.state = "finished";
+      room.draw = true;
+      room.lastAction = "Nerije\u0161eno \u2014 tabla je puna!";
+      return res.json({ ok: true });
+    }
+    room.currentIdx = (room.currentIdx + 1) % 2;
+    const next = room.players[room.currentIdx];
+    room.lastAction = `${player.name} bacio/la disk u kolonu ${col + 1} (red ${landRow + 1}) \u2014 sada igra ${next.name}`;
+    return res.json({ ok: true });
+  }
+  return res.status(400).json({ error: "Nepoznata akcija" });
+});
+setInterval(() => {
+  const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
+  for (const [k, v] of rooms2) if (v.createdAt < cutoff) rooms2.delete(k);
+}, 30 * 60 * 1e3);
+var play_spoji4_default = router15;
+
+// src/routes/play-potapanje.ts
+var import_express16 = __toESM(require_express2(), 1);
+import { randomBytes as randomBytes4 } from "crypto";
+var router16 = (0, import_express16.Router)();
+var GRID = 10;
+var FLEET = [5, 4, 3, 3, 2];
+var rooms3 = /* @__PURE__ */ new Map();
+function makeEmptyPlayer(id, name2) {
+  return { id, name: name2, ships: [], ready: false, shots: [], hitsMade: [] };
+}
+function cellsForShip(start, size, horizontal) {
+  const row = Math.floor(start / GRID);
+  const col = start % GRID;
+  const cells = [];
+  for (let i = 0; i < size; i++) {
+    const r = horizontal ? row : row + i;
+    const c = horizontal ? col + i : col;
+    if (r < 0 || r >= GRID || c < 0 || c >= GRID) return null;
+    cells.push(r * GRID + c);
+  }
+  return cells;
+}
+function shipsOverlap(ships, cells) {
+  const taken = /* @__PURE__ */ new Set();
+  for (const s of ships) for (const c of s.cells) taken.add(c);
+  return cells.some((c) => taken.has(c));
+}
+function randomPlacement() {
+  for (let attempt = 0; attempt < 200; attempt++) {
+    const ships = [];
+    let ok = true;
+    for (const size of FLEET) {
+      let placed = false;
+      for (let tries = 0; tries < 100; tries++) {
+        const horizontal = Math.random() < 0.5;
+        const start = Math.floor(Math.random() * GRID * GRID);
+        const cells = cellsForShip(start, size, horizontal);
+        if (!cells) continue;
+        if (shipsOverlap(ships, cells)) continue;
+        ships.push({ size, cells, hits: [] });
+        placed = true;
+        break;
+      }
+      if (!placed) {
+        ok = false;
+        break;
+      }
+    }
+    if (ok) return ships;
+  }
+  return [];
+}
+function sanitize(room, playerId) {
+  const me = room.players.find((p) => p.id === playerId);
+  const opponent = room.players.find((p) => p.id !== playerId);
+  const pub = (p) => p.id === playerId ? p.id : "anon" + room.players.indexOf(p);
+  return {
+    code: room.code,
+    state: room.state,
+    winner: room.winner,
+    lastAction: room.lastAction,
+    fleet: FLEET,
+    grid: GRID,
+    turnId: room.players[room.turnIdx] ? pub(room.players[room.turnIdx]) : null,
+    players: room.players.map((p) => ({ id: pub(p), name: p.name, ready: p.ready })),
+    me: me ? {
+      id: me.id,
+      name: me.name,
+      ready: me.ready,
+      ships: me.ships.map((s) => ({ size: s.size, cells: s.cells, hits: s.hits })),
+      shots: me.shots,
+      hitsMade: me.hitsMade,
+      sunkEnemy: opponent ? sunkSizes(opponent) : [],
+      sunkEnemyCells: opponent ? sunkCells(opponent) : []
+    } : null,
+    enemy: opponent ? {
+      id: pub(opponent),
+      name: opponent.name,
+      ready: opponent.ready,
+      // never leak ship positions until a ship is fully sunk
+      shotsAtMe: opponent.shots,
+      hitsOnMe: opponent.hitsMade,
+      sunkOnMe: sunkCells(me)
+    } : null
+  };
+}
+function sunkSizes(p) {
+  return p.ships.filter((s) => s.hits.length >= s.size).map((s) => s.size);
+}
+function sunkCells(p) {
+  if (!p) return [];
+  const out = [];
+  for (const s of p.ships) if (s.hits.length >= s.size) out.push(...s.cells);
+  return out;
+}
+function allSunk(p) {
+  return p.ships.length > 0 && p.ships.every((s) => s.hits.length >= s.size);
+}
+router16.post("/play/potapanje", (_req, res) => {
+  const code = randomBytes4(3).toString("hex").toUpperCase();
+  const room = {
+    code,
+    players: [],
+    state: "waiting",
+    turnIdx: 0,
+    winner: null,
+    lastAction: "Soba kreirana",
+    createdAt: Date.now()
+  };
+  rooms3.set(code, room);
+  res.json({ code });
+});
+router16.post("/play/potapanje/:code/join", (req, res) => {
+  const room = rooms3.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 2) return res.status(400).json({ error: "Soba je puna (max 2)" });
+  const { name: name2 } = req.body;
+  if (!name2?.trim()) return res.status(400).json({ error: "Ime je obavezno" });
+  const id = randomBytes4(4).toString("hex");
+  room.players.push(makeEmptyPlayer(id, name2.trim()));
+  room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
+  return res.json({ playerId: id, roomCode: room.code });
+});
+router16.post("/play/potapanje/:code/start", (req, res) => {
+  const room = rooms3.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.players.length < 2) return res.status(400).json({ error: "Potrebno 2 igra\u010Da" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  room.state = "placing";
+  for (const p of room.players) {
+    p.ships = [];
+    p.ready = false;
+    p.shots = [];
+    p.hitsMade = [];
+  }
+  room.lastAction = "Postavite svoje brodove!";
+  return res.json({ ok: true });
+});
+router16.get("/play/potapanje/:code", (req, res) => {
+  const room = rooms3.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId } = req.query;
+  return res.json(sanitize(room, playerId));
+});
+router16.post("/play/potapanje/:code/action", (req, res) => {
+  const room = rooms3.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId, action } = req.body;
+  const me = room.players.find((p) => p.id === playerId);
+  if (!me) return res.status(400).json({ error: "Nisi u sobi" });
+  if (action === "place") {
+    if (room.state !== "placing") return res.status(400).json({ error: "Nije faza postavljanja" });
+    if (me.ready) return res.status(400).json({ error: "Ve\u0107 si spreman/na" });
+    const { ships } = req.body;
+    if (!Array.isArray(ships) || ships.length !== FLEET.length)
+      return res.status(400).json({ error: "Nevalidna flota" });
+    const sortedSizes = [...ships.map((s) => s.size)].sort((a, b) => a - b);
+    const expected = [...FLEET].sort((a, b) => a - b);
+    if (sortedSizes.join(",") !== expected.join(","))
+      return res.status(400).json({ error: "Nevalidne veli\u010Dine brodova" });
+    const built = [];
+    for (const s of ships) {
+      const cells = cellsForShip(s.start, s.size, s.horizontal);
+      if (!cells) return res.status(400).json({ error: "Brod izlazi van mre\u017Ee" });
+      if (shipsOverlap(built, cells)) return res.status(400).json({ error: "Brodovi se preklapaju" });
+      built.push({ size: s.size, cells, hits: [] });
+    }
+    me.ships = built;
+    me.ready = true;
+    room.lastAction = `${me.name} je spreman/na`;
+    if (room.players.length === 2 && room.players.every((p) => p.ready)) {
+      room.state = "playing";
+      room.turnIdx = 0;
+      room.lastAction = `Bitka po\u010Dinje! Na potezu: ${room.players[0].name}`;
+    }
+    return res.json({ ok: true });
+  }
+  if (action === "random") {
+    if (room.state !== "placing") return res.status(400).json({ error: "Nije faza postavljanja" });
+    if (me.ready) return res.status(400).json({ error: "Ve\u0107 si spreman/na" });
+    me.ships = randomPlacement();
+    return res.json({ ok: true, ships: me.ships.map((s) => ({ size: s.size, cells: s.cells })) });
+  }
+  if (action === "fire") {
+    if (room.state !== "playing") return res.status(400).json({ error: "Bitka nije aktivna" });
+    if (room.players[room.turnIdx]?.id !== me.id) return res.status(400).json({ error: "Nije tvoj red" });
+    const { cell } = req.body;
+    if (cell === void 0 || cell < 0 || cell >= GRID * GRID)
+      return res.status(400).json({ error: "Nevalidno polje" });
+    if (me.shots.includes(cell)) return res.status(400).json({ error: "Ve\u0107 si ga\u0111ao/la to polje" });
+    const enemy = room.players.find((p) => p.id !== me.id);
+    me.shots.push(cell);
+    let hit = false;
+    let sunk = false;
+    for (const s of enemy.ships) {
+      if (s.cells.includes(cell)) {
+        hit = true;
+        if (!s.hits.includes(cell)) s.hits.push(cell);
+        if (s.hits.length >= s.size) sunk = true;
+        break;
+      }
+    }
+    if (hit) {
+      me.hitsMade.push(cell);
+      room.lastAction = sunk ? `${me.name} je POTOPIO/LA brod (${enemy.name})! \u{1F4A5}` : `${me.name} je pogodio/la! \u{1F525}`;
+    } else {
+      room.lastAction = `${me.name} je proma\u0161io/la \u{1F4A7}`;
+    }
+    if (allSunk(enemy)) {
+      room.state = "finished";
+      room.winner = me.name;
+      room.lastAction = `\u{1F3C6} ${me.name} je potopio/la cijelu flotu!`;
+      return res.json({ ok: true, hit, sunk });
+    }
+    if (!hit) {
+      room.turnIdx = (room.turnIdx + 1) % room.players.length;
+    }
+    return res.json({ ok: true, hit, sunk });
+  }
+  if (action === "rematch") {
+    if (room.state !== "finished") return res.status(400).json({ error: "Igra nije gotova" });
+    room.state = "placing";
+    room.winner = null;
+    room.turnIdx = 0;
+    for (const p of room.players) {
+      p.ships = [];
+      p.ready = false;
+      p.shots = [];
+      p.hitsMade = [];
+    }
+    room.lastAction = "Revan\u0161! Postavite svoje brodove!";
+    return res.json({ ok: true });
+  }
+  return res.status(400).json({ error: "Nepoznata akcija" });
+});
+setInterval(() => {
+  const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
+  for (const [k, v] of rooms3) if (v.createdAt < cutoff) rooms3.delete(k);
+}, 30 * 60 * 1e3);
+var play_potapanje_default = router16;
+
+// src/routes/play-kviz.ts
+var import_express17 = __toESM(require_express2(), 1);
+import { randomBytes as randomBytes5 } from "crypto";
+var router17 = (0, import_express17.Router)();
+var kvizRooms = /* @__PURE__ */ new Map();
+var QUESTION_MS = 15e3;
+var REVEAL_MS = 5500;
+var TOTAL_QUESTIONS = 10;
+var MAX_PLAYERS = 10;
+function shuffle3(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+var QUESTION_BANK = [
+  // ── Opšte znanje ──
+  { q: "Koliko kontinenata ima na Zemlji?", options: ["5", "6", "7", "8"], answer: 2, cat: "Op\u0161te znanje" },
+  { q: "Koja boja nastaje mije\u0161anjem plave i \u017Eute?", options: ["Zelena", "Ljubi\u010Dasta", "Narand\u017Easta", "Sme\u0111a"], answer: 0, cat: "Op\u0161te znanje" },
+  { q: "Koliko strana ima \u0161estougao?", options: ["5", "6", "7", "8"], answer: 1, cat: "Op\u0161te znanje" },
+  { q: "Koji organ pumpa krv kroz tijelo?", options: ["Plu\u0107a", "Jetra", "Srce", "Bubreg"], answer: 2, cat: "Op\u0161te znanje" },
+  { q: "Koliko minuta ima jedan sat?", options: ["30", "60", "90", "120"], answer: 1, cat: "Op\u0161te znanje" },
+  { q: "Koja je najve\u0107a planeta u Sun\u010Devom sistemu?", options: ["Saturn", "Jupiter", "Neptun", "Zemlja"], answer: 1, cat: "Op\u0161te znanje" },
+  { q: "Koliko boja ima duga?", options: ["5", "6", "7", "9"], answer: 2, cat: "Op\u0161te znanje" },
+  { q: "\u0160ta p\u010Dele proizvode?", options: ["Mlijeko", "Med", "Vosak i med", "\u0160e\u0107er"], answer: 2, cat: "Op\u0161te znanje" },
+  { q: "Koji je hemijski simbol za zlato?", options: ["Au", "Ag", "Gd", "Go"], answer: 0, cat: "Nauka" },
+  { q: "Voda klju\u010Da na koliko stepeni Celzijusa (na nivou mora)?", options: ["90", "100", "110", "120"], answer: 1, cat: "Nauka" },
+  { q: "Koliko nogu ima pauk?", options: ["6", "8", "10", "12"], answer: 1, cat: "Nauka" },
+  { q: "Koji gas najvi\u0161e udi\u0161emo iz vazduha?", options: ["Kisik", "Ugljen-dioksid", "Azot", "Vodonik"], answer: 2, cat: "Nauka" },
+  { q: "Koja je najtvr\u0111a prirodna materija?", options: ["\u017Deljezo", "Dijamant", "Granit", "Zlato"], answer: 1, cat: "Nauka" },
+  { q: "Koliko kostiju ima odrasli \u010Dovjek (otprilike)?", options: ["106", "206", "306", "406"], answer: 1, cat: "Nauka" },
+  { q: "Brzina svjetlosti je pribli\u017Eno koliko km/s?", options: ["3.000", "30.000", "300.000", "3.000.000"], answer: 2, cat: "Nauka" },
+  // ── Geografija ──
+  { q: "Koji je glavni grad Bosne i Hercegovine?", options: ["Banja Luka", "Mostar", "Sarajevo", "Tuzla"], answer: 2, cat: "Geografija" },
+  { q: "Koja rijeka proti\u010De kroz Mostar?", options: ["Bosna", "Neretva", "Vrbas", "Drina"], answer: 1, cat: "Geografija" },
+  { q: "Koji je glavni grad Hrvatske?", options: ["Split", "Zagreb", "Rijeka", "Osijek"], answer: 1, cat: "Geografija" },
+  { q: "Koji je glavni grad Srbije?", options: ["Novi Sad", "Ni\u0161", "Beograd", "Kragujevac"], answer: 2, cat: "Geografija" },
+  { q: "Koji je glavni grad Crne Gore?", options: ["Podgorica", "Cetinje", "Budva", "Nik\u0161i\u0107"], answer: 0, cat: "Geografija" },
+  { q: "Koje je najve\u0107e more na svijetu?", options: ["Sredozemno", "Crveno", "Karipsko", "Filipinsko"], answer: 3, cat: "Geografija" },
+  { q: "Na kojem kontinentu se nalazi Egipat?", options: ["Azija", "Afrika", "Evropa", "Australija"], answer: 1, cat: "Geografija" },
+  { q: "Koja je najdu\u017Ea rijeka na svijetu?", options: ["Amazon", "Nil", "Misisipi", "Dunav"], answer: 1, cat: "Geografija" },
+  { q: "Koji je glavni grad Francuske?", options: ["Lion", "Marsej", "Pariz", "Nica"], answer: 2, cat: "Geografija" },
+  { q: "Koja je najvi\u0161a planina na svijetu?", options: ["K2", "Mont Blanc", "Mount Everest", "Kilimand\u017Earo"], answer: 2, cat: "Geografija" },
+  { q: "Kroz koju zemlju NE proti\u010De Dunav?", options: ["Austrija", "Ma\u0111arska", "Srbija", "\u0160panija"], answer: 3, cat: "Geografija" },
+  { q: "Koji je glavni grad Italije?", options: ["Milano", "Rim", "Napulj", "Torino"], answer: 1, cat: "Geografija" },
+  { q: "Koja planina je iznad Sarajeva i bila doma\u0107in ZOI 1984?", options: ["Jahorina", "Bjela\u0161nica", "Trebevi\u0107", "Vla\u0161i\u0107"], answer: 2, cat: "Geografija" },
+  { q: "Koje je najmanje more koje doti\u010De Balkan?", options: ["Jadransko", "Crno", "Egejsko", "Jonsko"], answer: 0, cat: "Geografija" },
+  { q: "Koji grad je poznat po Starom mostu?", options: ["Sarajevo", "Mostar", "Vi\u0161egrad", "Travnik"], answer: 1, cat: "Geografija" },
+  // ── Sport ──
+  { q: "Koliko igra\u010Da ima fudbalski tim na terenu?", options: ["9", "10", "11", "12"], answer: 2, cat: "Sport" },
+  { q: "Koliko traje jedna poluvrijeme fudbalske utakmice?", options: ["30 min", "45 min", "60 min", "90 min"], answer: 1, cat: "Sport" },
+  { q: "U kojem sportu se koristi reket i loptica preko mre\u017Ee?", options: ["Ko\u0161arka", "Tenis", "Rukomet", "Vaterpolo"], answer: 1, cat: "Sport" },
+  { q: "Koliko poena vrijedi ko\u0161 iza linije za tri poena?", options: ["1", "2", "3", "4"], answer: 2, cat: "Sport" },
+  { q: "Koliko \u010Desto se odr\u017Eavaju Ljetne olimpijske igre?", options: ["Svake 2 godine", "Svake 3 godine", "Svake 4 godine", "Svake 5 godina"], answer: 2, cat: "Sport" },
+  { q: "Koja reprezentacija je osvojila SP u fudbalu 2018. godine?", options: ["Njema\u010Dka", "Francuska", "Hrvatska", "Brazil"], answer: 1, cat: "Sport" },
+  { q: "Iz koje zemlje dolazi ko\u0161arka\u0161 Dra\u017Een Petrovi\u0107?", options: ["Srbija", "Hrvatska", "Slovenija", "BiH"], answer: 1, cat: "Sport" },
+  { q: "U kojem sportu je poznat Novak \u0110okovi\u0107?", options: ["Fudbal", "Tenis", "Ko\u0161arka", "Odbojka"], answer: 1, cat: "Sport" },
+  { q: "Koliko prstenova ima olimpijski simbol?", options: ["4", "5", "6", "7"], answer: 1, cat: "Sport" },
+  { q: "Edin D\u017Eeko je poznat bh. sportista u kojem sportu?", options: ["Ko\u0161arka", "Fudbal", "Rukomet", "Tenis"], answer: 1, cat: "Sport" },
+  // ── Film & muzika ──
+  { q: "Ko je re\u017Eirao film 'Titanik'?", options: ["Steven Spielberg", "James Cameron", "Christopher Nolan", "Martin Scorsese"], answer: 1, cat: "Film" },
+  { q: "U kojem filmu je lik po imenu 'Jack Sparrow'?", options: ["Pirati s Kariba", "Indiana Jones", "Mad Max", "Avatar"], answer: 0, cat: "Film" },
+  { q: "Koji superheroj nosi nadimak '\u010Covjek od \u017Eeljeza'?", options: ["Batman", "Iron Man", "Thor", "Hulk"], answer: 1, cat: "Film" },
+  { q: "Kako se zove \u010Darobnjak iz serije knjiga J.K. Rowling?", options: ["Frodo", "Harry Potter", "Gandalf", "Percy"], answer: 1, cat: "Film" },
+  { q: "Koji animirani film govori o lavu Simbi?", options: ["Madagaskar", "Kralj lavova", "Zootropolis", "Knjiga o d\u017Eungli"], answer: 1, cat: "Film" },
+  { q: "Emir Kusturica je poznati bh. re\u017Eiser. Koji film je njegov?", options: ["Underground", "Parazit", "Joker", "Gladijator"], answer: 0, cat: "Film" },
+  { q: "Koja muzi\u010Dka grupa pjeva 'Bohemian Rhapsody'?", options: ["The Beatles", "Queen", "Pink Floyd", "Nirvana"], answer: 1, cat: "Film" },
+  { q: "Koji instrument ima 88 tipki?", options: ["Gitara", "Klavir", "Violina", "Harmonika"], answer: 1, cat: "Film" },
+  // ── Balkan kultura ──
+  { q: "Koje jelo od mljevenog mesa u 'lepinji' je popularno na Balkanu?", options: ["Sarma", "\u0106evapi", "Burek", "Pita"], answer: 1, cat: "Balkan kultura" },
+  { q: "Burek se tradicionalno pravi sa \u010Dime?", options: ["Jufkom (korom)", "Pirin\u010Dem", "Krompirom samo", "Tjesteninom"], answer: 0, cat: "Balkan kultura" },
+  { q: "Koji se tradicionalni napitak kuha u 'd\u017Eezvi'?", options: ["\u010Caj", "Kafa", "Salep", "Boza"], answer: 1, cat: "Balkan kultura" },
+  { q: "Kako se zove tradicionalno bosansko jelo s mesom i povr\u0107em ispod sa\u010Da?", options: ["Japrak", "Bosanski lonac", "Dolma", "\u0106evap"], answer: 1, cat: "Balkan kultura" },
+  { q: "Kako se zove tradicionalna ju\u017Enoslavenska epska pjesma uz gusle?", options: ["Sevdalinka", "Epska narodna pjesma", "Kolo", "Be\u0107arac"], answer: 1, cat: "Balkan kultura" },
+  { q: "Koji slatki\u0161 natopljen sirupom je popularan na Balkanu?", options: ["Baklava", "Krofna", "\u0160trudla", "Pala\u010Dinka"], answer: 0, cat: "Balkan kultura" },
+  { q: "Sevdalinka je tradicionalna muzika iz koje regije?", options: ["Dalmacija", "Bosna i Hercegovina", "Makedonija", "Slovenija"], answer: 1, cat: "Balkan kultura" },
+  { q: "Koji je tradicionalni balkanski ples u krugu?", options: ["Valcer", "Kolo", "Tango", "Polka"], answer: 1, cat: "Balkan kultura" },
+  { q: "Ivo Andri\u0107, dobitnik Nobelove nagrade, napisao je koji roman?", options: ["Na Drini \u0107uprija", "Dervi\u0161 i smrt", "Prokleta avlija", "Hasanaginica"], answer: 0, cat: "Balkan kultura" },
+  { q: "Koje pecivo s mesom je dio porodice 'pita' na Balkanu?", options: ["Zeljanica", "Burek", "Krompiru\u0161a", "Sve navedeno"], answer: 3, cat: "Balkan kultura" },
+  // ── Historija ──
+  { q: "Koje godine je po\u010Deo Prvi svjetski rat?", options: ["1912", "1914", "1918", "1939"], answer: 1, cat: "Historija" },
+  { q: "U kojem gradu je 1914. izvr\u0161en atentat na Franza Ferdinanda?", options: ["Be\u010D", "Sarajevo", "Beograd", "Zagreb"], answer: 1, cat: "Historija" },
+  { q: "Koje godine je \u010Dovjek prvi put kro\u010Dio na Mjesec?", options: ["1959", "1969", "1979", "1989"], answer: 1, cat: "Historija" },
+  { q: "Koja civilizacija je sagradila piramide u Gizi?", options: ["Rimljani", "Grci", "Egip\u0107ani", "Maje"], answer: 2, cat: "Historija" },
+  { q: "Ko je naslikao 'Mona Lizu'?", options: ["Michelangelo", "Leonardo da Vinci", "Picasso", "Van Gogh"], answer: 1, cat: "Historija" },
+  { q: "Koje godine je pao Berlinski zid?", options: ["1985", "1989", "1991", "1995"], answer: 1, cat: "Historija" }
+];
+function pickQuestions() {
+  return shuffle3(QUESTION_BANK).slice(0, TOTAL_QUESTIONS);
+}
+function resetForNextQuestion(room) {
+  for (const p of room.players) {
+    p.answer = null;
+    p.answerTime = null;
+    p.lastCorrect = null;
+    p.lastGain = 0;
+  }
+}
+function tick(room) {
+  if (room.state !== "playing") return;
+  const now = Date.now();
+  if (room.phase === "question") {
+    const everyoneAnswered = room.players.length > 0 && room.players.every((p) => p.answer !== null);
+    const timeUp = now - room.questionStartedAt >= QUESTION_MS;
+    if (everyoneAnswered || timeUp) {
+      const q = room.questions[room.qIndex];
+      for (const p of room.players) {
+        if (p.answer === q.answer) {
+          const t = p.answerTime ?? room.questionStartedAt + QUESTION_MS;
+          const taken = Math.max(0, t - room.questionStartedAt);
+          const speed = Math.max(0, 1 - taken / QUESTION_MS);
+          const gain = 500 + Math.round(500 * speed);
+          p.score += gain;
+          p.streak += 1;
+          p.lastGain = gain;
+          p.lastCorrect = true;
+        } else {
+          p.streak = 0;
+          p.lastGain = 0;
+          p.lastCorrect = false;
+        }
+      }
+      room.phase = "reveal";
+      room.revealStartedAt = now;
+      room.lastAction = `Ta\u010Dan odgovor: ${q.options[q.answer]}`;
+    }
+    return;
+  }
+  if (room.phase === "reveal") {
+    if (now - room.revealStartedAt >= REVEAL_MS) {
+      if (room.qIndex >= room.questions.length - 1) {
+        room.state = "finished";
+        const sorted = [...room.players].sort((a, b) => b.score - a.score);
+        room.winner = sorted[0]?.name ?? null;
+        room.lastAction = room.winner ? `\u{1F3C6} ${room.winner} je pobijedio/la!` : "Kraj kviza";
+      } else {
+        room.qIndex += 1;
+        room.phase = "question";
+        room.questionStartedAt = now;
+        room.revealStartedAt = 0;
+        resetForNextQuestion(room);
+        room.lastAction = `Pitanje ${room.qIndex + 1}`;
+      }
+    }
+  }
+}
+router17.post("/play/kviz", (_req, res) => {
+  const code = randomBytes5(3).toString("hex").toUpperCase();
+  const room = {
+    code,
+    players: [],
+    state: "waiting",
+    questions: [],
+    qIndex: 0,
+    phase: "question",
+    questionStartedAt: 0,
+    revealStartedAt: 0,
+    winner: null,
+    lastAction: "Soba kreirana",
+    createdAt: Date.now()
+  };
+  kvizRooms.set(code, room);
+  res.json({ code });
+});
+router17.post("/play/kviz/:code/join", (req, res) => {
+  const room = kvizRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= MAX_PLAYERS) return res.status(400).json({ error: "Soba je puna (max 10)" });
+  const { name: name2 } = req.body;
+  if (!name2?.trim()) return res.status(400).json({ error: "Ime je obavezno" });
+  const id = randomBytes5(4).toString("hex");
+  room.players.push({
+    id,
+    name: name2.trim(),
+    score: 0,
+    answer: null,
+    answerTime: null,
+    lastCorrect: null,
+    lastGain: 0,
+    streak: 0
+  });
+  room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
+  return res.json({ playerId: id, roomCode: room.code });
+});
+router17.post("/play/kviz/:code/start", (req, res) => {
+  const room = kvizRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
+  room.questions = pickQuestions();
+  room.qIndex = 0;
+  room.phase = "question";
+  room.questionStartedAt = Date.now();
+  room.revealStartedAt = 0;
+  room.winner = null;
+  for (const p of room.players) {
+    p.score = 0;
+    p.answer = null;
+    p.answerTime = null;
+    p.lastCorrect = null;
+    p.lastGain = 0;
+    p.streak = 0;
+  }
+  room.state = "playing";
+  room.lastAction = "Kviz je po\u010Deo!";
+  return res.json({ ok: true });
+});
+router17.get("/play/kviz/:code", (req, res) => {
+  const room = kvizRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  tick(room);
+  const { playerId } = req.query;
+  const me = room.players.find((p) => p.id === playerId);
+  const q = room.state === "playing" ? room.questions[room.qIndex] : null;
+  const reveal = room.phase === "reveal" || room.state === "finished";
+  const sortedPlayers = [...room.players].sort((a, b) => b.score - a.score);
+  return res.json({
+    code: room.code,
+    state: room.state,
+    phase: room.phase,
+    qIndex: room.qIndex,
+    total: room.state === "waiting" ? TOTAL_QUESTIONS : room.questions.length,
+    winner: room.winner,
+    lastAction: room.lastAction,
+    now: Date.now(),
+    questionStartedAt: room.questionStartedAt,
+    revealStartedAt: room.revealStartedAt,
+    questionMs: QUESTION_MS,
+    revealMs: REVEAL_MS,
+    myAnswer: me?.answer ?? null,
+    question: q ? {
+      q: q.q,
+      options: q.options,
+      cat: q.cat,
+      answer: reveal ? q.answer : null
+    } : null,
+    players: sortedPlayers.map((p) => ({
+      id: p.id === playerId ? p.id : "anon" + room.players.indexOf(p),
+      name: p.name,
+      score: p.score,
+      streak: p.streak,
+      answered: p.answer !== null,
+      choice: reveal ? p.answer : null,
+      lastCorrect: reveal ? p.lastCorrect : null,
+      lastGain: reveal ? p.lastGain : 0
+    }))
+  });
+});
+router17.post("/play/kviz/:code/action", (req, res) => {
+  const room = kvizRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId, action, choice } = req.body;
+  const player = room.players.find((p) => p.id === playerId);
+  if (!player) return res.status(400).json({ error: "Nisi u sobi" });
+  if (action === "answer") {
+    tick(room);
+    if (room.state !== "playing") return res.status(400).json({ error: "Kviz nije aktivan" });
+    if (room.phase !== "question") return res.status(400).json({ error: "Vrijeme za odgovor je isteklo" });
+    if (player.answer !== null) return res.status(400).json({ error: "Ve\u0107 si odgovorio/la" });
+    const q = room.questions[room.qIndex];
+    if (choice === void 0 || choice < 0 || choice >= q.options.length)
+      return res.status(400).json({ error: "Nevalidan odgovor" });
+    player.answer = choice;
+    player.answerTime = Date.now();
+    tick(room);
+    return res.json({ ok: true });
+  }
+  if (action === "restart") {
+    if (room.players[0]?.id !== playerId) return res.status(400).json({ error: "Samo doma\u0107in mo\u017Ee ponovo pokrenuti" });
+    room.questions = pickQuestions();
+    room.qIndex = 0;
+    room.phase = "question";
+    room.questionStartedAt = Date.now();
+    room.revealStartedAt = 0;
+    room.winner = null;
+    for (const p of room.players) {
+      p.score = 0;
+      p.answer = null;
+      p.answerTime = null;
+      p.lastCorrect = null;
+      p.lastGain = 0;
+      p.streak = 0;
+    }
+    room.state = "playing";
+    room.lastAction = "Nova partija!";
+    return res.json({ ok: true });
+  }
+  return res.status(400).json({ error: "Nepoznata akcija" });
+});
+setInterval(() => {
+  const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
+  for (const [k, v] of kvizRooms) if (v.createdAt < cutoff) kvizRooms.delete(k);
+}, 30 * 60 * 1e3);
+var play_kviz_default = router17;
+
+// src/routes/play-tacke.ts
+var import_express18 = __toESM(require_express2(), 1);
+import { randomBytes as randomBytes6 } from "crypto";
+var router18 = (0, import_express18.Router)();
+var PLAYER_COLORS = ["#ec4899", "#3b82f6", "#22c55e", "#f59e0b"];
+var tackeRooms = /* @__PURE__ */ new Map();
+function makeGrid(rows, cols) {
+  const hLines = [];
+  for (let r = 0; r < rows; r++) hLines.push(new Array(cols - 1).fill(false));
+  const vLines = [];
+  for (let r = 0; r < rows - 1; r++) vLines.push(new Array(cols).fill(false));
+  const boxes = [];
+  for (let r = 0; r < rows - 1; r++) boxes.push(new Array(cols - 1).fill(null));
+  return { hLines, vLines, boxes };
+}
+function boxComplete(room, br, bc) {
+  return room.hLines[br][bc] && room.hLines[br + 1][bc] && room.vLines[br][bc] && room.vLines[br][bc + 1];
+}
+router18.post("/play/tacke", (req, res) => {
+  const { size } = req.body;
+  let dots = 6;
+  if (size === "small") dots = 5;
+  else if (size === "medium") dots = 6;
+  else if (size === "large") dots = 7;
+  const code = randomBytes6(3).toString("hex").toUpperCase();
+  const grid = makeGrid(dots, dots);
+  const room = {
+    code,
+    players: [],
+    rows: dots,
+    cols: dots,
+    ...grid,
+    currentIdx: 0,
+    state: "waiting",
+    winner: null,
+    lastAction: "Soba kreirana",
+    lastMove: null,
+    createdAt: Date.now()
+  };
+  tackeRooms.set(code, room);
+  return res.json({ code });
+});
+router18.post("/play/tacke/:code/join", (req, res) => {
+  const room = tackeRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 4) return res.status(400).json({ error: "Soba je puna (max 4)" });
+  const { name: name2 } = req.body;
+  if (!name2?.trim()) return res.status(400).json({ error: "Ime je obavezno" });
+  const id = randomBytes6(4).toString("hex");
+  const color = PLAYER_COLORS[room.players.length];
+  room.players.push({ id, name: name2.trim(), color, score: 0 });
+  room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
+  return res.json({ playerId: id, color, roomCode: room.code });
+});
+router18.post("/play/tacke/:code/start", (req, res) => {
+  const room = tackeRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
+  room.state = "playing";
+  room.currentIdx = 0;
+  room.lastAction = "Igra je po\u010Dela!";
+  return res.json({ ok: true });
+});
+router18.get("/play/tacke/:code", (req, res) => {
+  const room = tackeRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId } = req.query;
+  const pubMap = new Map(room.players.map((p, i) => [p.id, p.id === playerId ? p.id : "anon" + i]));
+  return res.json({
+    ...room,
+    players: room.players.map((p) => ({ ...p, id: pubMap.get(p.id) })),
+    boxes: room.boxes.map((rowArr) => rowArr.map((o) => o == null ? null : pubMap.get(o) ?? o))
+  });
+});
+router18.post("/play/tacke/:code/action", (req, res) => {
+  const room = tackeRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId, action, type, row, col } = req.body;
+  const pIdx = room.players.findIndex((p) => p.id === playerId);
+  if (pIdx === -1) return res.status(400).json({ error: "Nisi u sobi" });
+  if (action === "rematch") {
+    const grid = makeGrid(room.rows, room.cols);
+    room.hLines = grid.hLines;
+    room.vLines = grid.vLines;
+    room.boxes = grid.boxes;
+    for (const p of room.players) p.score = 0;
+    room.currentIdx = 0;
+    room.state = "playing";
+    room.winner = null;
+    room.lastMove = null;
+    room.lastAction = "Nova partija!";
+    return res.json({ ok: true });
+  }
+  if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
+  if (pIdx !== room.currentIdx) return res.status(400).json({ error: "Nije tvoj red" });
+  if (type !== "h" && type !== "v") return res.status(400).json({ error: "Nevalidan potez" });
+  if (row === void 0 || col === void 0 || row < 0 || col < 0)
+    return res.status(400).json({ error: "Nevalidan potez" });
+  const player = room.players[pIdx];
+  if (type === "h") {
+    if (row >= room.rows || col >= room.cols - 1)
+      return res.status(400).json({ error: "Nevalidan potez" });
+    if (room.hLines[row][col]) return res.status(400).json({ error: "Linija je ve\u0107 nacrtana" });
+    room.hLines[row][col] = true;
+  } else {
+    if (row >= room.rows - 1 || col >= room.cols)
+      return res.status(400).json({ error: "Nevalidan potez" });
+    if (room.vLines[row][col]) return res.status(400).json({ error: "Linija je ve\u0107 nacrtana" });
+    room.vLines[row][col] = true;
+  }
+  room.lastMove = { type, row, col };
+  let claimed = 0;
+  const candidates = [];
+  if (type === "h") {
+    if (row - 1 >= 0) candidates.push([row - 1, col]);
+    if (row <= room.rows - 2) candidates.push([row, col]);
+  } else {
+    if (col - 1 >= 0) candidates.push([row, col - 1]);
+    if (col <= room.cols - 2) candidates.push([row, col]);
+  }
+  for (const [br, bc] of candidates) {
+    if (br < 0 || bc < 0 || br >= room.rows - 1 || bc >= room.cols - 1) continue;
+    if (!room.boxes[br][bc] && boxComplete(room, br, bc)) {
+      room.boxes[br][bc] = player.id;
+      player.score += 1;
+      claimed += 1;
+    }
+  }
+  if (claimed > 0) {
+    room.lastAction = `${player.name} osvojio/la ${claimed} kvadrat${claimed === 1 ? "" : "i\u0107" + (claimed === 1 ? "" : "a")}`;
+  } else {
+    room.lastAction = `${player.name} povukao/la liniju`;
+  }
+  const totalBoxes = (room.rows - 1) * (room.cols - 1);
+  let filled = 0;
+  for (const r of room.boxes) for (const b of r) if (b) filled += 1;
+  if (filled >= totalBoxes) {
+    room.state = "finished";
+    const sorted = [...room.players].sort((a, b) => b.score - a.score);
+    if (sorted.length >= 2 && sorted[0].score === sorted[1].score) {
+      room.winner = null;
+      room.lastAction = "Nerije\u0161eno! \u{1F91D}";
+    } else {
+      room.winner = sorted[0].name;
+      room.lastAction = `\u{1F3C6} ${sorted[0].name} je pobijedio/la!`;
+    }
+    return res.json({ ok: true });
+  }
+  if (claimed === 0) {
+    room.currentIdx = (room.currentIdx + 1) % room.players.length;
+  }
+  return res.json({ ok: true });
+});
+setInterval(() => {
+  const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
+  for (const [k, v] of tackeRooms) if (v.createdAt < cutoff) tackeRooms.delete(k);
+}, 30 * 60 * 1e3);
+var play_tacke_default = router18;
+
+// src/routes/play-reversi.ts
+var import_express19 = __toESM(require_express2(), 1);
+import { randomBytes as randomBytes7 } from "crypto";
+var router19 = (0, import_express19.Router)();
+var reversiRooms = /* @__PURE__ */ new Map();
+var DIRS = [
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+  [0, -1],
+  [0, 1],
+  [1, -1],
+  [1, 0],
+  [1, 1]
+];
+function makeBoard() {
+  const b = Array.from({ length: 8 }, () => Array(8).fill(0));
+  b[3][3] = 2;
+  b[3][4] = 1;
+  b[4][3] = 1;
+  b[4][4] = 2;
+  return b;
+}
+function inBounds(r, c) {
+  return r >= 0 && r < 8 && c >= 0 && c < 8;
+}
+function flipsFor(board, row, col, disc) {
+  if (board[row][col] !== 0) return [];
+  const opp = disc === 1 ? 2 : 1;
+  const flips = [];
+  for (const [dr, dc] of DIRS) {
+    const line2 = [];
+    let r = row + dr, c = col + dc;
+    while (inBounds(r, c) && board[r][c] === opp) {
+      line2.push([r, c]);
+      r += dr;
+      c += dc;
+    }
+    if (line2.length > 0 && inBounds(r, c) && board[r][c] === disc) {
+      flips.push(...line2);
+    }
+  }
+  return flips;
+}
+function legalMoves(board, disc) {
+  const moves = [];
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      if (flipsFor(board, r, c, disc).length > 0) moves.push([r, c]);
+    }
+  }
+  return moves;
+}
+function countDiscs(board) {
+  let black = 0, white = 0;
+  for (const rowArr of board) for (const cell of rowArr) {
+    if (cell === 1) black++;
+    else if (cell === 2) white++;
+  }
+  return { black, white };
+}
+function resetRoom2(room) {
+  room.board = makeBoard();
+  room.turn = 1;
+  room.state = "playing";
+  room.winner = null;
+  room.passed = false;
+  room.lastAction = "Igra je po\u010Dela! Crni je na potezu.";
+}
+router19.post("/play/reversi", (_req, res) => {
+  const code = randomBytes7(3).toString("hex").toUpperCase();
+  const room = {
+    code,
+    players: [],
+    board: makeBoard(),
+    turn: 1,
+    state: "waiting",
+    winner: null,
+    lastAction: "Soba kreirana",
+    passed: false,
+    createdAt: Date.now()
+  };
+  reversiRooms.set(code, room);
+  res.json({ code });
+});
+router19.post("/play/reversi/:code/join", (req, res) => {
+  const room = reversiRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 2) return res.status(400).json({ error: "Soba je puna (max 2)" });
+  const { name: name2 } = req.body;
+  if (!name2?.trim()) return res.status(400).json({ error: "Ime je obavezno" });
+  const id = randomBytes7(4).toString("hex");
+  const disc = room.players.length === 0 ? 1 : 2;
+  room.players.push({ id, name: name2.trim(), disc });
+  room.lastAction = `${name2.trim()} se pridru\u017Eio/la (${disc === 1 ? "crni" : "bijeli"})`;
+  return res.json({ playerId: id, roomCode: room.code, disc });
+});
+router19.post("/play/reversi/:code/start", (req, res) => {
+  const room = reversiRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.players.length < 2) return res.status(400).json({ error: "Potrebno je 2 igra\u010Da" });
+  resetRoom2(room);
+  return res.json({ ok: true });
+});
+router19.get("/play/reversi/:code", (req, res) => {
+  const room = reversiRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId } = req.query;
+  const me = room.players.find((p) => p.id === playerId);
+  const { black, white } = countDiscs(room.board);
+  const moves = room.state === "playing" ? legalMoves(room.board, room.turn) : [];
+  res.json({
+    code: room.code,
+    state: room.state,
+    board: room.board,
+    turn: room.turn,
+    winner: room.winner,
+    lastAction: room.lastAction,
+    passed: room.passed,
+    counts: { black, white },
+    legalMoves: moves,
+    yourDisc: me?.disc ?? null,
+    players: room.players.map((p) => ({ id: p.id === playerId ? p.id : "anon" + room.players.indexOf(p), name: p.name, disc: p.disc }))
+  });
+  return;
+});
+router19.post("/play/reversi/:code/action", (req, res) => {
+  const room = reversiRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId, action, row, col } = req.body;
+  const me = room.players.find((p) => p.id === playerId);
+  if (!me) return res.status(400).json({ error: "Nisi u sobi" });
+  if (action === "rematch") {
+    if (room.state !== "finished") return res.status(400).json({ error: "Igra jo\u0161 traje" });
+    resetRoom2(room);
+    return res.json({ ok: true });
+  }
+  if (action === "move") {
+    if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
+    if (me.disc !== room.turn) return res.status(400).json({ error: "Nije tvoj red" });
+    if (row === void 0 || col === void 0 || !inBounds(row, col))
+      return res.status(400).json({ error: "Nevalidno polje" });
+    const flips = flipsFor(room.board, row, col, room.turn);
+    if (flips.length === 0) return res.status(400).json({ error: "Nedozvoljen potez" });
+    room.board[row][col] = room.turn;
+    for (const [r, c] of flips) room.board[r][c] = room.turn;
+    room.passed = false;
+    const placedName = me.name;
+    const opp = room.turn === 1 ? 2 : 1;
+    const oppMoves = legalMoves(room.board, opp);
+    if (oppMoves.length > 0) {
+      room.turn = opp;
+      room.lastAction = `${placedName} je odigrao/la i okrenuo/la ${flips.length} \u2022 Red: ${opp === 1 ? "crni" : "bijeli"}`;
+    } else {
+      const myMoves = legalMoves(room.board, room.turn);
+      if (myMoves.length > 0) {
+        room.passed = true;
+        room.lastAction = `${placedName} je okrenuo/la ${flips.length} \u2022 Protivnik nema potez \u2014 ponovo ${room.turn === 1 ? "crni" : "bijeli"}`;
+      } else {
+        finishGame(room);
+        return res.json({ ok: true });
+      }
+    }
+    return res.json({ ok: true });
+  }
+  return res.status(400).json({ error: "Nepoznata akcija" });
+});
+function finishGame(room) {
+  room.state = "finished";
+  const { black, white } = countDiscs(room.board);
+  if (black === white) {
+    room.winner = "Nerije\u0161eno";
+    room.lastAction = `Kraj igre \u2014 nerije\u0161eno (${black}:${white})`;
+  } else {
+    const winDisc = black > white ? 1 : 2;
+    const winner = room.players.find((p) => p.disc === winDisc);
+    room.winner = winner?.name ?? (winDisc === 1 ? "Crni" : "Bijeli");
+    room.lastAction = `\u{1F3C6} ${room.winner} je pobijedio/la (${black}:${white})`;
+  }
+}
+setInterval(() => {
+  const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
+  for (const [k, v] of reversiRooms) if (v.createdAt < cutoff) reversiRooms.delete(k);
+}, 30 * 60 * 1e3);
+var play_reversi_default = router19;
+
+// src/routes/youtube.ts
+var import_express20 = __toESM(require_express2(), 1);
+var router20 = (0, import_express20.Router)();
 function extractJson(html, marker) {
   let i = html.indexOf(`${marker} =`);
   if (i === -1) i = html.indexOf(marker);
@@ -67363,7 +68836,7 @@ function txt(v) {
   if (Array.isArray(runs) && runs[0]?.text) return runs[0].text;
   return "";
 }
-router14.get("/youtube/search", async (req, res) => {
+router20.get("/youtube/search", async (req, res) => {
   const q = (req.query.q || "").trim();
   if (!q) {
     res.json({ results: [] });
@@ -67424,7 +68897,7 @@ router14.get("/youtube/search", async (req, res) => {
     res.status(500).json({ error: "search_failed", results: [] });
   }
 });
-var youtube_default = router14;
+var youtube_default = router20;
 
 // src/lib/logger.ts
 var import_pino = __toESM(require_pino(), 1);
@@ -67445,7 +68918,7 @@ var logger = (0, import_pino.default)({
 });
 
 // src/app.ts
-var app = (0, import_express15.default)();
+var app = (0, import_express21.default)();
 app.use(
   (0, import_pino_http.default)({
     logger,
@@ -67466,16 +68939,22 @@ app.use(
   })
 );
 app.use((0, import_cors.default)());
-app.use(import_express15.default.json());
-app.use(import_express15.default.urlencoded({ extended: true }));
+app.use(import_express21.default.json());
+app.use(import_express21.default.urlencoded({ extended: true }));
 app.use(icons_default);
 app.use(welcome_card_default);
 app.use("/api", games_play_default);
+app.use("/api", play_crtanje_default);
+app.use("/api", play_spoji4_default);
+app.use("/api", play_potapanje_default);
+app.use("/api", play_kviz_default);
+app.use("/api", play_tacke_default);
+app.use("/api", play_reversi_default);
 app.use("/api", authMiddleware, youtube_default);
 app.use("/api", authMiddleware, routes_default);
 var staticDir = path3.join(process.cwd(), "public");
 if (fs3.existsSync(staticDir)) {
-  app.use(import_express15.default.static(staticDir));
+  app.use(import_express21.default.static(staticDir));
   app.use((_req, res) => {
     res.sendFile(path3.join(staticDir, "index.html"));
   });
