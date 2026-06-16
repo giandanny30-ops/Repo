@@ -66996,11 +66996,9 @@ router11.post("/profile/add-guild", async (req, res) => {
     return;
   }
   const secret2 = process.env.PANEL_SECRET;
-  if (secret2) {
-    if (typeof password !== "string" || !safeEqual(password, secret2)) {
-      res.status(403).json({ ok: false, error: "Pogre\u0161na \u0161ifra." });
-      return;
-    }
+  if (!secret2 || typeof password !== "string" || !safeEqual(password, secret2)) {
+    res.status(403).json({ ok: false, error: "Pogre\u0161na \u0161ifra." });
+    return;
   }
   const id = guildId.trim();
   const profile = await readConfig(`profile:${sess.uid}`) ?? null;
