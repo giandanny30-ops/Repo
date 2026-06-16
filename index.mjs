@@ -65953,8 +65953,8 @@ router6.get("/discord/debug", async (req, res) => {
           result.appEmojisRaw = ebody.slice(0, 300);
         }
       } else {
-        const txt = await r.text();
-        result.appError = `${r.status}: ${txt.slice(0, 200)}`;
+        const txt2 = await r.text();
+        result.appError = `${r.status}: ${txt2.slice(0, 200)}`;
       }
     } catch (e) {
       result.appException = e.message;
@@ -67310,227 +67310,108 @@ setInterval(() => {
 }, 30 * 60 * 1e3);
 var games_play_default = router13;
 
-// src/routes/spotify.ts
+// src/routes/youtube.ts
 var import_express14 = __toESM(require_express2(), 1);
-import { randomUUID } from "crypto";
 var router14 = (0, import_express14.Router)();
-var KEY5 = "spotify_tokens";
-var STATE_KEY = "spotify_oauth_states";
-var STATE_TTL = 10 * 60 * 1e3;
-var SCOPES = [
-  "streaming",
-  "user-read-email",
-  "user-read-private",
-  "user-read-playback-state",
-  "user-modify-playback-state",
-  "user-read-currently-playing",
-  "playlist-read-private",
-  "user-library-read"
-].join(" ");
-function clientCreds() {
-  const id = process.env.SPOTIFY_CLIENT_ID;
-  const secret = process.env.SPOTIFY_CLIENT_SECRET;
-  if (!id || !secret) return null;
-  return { id, secret };
-}
-function redirectUri(req) {
-  const env = process.env.PANEL_PUBLIC_URL;
-  if (env) return `${env.replace(/\/$/, "")}/api/spotify/callback`;
-  const proto = (req.headers["x-forwarded-proto"] || req.protocol).split(",")[0].trim();
-  const host = (req.headers["x-forwarded-host"] || req.get("host") || "").split(",")[0].trim();
-  return `${proto}://${host}/api/spotify/callback`;
-}
-function requirePanel(req, res) {
-  const secret = process.env.PANEL_SECRET;
-  if (!secret) return true;
-  const auth = req.headers.authorization ?? "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (!token || token !== makeToken(secret)) {
-    res.status(401).json({ error: "Neautorizovano \u2014 prijava obavezna." });
-    return false;
+function extractJson(html, marker) {
+  const i = html.indexOf(marker);
+  if (i === -1) return null;
+  const start = html.indexOf("{", i);
+  if (start === -1) return null;
+  let depth = 0;
+  let inStr = false;
+  let esc2 = false;
+  for (let j = start; j < html.length; j++) {
+    const c = html[j];
+    if (inStr) {
+      if (esc2) esc2 = false;
+      else if (c === "\\") esc2 = true;
+      else if (c === '"') inStr = false;
+    } else if (c === '"') inStr = true;
+    else if (c === "{") depth++;
+    else if (c === "}") {
+      depth--;
+      if (depth === 0) {
+        try {
+          return JSON.parse(html.slice(start, j + 1));
+        } catch {
+          return null;
+        }
+      }
+    }
   }
-  return true;
+  return null;
 }
-async function addState(state, ruri) {
-  const map = await readConfig(STATE_KEY) ?? {};
-  const now = Date.now();
-  for (const k of Object.keys(map)) {
-    if (now - map[k].ts > STATE_TTL) delete map[k];
-  }
-  map[state] = { redirectUri: ruri, ts: now };
-  await writeConfig(STATE_KEY, map);
-}
-async function takeState(state) {
-  const map = await readConfig(STATE_KEY) ?? {};
-  const entry = map[state];
-  if (!entry) return null;
-  delete map[state];
-  await writeConfig(STATE_KEY, map);
-  if (Date.now() - entry.ts > STATE_TTL) return null;
-  return { redirectUri: entry.redirectUri };
-}
-async function loadTokens() {
-  const t = await readConfig(KEY5);
-  if (!t || !t.refresh_token) return null;
-  return t;
-}
-async function refreshTokens(creds, tokens) {
-  const body = new URLSearchParams({
-    grant_type: "refresh_token",
-    refresh_token: tokens.refresh_token
-  });
-  const basic = Buffer.from(`${creds.id}:${creds.secret}`).toString("base64");
-  const r = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${basic}`,
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body
-  });
-  if (!r.ok) {
-    const text2 = await r.text().catch(() => "");
-    throw new Error(`Spotify refresh failed: ${r.status} ${text2.slice(0, 200)}`);
-  }
-  const j = await r.json();
-  const updated = {
-    access_token: j.access_token,
-    refresh_token: j.refresh_token || tokens.refresh_token,
-    expires_at: Date.now() + j.expires_in * 1e3 - 6e4,
-    scope: j.scope || tokens.scope
-  };
-  await writeConfig(KEY5, updated);
-  return updated;
-}
-async function getValidToken(creds) {
-  let tokens = await loadTokens();
-  if (!tokens) return null;
-  if (Date.now() >= tokens.expires_at) {
-    tokens = await refreshTokens(creds, tokens);
-  }
-  return tokens;
-}
-router14.post("/spotify/auth-url", async (req, res) => {
-  if (!requirePanel(req, res)) return;
-  const creds = clientCreds();
-  if (!creds) {
-    res.status(400).json({ error: "Spotify nije pode\u0161en \u2014 nedostaju SPOTIFY_CLIENT_ID i SPOTIFY_CLIENT_SECRET." });
+function collect(node, out) {
+  if (!node || typeof node !== "object") return;
+  if (Array.isArray(node)) {
+    for (const x of node) collect(x, out);
     return;
   }
-  const state = randomUUID();
-  const ruri = redirectUri(req);
-  await addState(state, ruri);
-  const url = new URL("https://accounts.spotify.com/authorize");
-  url.searchParams.set("client_id", creds.id);
-  url.searchParams.set("response_type", "code");
-  url.searchParams.set("redirect_uri", ruri);
-  url.searchParams.set("scope", SCOPES);
-  url.searchParams.set("state", state);
-  res.json({ url: url.toString(), redirectUri: ruri });
-});
-router14.get("/spotify/callback", async (req, res) => {
-  const dest = (suffix) => res.redirect(`/spotify${suffix}`);
-  const creds = clientCreds();
-  if (!creds) return dest("?error=not_configured");
-  const code = req.query.code;
-  const state = req.query.state;
-  const err = req.query.error;
-  if (err) return dest(`?error=${encodeURIComponent(err)}`);
-  if (!code || !state) return dest("?error=missing_code");
-  const pending = await takeState(state);
-  if (!pending) return dest("?error=bad_state");
-  try {
-    const body = new URLSearchParams({
-      grant_type: "authorization_code",
-      code,
-      redirect_uri: pending.redirectUri
-    });
-    const basic = Buffer.from(`${creds.id}:${creds.secret}`).toString("base64");
-    const r = await fetch("https://accounts.spotify.com/api/token", {
-      method: "POST",
-      headers: { Authorization: `Basic ${basic}`, "Content-Type": "application/x-www-form-urlencoded" },
-      body
-    });
-    if (!r.ok) {
-      const text2 = await r.text().catch(() => "");
-      req.log.error({ status: r.status, text: text2.slice(0, 200) }, "Spotify token exchange failed");
-      return dest("?error=token_exchange");
-    }
-    const j = await r.json();
-    const tokens = {
-      access_token: j.access_token,
-      refresh_token: j.refresh_token,
-      expires_at: Date.now() + j.expires_in * 1e3 - 6e4,
-      scope: j.scope
-    };
-    await writeConfig(KEY5, tokens);
-    req.log.info("Spotify connected");
-    return dest("?connected=1");
-  } catch (e) {
-    req.log.error({ err: String(e) }, "Spotify callback error");
-    return dest("?error=server");
+  const obj = node;
+  if (obj.videoRenderer && typeof obj.videoRenderer === "object") {
+    out.push(obj.videoRenderer);
   }
-});
-router14.get("/spotify/status", async (req, res) => {
-  if (!requirePanel(req, res)) return;
-  const creds = clientCreds();
-  if (!creds) {
-    res.json({ connected: false, configured: false });
+  for (const k of Object.keys(obj)) collect(obj[k], out);
+}
+function txt(v) {
+  if (!v || typeof v !== "object") return "";
+  const o = v;
+  if (typeof o.simpleText === "string") return o.simpleText;
+  const runs = o.runs;
+  if (Array.isArray(runs) && runs[0]?.text) return runs[0].text;
+  return "";
+}
+router14.get("/youtube/search", async (req, res) => {
+  const q = (req.query.q || "").trim();
+  if (!q) {
+    res.json({ results: [] });
     return;
   }
   try {
-    const tokens = await getValidToken(creds);
-    if (!tokens) {
-      res.json({ connected: false, configured: true });
-      return;
-    }
-    const pr = await fetch("https://api.spotify.com/v1/me", {
-      headers: { Authorization: `Bearer ${tokens.access_token}` }
-    });
-    if (!pr.ok) {
-      res.json({ connected: false, configured: true });
-      return;
-    }
-    const profile = await pr.json();
-    res.json({
-      connected: true,
-      configured: true,
-      profile: {
-        name: profile.display_name ?? "Spotify",
-        product: profile.product ?? "unknown",
-        image: profile.images?.[0]?.url ?? null
+    const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}&sp=EgIQAQ%253D%253D`;
+    const r = await fetch(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9"
       }
     });
-  } catch (e) {
-    req.log.error({ err: String(e) }, "Spotify status error");
-    res.json({ connected: false, configured: true });
-  }
-});
-router14.get("/spotify/token", async (req, res) => {
-  if (!requirePanel(req, res)) return;
-  const creds = clientCreds();
-  if (!creds) {
-    res.status(400).json({ error: "not_configured" });
-    return;
-  }
-  try {
-    const tokens = await getValidToken(creds);
-    if (!tokens) {
-      res.status(404).json({ error: "not_connected" });
+    if (!r.ok) {
+      req.log.error({ status: r.status }, "YouTube fetch failed");
+      res.status(502).json({ error: "yt_fetch_failed", results: [] });
       return;
     }
-    res.json({ access_token: tokens.access_token, expires_at: tokens.expires_at });
+    const html = await r.text();
+    const data = extractJson(html, "ytInitialData");
+    if (!data) {
+      res.json({ results: [] });
+      return;
+    }
+    const renderers = [];
+    collect(data, renderers);
+    const seen = /* @__PURE__ */ new Set();
+    const results = [];
+    for (const v of renderers) {
+      const id = typeof v.videoId === "string" ? v.videoId : "";
+      if (!id || seen.has(id)) continue;
+      if (!v.lengthText) continue;
+      seen.add(id);
+      results.push({
+        id,
+        title: txt(v.title) || "Nepoznato",
+        channel: txt(v.ownerText) || txt(v.longBylineText),
+        duration: txt(v.lengthText),
+        thumbnail: `https://i.ytimg.com/vi/${id}/mqdefault.jpg`
+      });
+      if (results.length >= 25) break;
+    }
+    res.json({ results });
   } catch (e) {
-    req.log.error({ err: String(e) }, "Spotify token error");
-    res.status(500).json({ error: "token_failed" });
+    req.log.error({ err: String(e) }, "YouTube search error");
+    res.status(500).json({ error: "search_failed", results: [] });
   }
 });
-router14.post("/spotify/logout", async (req, res) => {
-  if (!requirePanel(req, res)) return;
-  await writeConfig(KEY5, null);
-  res.json({ ok: true });
-});
-var spotify_default = router14;
+var youtube_default = router14;
 
 // src/lib/logger.ts
 var import_pino = __toESM(require_pino(), 1);
@@ -67577,7 +67458,7 @@ app.use(import_express15.default.urlencoded({ extended: true }));
 app.use(icons_default);
 app.use(welcome_card_default);
 app.use("/api", games_play_default);
-app.use("/api", spotify_default);
+app.use("/api", authMiddleware, youtube_default);
 app.use("/api", authMiddleware, routes_default);
 var staticDir = path3.join(process.cwd(), "public");
 if (fs3.existsSync(staticDir)) {
