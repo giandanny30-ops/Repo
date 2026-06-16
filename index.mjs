@@ -30,9 +30,9 @@ var __export = (target, all) => {
 };
 var __copyProps = (to, from, except2, desc2) => {
   if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except2)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc2 = __getOwnPropDesc(from, key)) || desc2.enumerable });
+    for (let key2 of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key2) && key2 !== except2)
+        __defProp(to, key2, { get: () => from[key2], enumerable: !(desc2 = __getOwnPropDesc(from, key2)) || desc2.enumerable });
   }
   return to;
 };
@@ -173,8 +173,8 @@ var require_common = __commonJS({
       createDebug.enabled = enabled;
       createDebug.humanize = require_ms();
       createDebug.destroy = destroy;
-      Object.keys(env).forEach((key) => {
-        createDebug[key] = env[key];
+      Object.keys(env).forEach((key2) => {
+        createDebug[key2] = env[key2];
       });
       createDebug.names = [];
       createDebug.skips = [];
@@ -609,13 +609,13 @@ var require_node = __commonJS({
       }
     } catch (error) {
     }
-    exports.inspectOpts = Object.keys(process.env).filter((key) => {
-      return /^debug_/i.test(key);
-    }).reduce((obj, key) => {
-      const prop = key.substring(6).toLowerCase().replace(/_([a-z])/g, (_, k) => {
+    exports.inspectOpts = Object.keys(process.env).filter((key2) => {
+      return /^debug_/i.test(key2);
+    }).reduce((obj, key2) => {
+      const prop = key2.substring(6).toLowerCase().replace(/_([a-z])/g, (_, k) => {
         return k.toUpperCase();
       });
-      let val = process.env[key];
+      let val = process.env[key2];
       if (/^(yes|on|true|enabled)$/i.test(val)) {
         val = true;
       } else if (/^(no|off|false|disabled)$/i.test(val)) {
@@ -814,11 +814,11 @@ var require_depd = __commonJS({
           break;
         }
       }
-      var key = caller ? depSite.join(":") + "__" + caller.join(":") : void 0;
-      if (key !== void 0 && key in this._warned) {
+      var key2 = caller ? depSite.join(":") + "__" + caller.join(":") : void 0;
+      if (key2 !== void 0 && key2 in this._warned) {
         return;
       }
-      this._warned[key] = true;
+      this._warned[key2] = true;
       var msg = message;
       if (!msg) {
         msg = callSite === depSite || !callSite.name ? defaultMessage(depSite) : defaultMessage(callSite);
@@ -1272,9 +1272,9 @@ var require_http_errors = __commonJS({
         err.expose = status < 500;
         err.status = err.statusCode = status;
       }
-      for (var key in props) {
-        if (key !== "status" && key !== "statusCode") {
-          err[key] = props[key];
+      for (var key2 in props) {
+        if (key2 !== "status" && key2 !== "statusCode") {
+          err[key2] = props[key2];
         }
       }
       return err;
@@ -1480,17 +1480,17 @@ var require_safer = __commonJS({
     var buffer = __require("buffer");
     var Buffer2 = buffer.Buffer;
     var safer = {};
-    var key;
-    for (key in buffer) {
-      if (!buffer.hasOwnProperty(key)) continue;
-      if (key === "SlowBuffer" || key === "Buffer") continue;
-      safer[key] = buffer[key];
+    var key2;
+    for (key2 in buffer) {
+      if (!buffer.hasOwnProperty(key2)) continue;
+      if (key2 === "SlowBuffer" || key2 === "Buffer") continue;
+      safer[key2] = buffer[key2];
     }
     var Safer = safer.Buffer = {};
-    for (key in Buffer2) {
-      if (!Buffer2.hasOwnProperty(key)) continue;
-      if (key === "allocUnsafe" || key === "allocUnsafeSlow") continue;
-      Safer[key] = Buffer2[key];
+    for (key2 in Buffer2) {
+      if (!Buffer2.hasOwnProperty(key2)) continue;
+      if (key2 === "allocUnsafe" || key2 === "allocUnsafeSlow") continue;
+      Safer[key2] = Buffer2[key2];
     }
     safer.Buffer.prototype = Buffer2.prototype;
     if (!Safer.from || Safer.from === Uint8Array.from) {
@@ -1593,9 +1593,9 @@ var require_merge_exports = __commonJS({
     "use strict";
     var hasOwn = typeof Object.hasOwn === "undefined" ? Function.call.bind(Object.prototype.hasOwnProperty) : Object.hasOwn;
     function mergeModules(target, module2) {
-      for (var key in module2) {
-        if (hasOwn(module2, key)) {
-          target[key] = module2[key];
+      for (var key2 in module2) {
+        if (hasOwn(module2, key2)) {
+          target[key2] = module2[key2];
         }
       }
     }
@@ -5183,8 +5183,8 @@ var require_lib = __commonJS({
             enc = codecDef;
             break;
           case "object":
-            for (var key in codecDef) {
-              codecOptions[key] = codecDef[key];
+            for (var key2 in codecDef) {
+              codecOptions[key2] = codecDef[key2];
             }
             if (!codecOptions.encodingName) {
               codecOptions.encodingName = enc;
@@ -5692,7 +5692,7 @@ var require_content_type = __commonJS({
       }
       var obj = new ContentType(type.toLowerCase());
       if (index !== -1) {
-        var key;
+        var key2;
         var match;
         var value;
         PARAM_REGEXP.lastIndex = index;
@@ -5701,7 +5701,7 @@ var require_content_type = __commonJS({
             throw new TypeError("invalid parameter format");
           }
           index += match[0].length;
-          key = match[1].toLowerCase();
+          key2 = match[1].toLowerCase();
           value = match[2];
           if (value.charCodeAt(0) === 34) {
             value = value.slice(1, -1);
@@ -5709,7 +5709,7 @@ var require_content_type = __commonJS({
               value = value.replace(QESC_REGEXP, "$1");
             }
           }
-          obj.parameters[key] = value;
+          obj.parameters[key2] = value;
         }
         if (index !== header.length) {
           throw new TypeError("invalid parameter format");
@@ -15694,9 +15694,9 @@ var require_json = __commonJS({
     function normalizeJsonSyntaxError(error, obj) {
       var keys = Object.getOwnPropertyNames(error);
       for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        if (key !== "stack" && key !== "message") {
-          delete error[key];
+        var key2 = keys[i];
+        if (key2 !== "stack" && key2 !== "message") {
+          delete error[key2];
         }
       }
       error.stack = obj.stack.replace(error.message, obj.message);
@@ -15950,8 +15950,8 @@ var require_object_inspect = __commonJS({
       if (isMap(obj)) {
         var mapParts = [];
         if (mapForEach) {
-          mapForEach.call(obj, function(value, key) {
-            mapParts.push(inspect(key, obj, true) + " => " + inspect(value, obj));
+          mapForEach.call(obj, function(value, key2) {
+            mapParts.push(inspect(key2, obj, true) + " => " + inspect(value, obj));
           });
         }
         return collectionOf("Map", mapSize.call(obj), mapParts, indent);
@@ -16069,11 +16069,11 @@ var require_object_inspect = __commonJS({
       }
       return false;
     }
-    var hasOwn = Object.prototype.hasOwnProperty || function(key) {
-      return key in this;
+    var hasOwn = Object.prototype.hasOwnProperty || function(key2) {
+      return key2 in this;
     };
-    function has(obj, key) {
-      return hasOwn.call(obj, key);
+    function has(obj, key2) {
+      return hasOwn.call(obj, key2);
     }
     function toStr(obj) {
       return objectToString.call(obj);
@@ -16264,19 +16264,19 @@ var require_object_inspect = __commonJS({
           symMap["$" + syms[k]] = syms[k];
         }
       }
-      for (var key in obj) {
-        if (!has(obj, key)) {
+      for (var key2 in obj) {
+        if (!has(obj, key2)) {
           continue;
         }
-        if (isArr && String(Number(key)) === key && key < obj.length) {
+        if (isArr && String(Number(key2)) === key2 && key2 < obj.length) {
           continue;
         }
-        if (hasShammedSymbols && symMap["$" + key] instanceof Symbol) {
+        if (hasShammedSymbols && symMap["$" + key2] instanceof Symbol) {
           continue;
-        } else if ($test.call(/[^\w$]/, key)) {
-          xs.push(inspect(key, obj) + ": " + inspect(obj[key], obj));
+        } else if ($test.call(/[^\w$]/, key2)) {
+          xs.push(inspect(key2, obj) + ": " + inspect(obj[key2], obj));
         } else {
-          xs.push(key + ": " + inspect(obj[key], obj));
+          xs.push(key2 + ": " + inspect(obj[key2], obj));
         }
       }
       if (typeof gOPS === "function") {
@@ -16297,11 +16297,11 @@ var require_side_channel_list = __commonJS({
     "use strict";
     var inspect = require_object_inspect();
     var $TypeError = require_type();
-    var listGetNode = function(list, key, isDelete) {
+    var listGetNode = function(list, key2, isDelete) {
       var prev = list;
       var curr;
       for (; (curr = prev.next) != null; prev = curr) {
-        if (curr.key === key) {
+        if (curr.key === key2) {
           prev.next = curr.next;
           if (!isDelete) {
             curr.next = /** @type {NonNullable<typeof list.next>} */
@@ -16312,61 +16312,61 @@ var require_side_channel_list = __commonJS({
         }
       }
     };
-    var listGet = function(objects, key) {
+    var listGet = function(objects, key2) {
       if (!objects) {
         return void 0;
       }
-      var node = listGetNode(objects, key);
+      var node = listGetNode(objects, key2);
       return node && node.value;
     };
-    var listSet = function(objects, key, value) {
-      var node = listGetNode(objects, key);
+    var listSet = function(objects, key2, value) {
+      var node = listGetNode(objects, key2);
       if (node) {
         node.value = value;
       } else {
         objects.next = /** @type {import('./list.d.ts').ListNode<typeof value, typeof key>} */
         {
           // eslint-disable-line no-param-reassign, no-extra-parens
-          key,
+          key: key2,
           next: objects.next,
           value
         };
       }
     };
-    var listHas = function(objects, key) {
+    var listHas = function(objects, key2) {
       if (!objects) {
         return false;
       }
-      return !!listGetNode(objects, key);
+      return !!listGetNode(objects, key2);
     };
-    var listDelete = function(objects, key) {
+    var listDelete = function(objects, key2) {
       if (objects) {
-        return listGetNode(objects, key, true);
+        return listGetNode(objects, key2, true);
       }
     };
     module.exports = function getSideChannelList() {
       var $o;
       var channel = {
-        assert: function(key) {
-          if (!channel.has(key)) {
-            throw new $TypeError("Side channel does not contain " + inspect(key));
+        assert: function(key2) {
+          if (!channel.has(key2)) {
+            throw new $TypeError("Side channel does not contain " + inspect(key2));
           }
         },
-        "delete": function(key) {
+        "delete": function(key2) {
           var root = $o && $o.next;
-          var deletedNode = listDelete($o, key);
+          var deletedNode = listDelete($o, key2);
           if (deletedNode && root && root === deletedNode) {
             $o = void 0;
           }
           return !!deletedNode;
         },
-        get: function(key) {
-          return listGet($o, key);
+        get: function(key2) {
+          return listGet($o, key2);
         },
-        has: function(key) {
-          return listHas($o, key);
+        has: function(key2) {
+          return listHas($o, key2);
         },
-        set: function(key, value) {
+        set: function(key2, value) {
           if (!$o) {
             $o = {
               next: void 0
@@ -16375,7 +16375,7 @@ var require_side_channel_list = __commonJS({
           listSet(
             /** @type {NonNullable<typeof $o>} */
             $o,
-            key,
+            key2,
             value
           );
         }
@@ -17221,14 +17221,14 @@ var require_side_channel_map = __commonJS({
     function getSideChannelMap() {
       var $m;
       var channel = {
-        assert: function(key) {
-          if (!channel.has(key)) {
-            throw new $TypeError("Side channel does not contain " + inspect(key));
+        assert: function(key2) {
+          if (!channel.has(key2)) {
+            throw new $TypeError("Side channel does not contain " + inspect(key2));
           }
         },
-        "delete": function(key) {
+        "delete": function(key2) {
           if ($m) {
-            var result = $mapDelete($m, key);
+            var result = $mapDelete($m, key2);
             if ($mapSize($m) === 0) {
               $m = void 0;
             }
@@ -17236,22 +17236,22 @@ var require_side_channel_map = __commonJS({
           }
           return false;
         },
-        get: function(key) {
+        get: function(key2) {
           if ($m) {
-            return $mapGet($m, key);
+            return $mapGet($m, key2);
           }
         },
-        has: function(key) {
+        has: function(key2) {
           if ($m) {
-            return $mapHas($m, key);
+            return $mapHas($m, key2);
           }
           return false;
         },
-        set: function(key, value) {
+        set: function(key2, value) {
           if (!$m) {
             $m = new $Map();
           }
-          $mapSet($m, key, value);
+          $mapSet($m, key2, value);
         }
       };
       return channel;
@@ -17279,50 +17279,50 @@ var require_side_channel_weakmap = __commonJS({
         var $wm;
         var $m;
         var channel = {
-          assert: function(key) {
-            if (!channel.has(key)) {
-              throw new $TypeError("Side channel does not contain " + inspect(key));
+          assert: function(key2) {
+            if (!channel.has(key2)) {
+              throw new $TypeError("Side channel does not contain " + inspect(key2));
             }
           },
-          "delete": function(key) {
-            if ($WeakMap && key && (typeof key === "object" || typeof key === "function")) {
+          "delete": function(key2) {
+            if ($WeakMap && key2 && (typeof key2 === "object" || typeof key2 === "function")) {
               if ($wm) {
-                return $weakMapDelete($wm, key);
+                return $weakMapDelete($wm, key2);
               }
             } else if (getSideChannelMap) {
               if ($m) {
-                return $m["delete"](key);
+                return $m["delete"](key2);
               }
             }
             return false;
           },
-          get: function(key) {
-            if ($WeakMap && key && (typeof key === "object" || typeof key === "function")) {
+          get: function(key2) {
+            if ($WeakMap && key2 && (typeof key2 === "object" || typeof key2 === "function")) {
               if ($wm) {
-                return $weakMapGet($wm, key);
+                return $weakMapGet($wm, key2);
               }
             }
-            return $m && $m.get(key);
+            return $m && $m.get(key2);
           },
-          has: function(key) {
-            if ($WeakMap && key && (typeof key === "object" || typeof key === "function")) {
+          has: function(key2) {
+            if ($WeakMap && key2 && (typeof key2 === "object" || typeof key2 === "function")) {
               if ($wm) {
-                return $weakMapHas($wm, key);
+                return $weakMapHas($wm, key2);
               }
             }
-            return !!$m && $m.has(key);
+            return !!$m && $m.has(key2);
           },
-          set: function(key, value) {
-            if ($WeakMap && key && (typeof key === "object" || typeof key === "function")) {
+          set: function(key2, value) {
+            if ($WeakMap && key2 && (typeof key2 === "object" || typeof key2 === "function")) {
               if (!$wm) {
                 $wm = new $WeakMap();
               }
-              $weakMapSet($wm, key, value);
+              $weakMapSet($wm, key2, value);
             } else if (getSideChannelMap) {
               if (!$m) {
                 $m = getSideChannelMap();
               }
-              $m.set(key, value);
+              $m.set(key2, value);
             }
           }
         };
@@ -17345,25 +17345,25 @@ var require_side_channel = __commonJS({
     module.exports = function getSideChannel() {
       var $channelData;
       var channel = {
-        assert: function(key) {
-          if (!channel.has(key)) {
-            throw new $TypeError("Side channel does not contain " + inspect(key));
+        assert: function(key2) {
+          if (!channel.has(key2)) {
+            throw new $TypeError("Side channel does not contain " + inspect(key2));
           }
         },
-        "delete": function(key) {
-          return !!$channelData && $channelData["delete"](key);
+        "delete": function(key2) {
+          return !!$channelData && $channelData["delete"](key2);
         },
-        get: function(key) {
-          return $channelData && $channelData.get(key);
+        get: function(key2) {
+          return $channelData && $channelData.get(key2);
         },
-        has: function(key) {
-          return !!$channelData && $channelData.has(key);
+        has: function(key2) {
+          return !!$channelData && $channelData.has(key2);
         },
-        set: function(key, value) {
+        set: function(key2, value) {
           if (!$channelData) {
             $channelData = makeChannel();
           }
-          $channelData.set(key, value);
+          $channelData.set(key2, value);
         }
       };
       return channel;
@@ -17511,19 +17511,19 @@ var require_utils2 = __commonJS({
         });
         return target;
       }
-      return Object.keys(source).reduce(function(acc, key) {
-        var value = source[key];
-        if (has.call(acc, key)) {
-          acc[key] = merge2(acc[key], value, options);
+      return Object.keys(source).reduce(function(acc, key2) {
+        var value = source[key2];
+        if (has.call(acc, key2)) {
+          acc[key2] = merge2(acc[key2], value, options);
         } else {
-          acc[key] = value;
+          acc[key2] = value;
         }
         if (isOverflow(source) && !isOverflow(acc)) {
           markOverflow(acc, getMaxIndex(source));
         }
         if (isOverflow(acc)) {
-          var keyNum = parseInt(key, 10);
-          if (String(keyNum) === key && keyNum >= 0 && keyNum > getMaxIndex(acc)) {
+          var keyNum = parseInt(key2, 10);
+          if (String(keyNum) === key2 && keyNum >= 0 && keyNum > getMaxIndex(acc)) {
             setMaxIndex(acc, keyNum);
           }
         }
@@ -17531,8 +17531,8 @@ var require_utils2 = __commonJS({
       }, mergeTarget);
     };
     var assign = function assignSingleSource(target, source) {
-      return Object.keys(source).reduce(function(acc, key) {
-        acc[key] = source[key];
+      return Object.keys(source).reduce(function(acc, key2) {
+        acc[key2] = source[key2];
         return acc;
       }, target);
     };
@@ -17601,10 +17601,10 @@ var require_utils2 = __commonJS({
         var obj = item.obj[item.prop];
         var keys = Object.keys(obj);
         for (var j = 0; j < keys.length; ++j) {
-          var key = keys[j];
-          var val = obj[key];
+          var key2 = keys[j];
+          var val = obj[key2];
           if (typeof val === "object" && val !== null && refs.indexOf(val) === -1) {
-            queue[queue.length] = { obj, prop: key };
+            queue[queue.length] = { obj, prop: key2 };
             refs[refs.length] = val;
           }
         }
@@ -17674,8 +17674,8 @@ var require_stringify = __commonJS({
         return prefix + "[]";
       },
       comma: "comma",
-      indices: function indices(prefix, key) {
-        return prefix + "[" + key + "]";
+      indices: function indices(prefix, key2) {
+        return prefix + "[" + key2 + "]";
       },
       repeat: function repeat(prefix) {
         return prefix;
@@ -17782,12 +17782,12 @@ var require_stringify = __commonJS({
         return adjustedPrefix + "[]";
       }
       for (var j = 0; j < objKeys.length; ++j) {
-        var key = objKeys[j];
-        var value = typeof key === "object" && key && typeof key.value !== "undefined" ? key.value : obj[key];
+        var key2 = objKeys[j];
+        var value = typeof key2 === "object" && key2 && typeof key2.value !== "undefined" ? key2.value : obj[key2];
         if (skipNulls && value === null) {
           continue;
         }
-        var encodedKey = allowDots && encodeDotInKeys ? String(key).replace(/\./g, "%2E") : String(key);
+        var encodedKey = allowDots && encodeDotInKeys ? String(key2).replace(/\./g, "%2E") : String(key2);
         var keyPrefix = isArray(obj) ? typeof generateArrayPrefix === "function" ? generateArrayPrefix(adjustedPrefix, encodedKey) : adjustedPrefix : adjustedPrefix + (allowDots ? "." + encodedKey : "[" + encodedKey + "]");
         sideChannel.set(object, step);
         var valueSideChannel = getSideChannel();
@@ -17904,14 +17904,14 @@ var require_stringify = __commonJS({
       }
       var sideChannel = getSideChannel();
       for (var i = 0; i < objKeys.length; ++i) {
-        var key = objKeys[i];
-        var value = obj[key];
+        var key2 = objKeys[i];
+        var value = obj[key2];
         if (options.skipNulls && value === null) {
           continue;
         }
         pushToArray(keys, stringify(
           value,
-          key,
+          key2,
           generateArrayPrefix,
           commaRoundTrip,
           options.allowEmptyArrays,
@@ -18026,19 +18026,19 @@ var require_parse = __commonJS({
         var part = parts[i];
         var bracketEqualsPos = part.indexOf("]=");
         var pos = bracketEqualsPos === -1 ? part.indexOf("=") : bracketEqualsPos + 1;
-        var key;
+        var key2;
         var val;
         if (pos === -1) {
-          key = options.decoder(part, defaults2.decoder, charset, "key");
+          key2 = options.decoder(part, defaults2.decoder, charset, "key");
           val = options.strictNullHandling ? null : "";
         } else {
-          key = options.decoder(part.slice(0, pos), defaults2.decoder, charset, "key");
-          if (key !== null) {
+          key2 = options.decoder(part.slice(0, pos), defaults2.decoder, charset, "key");
+          if (key2 !== null) {
             val = utils.maybeMap(
               parseArrayValue(
                 part.slice(pos + 1),
                 options,
-                isArray(obj[key]) ? obj[key].length : 0
+                isArray(obj[key2]) ? obj[key2].length : 0
               ),
               function(encodedVal) {
                 return options.decoder(encodedVal, defaults2.decoder, charset, "value");
@@ -18058,17 +18058,17 @@ var require_parse = __commonJS({
           }
           val = utils.combine([], val, options.arrayLimit, options.plainObjects);
         }
-        if (key !== null) {
-          var existing = has.call(obj, key);
+        if (key2 !== null) {
+          var existing = has.call(obj, key2);
           if (existing && (options.duplicates === "combine" || part.indexOf("[]=") > -1)) {
-            obj[key] = utils.combine(
-              obj[key],
+            obj[key2] = utils.combine(
+              obj[key2],
               val,
               options.arrayLimit,
               options.plainObjects
             );
           } else if (!existing || options.duplicates === "last") {
-            obj[key] = val;
+            obj[key2] = val;
           }
         }
       }
@@ -18120,19 +18120,19 @@ var require_parse = __commonJS({
       return leaf;
     };
     var splitKeyIntoSegments = function splitKeyIntoSegments2(givenKey, options) {
-      var key = options.allowDots ? givenKey.replace(/\.([^.[]+)/g, "[$1]") : givenKey;
+      var key2 = options.allowDots ? givenKey.replace(/\.([^.[]+)/g, "[$1]") : givenKey;
       if (options.depth <= 0) {
-        if (!options.plainObjects && has.call(Object.prototype, key)) {
+        if (!options.plainObjects && has.call(Object.prototype, key2)) {
           if (!options.allowPrototypes) {
             return;
           }
         }
-        return [key];
+        return [key2];
       }
       var brackets = /(\[[^[\]]*])/;
       var child = /(\[[^[\]]*])/g;
-      var segment = brackets.exec(key);
-      var parent = segment ? key.slice(0, segment.index) : key;
+      var segment = brackets.exec(key2);
+      var parent = segment ? key2.slice(0, segment.index) : key2;
       var keys = [];
       if (parent) {
         if (!options.plainObjects && has.call(Object.prototype, parent)) {
@@ -18143,7 +18143,7 @@ var require_parse = __commonJS({
         keys[keys.length] = parent;
       }
       var i = 0;
-      while ((segment = child.exec(key)) !== null && i < options.depth) {
+      while ((segment = child.exec(key2)) !== null && i < options.depth) {
         i += 1;
         var segmentContent = segment[1].slice(1, -1);
         if (!options.plainObjects && has.call(Object.prototype, segmentContent)) {
@@ -18157,7 +18157,7 @@ var require_parse = __commonJS({
         if (options.strictDepth === true) {
           throw new RangeError("Input depth exceeded depth option of " + options.depth + " and strictDepth is true");
         }
-        keys[keys.length] = "[" + key.slice(segment.index) + "]";
+        keys[keys.length] = "[" + key2.slice(segment.index) + "]";
       }
       return keys;
     };
@@ -18231,8 +18231,8 @@ var require_parse = __commonJS({
       var obj = options.plainObjects ? { __proto__: null } : {};
       var keys = Object.keys(tempObj);
       for (var i = 0; i < keys.length; ++i) {
-        var key = keys[i];
-        var newObj = parseKeys(key, tempObj[key], options, typeof str === "string");
+        var key2 = keys[i];
+        var newObj = parseKeys(key2, tempObj[key2], options, typeof str === "string");
         obj = utils.merge(obj, newObj, options);
       }
       if (options.allowSparse === true) {
@@ -18649,8 +18649,8 @@ var require_finalhandler = __commonJS({
         res.removeHeader("Content-Encoding");
         res.removeHeader("Content-Language");
         res.removeHeader("Content-Range");
-        for (const [key, value] of Object.entries(headers ?? {})) {
-          res.setHeader(key, value);
+        for (const [key2, value] of Object.entries(headers ?? {})) {
+          res.setHeader(key2, value);
         }
         res.setHeader("Content-Security-Policy", "default-src 'none'");
         res.setHeader("X-Content-Type-Options", "nosniff");
@@ -19672,12 +19672,12 @@ var require_utils3 = __commonJS({
           index = str.lastIndexOf(";", splitIndex - 1) + 1;
           continue;
         }
-        var key = str.slice(index, splitIndex).trim();
+        var key2 = str.slice(index, splitIndex).trim();
         var value = str.slice(splitIndex + 1, endIndex).trim();
-        if (key === "q") {
+        if (key2 === "q") {
           ret.quality = parseFloat(value);
         } else {
-          ret.params[key] = value;
+          ret.params[key2] = value;
         }
         index = endIndex + 1;
       }
@@ -20057,10 +20057,10 @@ var require_dist = __commonJS({
     function match(path4, options = {}) {
       const { decode = decodeURIComponent, delimiter = DEFAULT_DELIMITER } = options;
       const { regexp, keys } = pathToRegexp(path4, options);
-      const decoders = keys.map((key) => {
+      const decoders = keys.map((key2) => {
         if (decode === false)
           return NOOP_VALUE;
-        if (key.type === "param")
+        if (key2.type === "param")
           return decode;
         return (value) => value.split(delimiter).map(decode);
       });
@@ -20073,9 +20073,9 @@ var require_dist = __commonJS({
         for (let i = 1; i < m.length; i++) {
           if (m[i] === void 0)
             continue;
-          const key = keys[i - 1];
+          const key2 = keys[i - 1];
           const decoder = decoders[i - 1];
-          params[key.name] = decoder(m[i]);
+          params[key2.name] = decoder(m[i]);
         }
         return { path: path5, params };
       };
@@ -20245,8 +20245,8 @@ var require_layer = __commonJS({
             }
             const params = {};
             for (let i = 1; i < match.length; i++) {
-              const key = keys[i - 1];
-              const prop = key.name;
+              const key2 = keys[i - 1];
+              const prop = key2.name;
               const val = decodeParam(match[i]);
               if (val !== void 0) {
                 params[prop] = val;
@@ -20488,27 +20488,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router22;
+    module.exports = Router23;
     module.exports.Route = Route;
-    function Router22(options) {
-      if (!(this instanceof Router22)) {
-        return new Router22(options);
+    function Router23(options) {
+      if (!(this instanceof Router23)) {
+        return new Router23(options);
       }
       const opts = options || {};
-      function router22(req, res, next) {
-        router22.handle(req, res, next);
+      function router23(req, res, next) {
+        router23.handle(req, res, next);
       }
-      Object.setPrototypeOf(router22, this);
-      router22.caseSensitive = opts.caseSensitive;
-      router22.mergeParams = opts.mergeParams;
-      router22.params = {};
-      router22.strict = opts.strict;
-      router22.stack = [];
-      return router22;
+      Object.setPrototypeOf(router23, this);
+      router23.caseSensitive = opts.caseSensitive;
+      router23.mergeParams = opts.mergeParams;
+      router23.params = {};
+      router23.strict = opts.strict;
+      router23.stack = [];
+      return router23;
     }
-    Router22.prototype = function() {
+    Router23.prototype = function() {
     };
-    Router22.prototype.param = function param2(name2, fn) {
+    Router23.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20528,7 +20528,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router22.prototype.handle = function handle(req, res, callback) {
+    Router23.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20655,7 +20655,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router22.prototype.use = function use(handler) {
+    Router23.prototype.use = function use(handler) {
       let offset = 0;
       let path4 = "/";
       if (typeof handler !== "function") {
@@ -20688,7 +20688,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router22.prototype.route = function route(path4) {
+    Router23.prototype.route = function route(path4) {
       const route2 = new Route(path4);
       const layer = new Layer(path4, {
         sensitive: this.caseSensitive,
@@ -20703,7 +20703,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router22.prototype[method] = function(path4) {
+      Router23.prototype[method] = function(path4) {
         const route = this.route(path4);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -20771,7 +20771,7 @@ var require_router = __commonJS({
       }
       let i = 0;
       let paramIndex = 0;
-      let key;
+      let key2;
       let paramVal;
       let paramCallbacks;
       let paramCalled;
@@ -20783,18 +20783,18 @@ var require_router = __commonJS({
           return done();
         }
         paramIndex = 0;
-        key = keys[i++];
-        paramVal = req.params[key];
-        paramCallbacks = params[key];
-        paramCalled = called[key];
+        key2 = keys[i++];
+        paramVal = req.params[key2];
+        paramCallbacks = params[key2];
+        paramCalled = called[key2];
         if (paramVal === void 0 || !paramCallbacks) {
           return param2();
         }
         if (paramCalled && (paramCalled.match === paramVal || paramCalled.error && paramCalled.error !== "route")) {
-          req.params[key] = paramCalled.value;
+          req.params[key2] = paramCalled.value;
           return param2(paramCalled.error);
         }
-        called[key] = paramCalled = {
+        called[key2] = paramCalled = {
           error: null,
           match: paramVal,
           value: paramVal
@@ -20803,7 +20803,7 @@ var require_router = __commonJS({
       }
       function paramCallback(err) {
         const fn = paramCallbacks[paramIndex++];
-        paramCalled.value = req.params[key];
+        paramCalled.value = req.params[key2];
         if (err) {
           paramCalled.error = err;
           param2(err);
@@ -20811,7 +20811,7 @@ var require_router = __commonJS({
         }
         if (!fn) return param2();
         try {
-          const ret = fn(req, res, paramCallback, paramVal, key);
+          const ret = fn(req, res, paramCallback, paramVal, key2);
           if (isPromise(ret)) {
             if (!(ret instanceof Promise)) {
               deprecate("parameters that are Promise-like are deprecated, use a native Promise instead");
@@ -20886,13 +20886,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router22 = require_router();
+    var Router23 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router22 = null;
+      var router23 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -20901,13 +20901,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router22 === null) {
-            router22 = new Router22({
+          if (router23 === null) {
+            router23 = new Router23({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router22;
+          return router23;
         }
       });
     };
@@ -20978,15 +20978,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router22 = this.router;
+      var router23 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router22.use(path4, fn2);
+          return router23.use(path4, fn2);
         }
         debug(".use app under %s", path4);
         fn2.mountpath = path4;
         fn2.parent = this;
-        router22.use(path4, function mounted_app(req, res, next) {
+        router23.use(path4, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -21457,14 +21457,14 @@ var require_mediaType = __commonJS({
         var kvps = splitParameters(match[3]).map(splitKeyValuePair);
         for (var j = 0; j < kvps.length; j++) {
           var pair = kvps[j];
-          var key = pair[0].toLowerCase();
+          var key2 = pair[0].toLowerCase();
           var val = pair[1];
           var value = val && val[0] === '"' && val[val.length - 1] === '"' ? val.slice(1, -1) : val;
-          if (key === "q") {
+          if (key2 === "q") {
             q = parseFloat(value);
             break;
           }
-          params[key] = value;
+          params[key2] = value;
         }
       }
       return {
@@ -21550,15 +21550,15 @@ var require_mediaType = __commonJS({
     }
     function splitKeyValuePair(str) {
       var index = str.indexOf("=");
-      var key;
+      var key2;
       var val;
       if (index === -1) {
-        key = str;
+        key2 = str;
       } else {
-        key = str.slice(0, index);
+        key2 = str.slice(0, index);
         val = str.slice(index + 1);
       }
-      return [key, val];
+      return [key2, val];
     }
     function splitMediaTypes(accept) {
       var accepts = accept.split(",");
@@ -22134,7 +22134,7 @@ var require_content_disposition = __commonJS({
       }
       var index = match[0].length;
       var type = match[1].toLowerCase();
-      var key;
+      var key2;
       var names = [];
       var params = {};
       var value;
@@ -22144,25 +22144,25 @@ var require_content_disposition = __commonJS({
           throw new TypeError("invalid parameter format");
         }
         index += match[0].length;
-        key = match[1].toLowerCase();
+        key2 = match[1].toLowerCase();
         value = match[2];
-        if (names.indexOf(key) !== -1) {
+        if (names.indexOf(key2) !== -1) {
           throw new TypeError("invalid duplicate parameter");
         }
-        names.push(key);
-        if (key.indexOf("*") + 1 === key.length) {
-          key = key.slice(0, -1);
+        names.push(key2);
+        if (key2.indexOf("*") + 1 === key2.length) {
+          key2 = key2.slice(0, -1);
           value = decodefield(value);
-          params[key] = value;
+          params[key2] = value;
           continue;
         }
-        if (typeof params[key] === "string") {
+        if (typeof params[key2] === "string") {
           continue;
         }
         if (value[0] === '"') {
           value = value.slice(1, -1).replace(QESC_REGEXP, "$1");
         }
-        params[key] = value;
+        params[key2] = value;
       }
       if (index !== -1 && index !== string.length) {
         throw new TypeError("invalid parameter format");
@@ -22244,8 +22244,8 @@ var require_cookie = __commonJS({
         }
         var keyStartIdx = startIndex(str, index, eqIdx);
         var keyEndIdx = endIndex(str, eqIdx, keyStartIdx);
-        var key = str.slice(keyStartIdx, keyEndIdx);
-        if (!__hasOwnProperty.call(obj, key)) {
+        var key2 = str.slice(keyStartIdx, keyEndIdx);
+        if (!__hasOwnProperty.call(obj, key2)) {
           var valStartIdx = startIndex(str, eqIdx + 1, endIdx);
           var valEndIdx = endIndex(str, endIdx, valStartIdx);
           if (str.charCodeAt(valStartIdx) === 34 && str.charCodeAt(valEndIdx - 1) === 34) {
@@ -22253,7 +22253,7 @@ var require_cookie = __commonJS({
             valEndIdx--;
           }
           var val = str.slice(valStartIdx, valEndIdx);
-          obj[key] = tryDecode(val, dec);
+          obj[key2] = tryDecode(val, dec);
         }
         index = endIdx + 1;
       } while (index < len);
@@ -22851,8 +22851,8 @@ var require_send = __commonJS({
     function setHeaders(res, headers) {
       var keys = Object.keys(headers);
       for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        res.setHeader(key, headers[key]);
+        var key2 = keys[i];
+        res.setHeader(key2, headers[key2]);
       }
     }
   }
@@ -23151,9 +23151,9 @@ var require_response = __commonJS({
       if (opts && opts.headers) {
         var keys = Object.keys(opts.headers);
         for (var i = 0; i < keys.length; i++) {
-          var key = keys[i];
-          if (key.toLowerCase() !== "content-disposition") {
-            headers[key] = opts.headers[key];
+          var key2 = keys[i];
+          if (key2.toLowerCase() !== "content-disposition") {
+            headers[key2] = opts.headers[key2];
           }
         }
       }
@@ -23172,11 +23172,11 @@ var require_response = __commonJS({
       var keys = Object.keys(obj).filter(function(v) {
         return v !== "default";
       });
-      var key = keys.length > 0 ? req.accepts(keys) : false;
+      var key2 = keys.length > 0 ? req.accepts(keys) : false;
       this.vary("Accept");
-      if (key) {
-        this.set("Content-Type", normalizeType(key).value);
-        obj[key](req, this, next);
+      if (key2) {
+        this.set("Content-Type", normalizeType(key2).value);
+        obj[key2](req, this, next);
       } else if (obj.default) {
         obj.default(req, this, next);
       } else {
@@ -23214,8 +23214,8 @@ var require_response = __commonJS({
         }
         this.setHeader(field, value);
       } else {
-        for (var key in field) {
-          this.set(key, field[key]);
+        for (var key2 in field) {
+          this.set(key2, field[key2]);
         }
       }
       return this;
@@ -23513,7 +23513,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router22 = require_router();
+    var Router23 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23535,8 +23535,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router22.Route;
-    exports.Router = Router22;
+    exports.Route = Router23.Route;
+    exports.Router = Router23;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -23604,9 +23604,9 @@ var require_object_assign = __commonJS({
       var symbols;
       for (var s = 1; s < arguments.length; s++) {
         from = Object(arguments[s]);
-        for (var key in from) {
-          if (hasOwnProperty.call(from, key)) {
-            to[key] = from[key];
+        for (var key2 in from) {
+          if (hasOwnProperty.call(from, key2)) {
+            to[key2] = from[key2];
           }
         }
         if (getOwnPropertySymbols) {
@@ -23897,13 +23897,13 @@ var require_cookie_parser = __commonJS({
     }
     function JSONCookies(obj) {
       var cookies = Object.keys(obj);
-      var key;
+      var key2;
       var val;
       for (var i = 0; i < cookies.length; i++) {
-        key = cookies[i];
-        val = JSONCookie(obj[key]);
+        key2 = cookies[i];
+        val = JSONCookie(obj[key2]);
         if (val) {
-          obj[key] = val;
+          obj[key2] = val;
         }
       }
       return obj;
@@ -23927,16 +23927,16 @@ var require_cookie_parser = __commonJS({
     function signedCookies(obj, secret2) {
       var cookies = Object.keys(obj);
       var dec;
-      var key;
+      var key2;
       var ret = /* @__PURE__ */ Object.create(null);
       var val;
       for (var i = 0; i < cookies.length; i++) {
-        key = cookies[i];
-        val = obj[key];
+        key2 = cookies[i];
+        val = obj[key2];
         dec = signedCookie(val, secret2);
         if (val !== dec) {
-          ret[key] = dec;
-          delete obj[key];
+          ret[key2] = dec;
+          delete obj[key2];
         }
       }
       return ret;
@@ -24073,15 +24073,15 @@ var require_err = __commonJS({
       if (Array.isArray(err.errors)) {
         _err.aggregateErrors = err.errors.map((err2) => errSerializer(err2));
       }
-      for (const key in err) {
-        if (_err[key] === void 0) {
-          const val = err[key];
+      for (const key2 in err) {
+        if (_err[key2] === void 0) {
+          const val = err[key2];
           if (isErrorLike(val)) {
-            if (key !== "cause" && !Object.prototype.hasOwnProperty.call(val, seen)) {
-              _err[key] = errSerializer(val);
+            if (key2 !== "cause" && !Object.prototype.hasOwnProperty.call(val, seen)) {
+              _err[key2] = errSerializer(val);
             }
           } else {
-            _err[key] = val;
+            _err[key2] = val;
           }
         }
       }
@@ -24116,15 +24116,15 @@ var require_err_with_cause = __commonJS({
       if (isErrorLike(err.cause) && !Object.prototype.hasOwnProperty.call(err.cause, seen)) {
         _err.cause = errWithCauseSerializer(err.cause);
       }
-      for (const key in err) {
-        if (_err[key] === void 0) {
-          const val = err[key];
+      for (const key2 in err) {
+        if (_err[key2] === void 0) {
+          const val = err[key2];
           if (isErrorLike(val)) {
             if (!Object.prototype.hasOwnProperty.call(val, seen)) {
-              _err[key] = errWithCauseSerializer(val);
+              _err[key2] = errWithCauseSerializer(val);
             }
           } else {
-            _err[key] = val;
+            _err[key2] = val;
           }
         }
       }
@@ -24364,9 +24364,9 @@ var require_redact = __commonJS({
       }
       if (typeof obj === "object") {
         const cloned = Object.create(Object.getPrototypeOf(obj));
-        for (const key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            cloned[key] = deepClone(obj[key]);
+        for (const key2 in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key2)) {
+            cloned[key2] = deepClone(obj[key2]);
           }
         }
         return cloned;
@@ -24419,14 +24419,14 @@ var require_redact = __commonJS({
     function setValue(obj, parts, value) {
       let current = obj;
       for (let i = 0; i < parts.length - 1; i++) {
-        const key = parts[i];
-        if (typeof current !== "object" || current === null || !(key in current)) {
+        const key2 = parts[i];
+        if (typeof current !== "object" || current === null || !(key2 in current)) {
           return false;
         }
-        if (typeof current[key] !== "object" || current[key] === null) {
+        if (typeof current[key2] !== "object" || current[key2] === null) {
           return false;
         }
-        current = current[key];
+        current = current[key2];
       }
       const lastKey = parts[parts.length - 1];
       if (lastKey === "*") {
@@ -24435,9 +24435,9 @@ var require_redact = __commonJS({
             current[i] = value;
           }
         } else if (typeof current === "object" && current !== null) {
-          for (const key in current) {
-            if (Object.prototype.hasOwnProperty.call(current, key)) {
-              current[key] = value;
+          for (const key2 in current) {
+            if (Object.prototype.hasOwnProperty.call(current, key2)) {
+              current[key2] = value;
             }
           }
         }
@@ -24451,14 +24451,14 @@ var require_redact = __commonJS({
     function removeKey(obj, parts) {
       let current = obj;
       for (let i = 0; i < parts.length - 1; i++) {
-        const key = parts[i];
-        if (typeof current !== "object" || current === null || !(key in current)) {
+        const key2 = parts[i];
+        if (typeof current !== "object" || current === null || !(key2 in current)) {
           return false;
         }
-        if (typeof current[key] !== "object" || current[key] === null) {
+        if (typeof current[key2] !== "object" || current[key2] === null) {
           return false;
         }
-        current = current[key];
+        current = current[key2];
       }
       const lastKey = parts[parts.length - 1];
       if (lastKey === "*") {
@@ -24467,9 +24467,9 @@ var require_redact = __commonJS({
             current[i] = void 0;
           }
         } else if (typeof current === "object" && current !== null) {
-          for (const key in current) {
-            if (Object.prototype.hasOwnProperty.call(current, key)) {
-              delete current[key];
+          for (const key2 in current) {
+            if (Object.prototype.hasOwnProperty.call(current, key2)) {
+              delete current[key2];
             }
           }
         }
@@ -24554,19 +24554,19 @@ var require_redact = __commonJS({
         } else if (typeof current === "object" && current !== null) {
           if (remove) {
             const keysToDelete = [];
-            for (const key in current) {
-              if (Object.prototype.hasOwnProperty.call(current, key)) {
-                keysToDelete.push(key);
+            for (const key2 in current) {
+              if (Object.prototype.hasOwnProperty.call(current, key2)) {
+                keysToDelete.push(key2);
               }
             }
-            for (const key of keysToDelete) {
-              delete current[key];
+            for (const key2 of keysToDelete) {
+              delete current[key2];
             }
           } else {
-            for (const key in current) {
-              const keyPath = [...parentParts, key];
-              const actualCensor = typeof censor === "function" ? censor(current[key], keyPath) : censor;
-              current[key] = actualCensor;
+            for (const key2 in current) {
+              const keyPath = [...parentParts, key2];
+              const actualCensor = typeof censor === "function" ? censor(current[key2], keyPath) : censor;
+              current[key2] = actualCensor;
             }
           }
         }
@@ -24586,9 +24586,9 @@ var require_redact = __commonJS({
               traverse(current[i], pathLength + 1);
             }
           } else if (typeof current === "object" && current !== null) {
-            for (const key in current) {
-              pathArray[pathLength] = key;
-              traverse(current[key], pathLength + 1);
+            for (const key2 in current) {
+              pathArray[pathLength] = key2;
+              traverse(current[key2], pathLength + 1);
             }
           }
         } else if (pathLength < beforeWildcard.length) {
@@ -24675,12 +24675,12 @@ var require_redact = __commonJS({
           return cloned2;
         }
         const cloned = Object.create(Object.getPrototypeOf(source));
-        for (const key in source) {
-          if (Object.prototype.hasOwnProperty.call(source, key)) {
-            if (pathMap.has(key) || pathMap.has("*")) {
-              cloned[key] = cloneSelectively(source[key], pathMap.get(key) || pathMap.get("*"));
+        for (const key2 in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key2)) {
+            if (pathMap.has(key2) || pathMap.has("*")) {
+              cloned[key2] = cloneSelectively(source[key2], pathMap.get(key2) || pathMap.get("*"));
             } else {
-              cloned[key] = source[key];
+              cloned[key2] = source[key2];
             }
           }
         }
@@ -26610,15 +26610,15 @@ var require_tools = __commonJS({
       }
       const wildcardStringifier = stringifiers[wildcardFirstSym];
       let propStr = "";
-      for (const key in obj) {
-        value = obj[key];
-        if (Object.prototype.hasOwnProperty.call(obj, key) && value !== void 0) {
-          if (serializers[key]) {
-            value = serializers[key](value);
-          } else if (key === errorKey && serializers.err) {
+      for (const key2 in obj) {
+        value = obj[key2];
+        if (Object.prototype.hasOwnProperty.call(obj, key2) && value !== void 0) {
+          if (serializers[key2]) {
+            value = serializers[key2](value);
+          } else if (key2 === errorKey && serializers.err) {
             value = serializers.err(value);
           }
-          const stringifier = stringifiers[key] || wildcardStringifier;
+          const stringifier = stringifiers[key2] || wildcardStringifier;
           switch (typeof value) {
             case "undefined":
             case "function":
@@ -26638,7 +26638,7 @@ var require_tools = __commonJS({
               value = (stringifier || stringify2)(value, stringifySafe);
           }
           if (value === void 0) continue;
-          const strKey = asString(key);
+          const strKey = asString(key2);
           propStr += "," + strKey + ":" + value;
         }
       }
@@ -26683,14 +26683,14 @@ var require_tools = __commonJS({
       const serializers = instance[serializersSym];
       const formatter = instance[formattersSym].bindings;
       bindings = formatter(bindings);
-      for (const key in bindings) {
-        value = bindings[key];
-        const valid = (key.length < 5 || key !== "level" && key !== "serializers" && key !== "formatters" && key !== "customLevels") && bindings.hasOwnProperty(key) && value !== void 0;
+      for (const key2 in bindings) {
+        value = bindings[key2];
+        const valid = (key2.length < 5 || key2 !== "level" && key2 !== "serializers" && key2 !== "formatters" && key2 !== "customLevels") && bindings.hasOwnProperty(key2) && value !== void 0;
         if (valid === true) {
-          value = serializers[key] ? serializers[key](value) : value;
-          value = (stringifiers[key] || wildcardStringifier || stringify2)(value, stringifySafe);
+          value = serializers[key2] ? serializers[key2](value) : value;
+          value = (stringifiers[key2] || wildcardStringifier || stringify2)(value, stringifySafe);
           if (value === void 0) continue;
-          data += ',"' + key + '":' + value;
+          data += ',"' + key2 + '":' + value;
         }
       }
       return data;
@@ -26925,12 +26925,12 @@ var require_levels = __commonJS({
       const useOnlyCustomLevelsVal = this[useOnlyCustomLevelsSym];
       const levelComparison = this[levelCompSym];
       const hook = this[hooksSym].logMethod;
-      for (const key in values) {
-        if (levelComparison(values[key], levelVal) === false) {
-          this[key] = noop;
+      for (const key2 in values) {
+        if (levelComparison(values[key2], levelVal) === false) {
+          this[key2] = noop;
           continue;
         }
-        this[key] = isStandardLevel(key, useOnlyCustomLevelsVal) ? levelMethods[key](hook) : genLog(values[key], hook);
+        this[key2] = isStandardLevel(key2, useOnlyCustomLevelsVal) ? levelMethods[key2](hook) : genLog(values[key2], hook);
       }
       this.emit(
         "level-change",
@@ -26982,7 +26982,7 @@ var require_levels = __commonJS({
     function assertDefaultLevelFound(defaultLevel, customLevels, useOnlyCustomLevels) {
       if (typeof defaultLevel === "number") {
         const values = [].concat(
-          Object.keys(customLevels || {}).map((key) => customLevels[key]),
+          Object.keys(customLevels || {}).map((key2) => customLevels[key2]),
           useOnlyCustomLevels ? [] : Object.keys(nums).map((level) => +level),
           Infinity
         );
@@ -27361,28 +27361,28 @@ var require_safe_stable_stringify = __commonJS({
       }
       return value === void 0 ? true : value;
     }
-    function getBooleanOption(options, key) {
+    function getBooleanOption(options, key2) {
       let value;
-      if (hasOwnProperty.call(options, key)) {
-        value = options[key];
+      if (hasOwnProperty.call(options, key2)) {
+        value = options[key2];
         if (typeof value !== "boolean") {
-          throw new TypeError(`The "${key}" argument must be of type boolean`);
+          throw new TypeError(`The "${key2}" argument must be of type boolean`);
         }
       }
       return value === void 0 ? true : value;
     }
-    function getPositiveIntegerOption(options, key) {
+    function getPositiveIntegerOption(options, key2) {
       let value;
-      if (hasOwnProperty.call(options, key)) {
-        value = options[key];
+      if (hasOwnProperty.call(options, key2)) {
+        value = options[key2];
         if (typeof value !== "number") {
-          throw new TypeError(`The "${key}" argument must be of type number`);
+          throw new TypeError(`The "${key2}" argument must be of type number`);
         }
         if (!Number.isInteger(value)) {
-          throw new TypeError(`The "${key}" argument must be an integer`);
+          throw new TypeError(`The "${key2}" argument must be an integer`);
         }
         if (value < 1) {
-          throw new RangeError(`The "${key}" argument must be >= 1`);
+          throw new RangeError(`The "${key2}" argument must be >= 1`);
         }
       }
       return value === void 0 ? Infinity : value;
@@ -27434,12 +27434,12 @@ var require_safe_stable_stringify = __commonJS({
       const comparator = typeof deterministic === "function" ? deterministic : void 0;
       const maximumDepth = getPositiveIntegerOption(options, "maximumDepth");
       const maximumBreadth = getPositiveIntegerOption(options, "maximumBreadth");
-      function stringifyFnReplacer(key, parent, stack, replacer, spacer, indentation) {
-        let value = parent[key];
+      function stringifyFnReplacer(key2, parent, stack, replacer, spacer, indentation) {
+        let value = parent[key2];
         if (typeof value === "object" && value !== null && typeof value.toJSON === "function") {
-          value = value.toJSON(key);
+          value = value.toJSON(key2);
         }
-        value = replacer.call(parent, key, value);
+        value = replacer.call(parent, key2, value);
         switch (typeof value) {
           case "string":
             return strEscape(value);
@@ -27510,10 +27510,10 @@ ${indentation}`;
             }
             stack.push(value);
             for (let i = 0; i < maximumPropertiesToStringify; i++) {
-              const key2 = keys[i];
-              const tmp = stringifyFnReplacer(key2, value, stack, replacer, spacer, indentation);
+              const key3 = keys[i];
+              const tmp = stringifyFnReplacer(key3, value, stack, replacer, spacer, indentation);
               if (tmp !== void 0) {
-                res += `${separator}${strEscape(key2)}:${whitespace}${tmp}`;
+                res += `${separator}${strEscape(key3)}:${whitespace}${tmp}`;
                 separator = join;
               }
             }
@@ -27545,9 +27545,9 @@ ${originalIndentation}`;
             return fail ? fail(value) : void 0;
         }
       }
-      function stringifyArrayReplacer(key, value, stack, replacer, spacer, indentation) {
+      function stringifyArrayReplacer(key2, value, stack, replacer, spacer, indentation) {
         if (typeof value === "object" && value !== null && typeof value.toJSON === "function") {
-          value = value.toJSON(key);
+          value = value.toJSON(key2);
         }
         switch (typeof value) {
           case "string":
@@ -27606,10 +27606,10 @@ ${indentation}`;
               whitespace = " ";
             }
             let separator = "";
-            for (const key2 of replacer) {
-              const tmp = stringifyArrayReplacer(key2, value[key2], stack, replacer, spacer, indentation);
+            for (const key3 of replacer) {
+              const tmp = stringifyArrayReplacer(key3, value[key3], stack, replacer, spacer, indentation);
               if (tmp !== void 0) {
-                res += `${separator}${strEscape(key2)}:${whitespace}${tmp}`;
+                res += `${separator}${strEscape(key3)}:${whitespace}${tmp}`;
                 separator = join;
               }
             }
@@ -27636,7 +27636,7 @@ ${originalIndentation}`;
             return fail ? fail(value) : void 0;
         }
       }
-      function stringifyIndent(key, value, stack, spacer, indentation) {
+      function stringifyIndent(key2, value, stack, spacer, indentation) {
         switch (typeof value) {
           case "string":
             return strEscape(value);
@@ -27645,9 +27645,9 @@ ${originalIndentation}`;
               return "null";
             }
             if (typeof value.toJSON === "function") {
-              value = value.toJSON(key);
+              value = value.toJSON(key2);
               if (typeof value !== "object") {
-                return stringifyIndent(key, value, stack, spacer, indentation);
+                return stringifyIndent(key2, value, stack, spacer, indentation);
               }
               if (value === null) {
                 return "null";
@@ -27713,10 +27713,10 @@ ${indentation}`;
             }
             stack.push(value);
             for (let i = 0; i < maximumPropertiesToStringify; i++) {
-              const key2 = keys[i];
-              const tmp = stringifyIndent(key2, value[key2], stack, spacer, indentation);
+              const key3 = keys[i];
+              const tmp = stringifyIndent(key3, value[key3], stack, spacer, indentation);
               if (tmp !== void 0) {
-                res += `${separator}${strEscape(key2)}: ${tmp}`;
+                res += `${separator}${strEscape(key3)}: ${tmp}`;
                 separator = join;
               }
             }
@@ -27748,7 +27748,7 @@ ${originalIndentation}`;
             return fail ? fail(value) : void 0;
         }
       }
-      function stringifySimple(key, value, stack) {
+      function stringifySimple(key2, value, stack) {
         switch (typeof value) {
           case "string":
             return strEscape(value);
@@ -27757,9 +27757,9 @@ ${originalIndentation}`;
               return "null";
             }
             if (typeof value.toJSON === "function") {
-              value = value.toJSON(key);
+              value = value.toJSON(key2);
               if (typeof value !== "object") {
-                return stringifySimple(key, value, stack);
+                return stringifySimple(key2, value, stack);
               }
               if (value === null) {
                 return "null";
@@ -27815,10 +27815,10 @@ ${originalIndentation}`;
             }
             stack.push(value);
             for (let i = 0; i < maximumPropertiesToStringify; i++) {
-              const key2 = keys[i];
-              const tmp = stringifySimple(key2, value[key2], stack);
+              const key3 = keys[i];
+              const tmp = stringifySimple(key3, value[key3], stack);
               if (tmp !== void 0) {
-                res += `${separator}${strEscape(key2)}:${tmp}`;
+                res += `${separator}${strEscape(key3)}:${tmp}`;
                 separator = ",";
               }
             }
@@ -29863,9 +29863,9 @@ var init_alias = __esm({
             return columns;
           }
           const proxiedColumns = {};
-          Object.keys(columns).map((key) => {
-            proxiedColumns[key] = new Proxy(
-              columns[key],
+          Object.keys(columns).map((key2) => {
+            proxiedColumns[key2] = new Proxy(
+              columns[key2],
               new ColumnAliasProxyHandler(new Proxy(target, this))
             );
           });
@@ -30069,19 +30069,19 @@ function haveSameKeys(left, right) {
   if (leftKeys.length !== rightKeys.length) {
     return false;
   }
-  for (const [index, key] of leftKeys.entries()) {
-    if (key !== rightKeys[index]) {
+  for (const [index, key2] of leftKeys.entries()) {
+    if (key2 !== rightKeys[index]) {
       return false;
     }
   }
   return true;
 }
 function mapUpdateSet(table, values) {
-  const entries = Object.entries(values).filter(([, value]) => value !== void 0).map(([key, value]) => {
+  const entries = Object.entries(values).filter(([, value]) => value !== void 0).map(([key2, value]) => {
     if (is(value, SQL) || is(value, Column)) {
-      return [key, value];
+      return [key2, value];
     } else {
-      return [key, new Param(value, table[Table.Symbol.Columns][key])];
+      return [key2, new Param(value, table[Table.Symbol.Columns][key2])];
     }
   });
   if (entries.length === 0) {
@@ -32142,13 +32142,13 @@ function extractTablesRelationalConfig(schema, configHelpers) {
   const tableNamesMap = {};
   const relationsBuffer = {};
   const tablesConfig = {};
-  for (const [key, value] of Object.entries(schema)) {
+  for (const [key2, value] of Object.entries(schema)) {
     if (is(value, Table)) {
       const dbName = getTableUniqueName(value);
       const bufferedRelations = relationsBuffer[dbName];
-      tableNamesMap[dbName] = key;
-      tablesConfig[key] = {
-        tsName: key,
+      tableNamesMap[dbName] = key2;
+      tablesConfig[key2] = {
+        tsName: key2,
         dbName: value[Table.Symbol.Name],
         schema: value[Table.Symbol.Schema],
         columns: value[Table.Symbol.Columns],
@@ -32159,14 +32159,14 @@ function extractTablesRelationalConfig(schema, configHelpers) {
         value[Table.Symbol.Columns]
       )) {
         if (column.primary) {
-          tablesConfig[key].primaryKey.push(column);
+          tablesConfig[key2].primaryKey.push(column);
         }
       }
       const extraConfig = value[Table.Symbol.ExtraConfigBuilder]?.(value[Table.Symbol.ExtraConfigColumns]);
       if (extraConfig) {
         for (const configEntry of Object.values(extraConfig)) {
           if (is(configEntry, PrimaryKeyBuilder)) {
-            tablesConfig[key].primaryKey.push(...configEntry.columns);
+            tablesConfig[key2].primaryKey.push(...configEntry.columns);
           }
         }
       }
@@ -32202,9 +32202,9 @@ function relations(table, relations2) {
   return new Relations(
     table,
     (helpers) => Object.fromEntries(
-      Object.entries(relations2(helpers)).map(([key, value]) => [
-        key,
-        value.withFieldName(key)
+      Object.entries(relations2(helpers)).map(([key2, value]) => [
+        key2,
+        value.withFieldName(key2)
       ])
     )
   );
@@ -32826,9 +32826,9 @@ var require_mutable = __commonJS({
     function extend(target) {
       for (var i = 1; i < arguments.length; i++) {
         var source = arguments[i];
-        for (var key in source) {
-          if (hasOwnProperty.call(source, key)) {
-            target[key] = source[key];
+        for (var key2 in source) {
+          if (hasOwnProperty.call(source, key2)) {
+            target[key2] = source[key2];
           }
         }
       }
@@ -33798,8 +33798,8 @@ var require_utils_legacy = __commonJS({
       hashName = hashName.replace(/(\D)-/, "$1");
       return nodeCrypto.createHash(hashName).update(text2).digest();
     }
-    function hmacSha256(key, msg) {
-      return nodeCrypto.createHmac("sha256", key).update(msg).digest();
+    function hmacSha256(key2, msg) {
+      return nodeCrypto.createHmac("sha256", key2).update(msg).digest();
     }
     async function deriveKey(password, salt, iterations) {
       return nodeCrypto.pbkdf2Sync(password, salt, iterations, 32, "sha256");
@@ -33856,13 +33856,13 @@ var require_utils_webcrypto = __commonJS({
       return await subtleCrypto.digest(hashName, text2);
     }
     async function hmacSha256(keyBuffer, msg) {
-      const key = await subtleCrypto.importKey("raw", keyBuffer, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-      return await subtleCrypto.sign("HMAC", key, textEncoder.encode(msg));
+      const key2 = await subtleCrypto.importKey("raw", keyBuffer, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+      return await subtleCrypto.sign("HMAC", key2, textEncoder.encode(msg));
     }
     async function deriveKey(password, salt, iterations) {
-      const key = await subtleCrypto.importKey("raw", textEncoder.encode(password), "PBKDF2", false, ["deriveBits"]);
+      const key2 = await subtleCrypto.importKey("raw", textEncoder.encode(password), "PBKDF2", false, ["deriveBits"]);
       const params = { name: "PBKDF2", hash: "SHA-256", salt, iterations };
-      return await subtleCrypto.deriveBits(params, key, 32 * 8, ["deriveBits"]);
+      return await subtleCrypto.deriveBits(params, key2, 32 * 8, ["deriveBits"]);
     }
   }
 });
@@ -34322,35 +34322,35 @@ var require_pg_connection_string = __commonJS({
       return config;
     }
     function toConnectionOptions(sslConfig) {
-      const connectionOptions = Object.entries(sslConfig).reduce((c, [key, value]) => {
+      const connectionOptions = Object.entries(sslConfig).reduce((c, [key2, value]) => {
         if (value !== void 0 && value !== null) {
-          c[key] = value;
+          c[key2] = value;
         }
         return c;
       }, {});
       return connectionOptions;
     }
     function toClientConfig(config) {
-      const poolConfig = Object.entries(config).reduce((c, [key, value]) => {
-        if (key === "ssl") {
+      const poolConfig = Object.entries(config).reduce((c, [key2, value]) => {
+        if (key2 === "ssl") {
           const sslConfig = value;
           if (typeof sslConfig === "boolean") {
-            c[key] = sslConfig;
+            c[key2] = sslConfig;
           }
           if (typeof sslConfig === "object") {
-            c[key] = toConnectionOptions(sslConfig);
+            c[key2] = toConnectionOptions(sslConfig);
           }
         } else if (value !== void 0 && value !== null) {
-          if (key === "port") {
+          if (key2 === "port") {
             if (value !== "") {
               const v = parseInt(value, 10);
               if (isNaN(v)) {
-                throw new Error(`Invalid ${key}: ${value}`);
+                throw new Error(`Invalid ${key2}: ${value}`);
               }
-              c[key] = v;
+              c[key2] = v;
             }
           } else {
-            c[key] = value;
+            c[key2] = value;
           }
         }
         return c;
@@ -34387,17 +34387,17 @@ var require_connection_parameters = __commonJS({
     var dns = __require("dns");
     var defaults2 = require_defaults();
     var parse = require_pg_connection_string().parse;
-    var val = function(key, config, envVar) {
-      if (config[key]) {
-        return config[key];
+    var val = function(key2, config, envVar) {
+      if (config[key2]) {
+        return config[key2];
       }
       if (envVar === void 0) {
-        envVar = process.env["PG" + key.toUpperCase()];
+        envVar = process.env["PG" + key2.toUpperCase()];
       } else if (envVar === false) {
       } else {
         envVar = process.env[envVar];
       }
-      return envVar || defaults2[key];
+      return envVar || defaults2[key2];
     };
     var readSSLConfigFromEnvironment = function() {
       switch (process.env.PGSSLMODE) {
@@ -35065,8 +35065,8 @@ var require_serializer = __commonJS({
     var writer = new buffer_writer_1.Writer();
     var startup = (opts) => {
       writer.addInt16(3).addInt16(0);
-      for (const key of Object.keys(opts)) {
-        writer.addCString(key).addCString(opts[key]);
+      for (const key2 of Object.keys(opts)) {
+        writer.addCString(key2).addCString(opts[key2]);
       }
       writer.addCString("client_encoding").addCString("UTF8");
       const bodyBuffer = writer.addCString("").flush();
@@ -37300,9 +37300,9 @@ var require_query2 = __commonJS({
     NativeQuery.prototype.handleError = function(err) {
       const fields = this.native.pq.resultErrorFields();
       if (fields) {
-        for (const key in fields) {
-          const normalizedFieldName = errorFieldMap[key] || key;
-          err[normalizedFieldName] = fields[key];
+        for (const key2 in fields) {
+          const normalizedFieldName = errorFieldMap[key2] || key2;
+          err[normalizedFieldName] = fields[key2];
         }
       }
       if (this.callback) {
@@ -38082,11 +38082,11 @@ var init_casing = __esm({
         if (!column.keyAsName) return column.name;
         const schema = column.table[Table.Symbol.Schema] ?? "public";
         const tableName = column.table[Table.Symbol.OriginalName];
-        const key = `${schema}.${tableName}.${column.name}`;
-        if (!this.cache[key]) {
+        const key2 = `${schema}.${tableName}.${column.name}`;
+        if (!this.cache[key2]) {
           this.cacheTable(column.table);
         }
-        return this.cache[key];
+        return this.cache[key2];
       }
       cacheTable(table) {
         const schema = table[Table.Symbol.Schema] ?? "public";
@@ -39037,9 +39037,9 @@ var init_dialect = __esm({
         const joins = [];
         if (config === true) {
           const selectionEntries = Object.entries(tableConfig.columns);
-          selection = selectionEntries.map(([key, value]) => ({
+          selection = selectionEntries.map(([key2, value]) => ({
             dbKey: value.name,
-            tsKey: key,
+            tsKey: key2,
             field: aliasedTableColumn(value, tableAlias),
             relationTableTsKey: void 0,
             isJson: false,
@@ -39047,7 +39047,7 @@ var init_dialect = __esm({
           }));
         } else {
           const aliasedColumns = Object.fromEntries(
-            Object.entries(tableConfig.columns).map(([key, value]) => [key, aliasedTableColumn(value, tableAlias)])
+            Object.entries(tableConfig.columns).map(([key2, value]) => [key2, aliasedTableColumn(value, tableAlias)])
           );
           if (config.where) {
             const whereSql = typeof config.where === "function" ? config.where(aliasedColumns, getOperators()) : config.where;
@@ -39069,7 +39069,7 @@ var init_dialect = __esm({
               }
             }
             if (selectedColumns.length > 0) {
-              selectedColumns = isIncludeMode ? selectedColumns.filter((c) => config.columns?.[c] === true) : Object.keys(tableConfig.columns).filter((key) => !selectedColumns.includes(key));
+              selectedColumns = isIncludeMode ? selectedColumns.filter((c) => config.columns?.[c] === true) : Object.keys(tableConfig.columns).filter((key2) => !selectedColumns.includes(key2));
             }
           } else {
             selectedColumns = Object.keys(tableConfig.columns);
@@ -39330,7 +39330,7 @@ var init_select2 = __esm({
           fields = this.fields;
         } else if (is(src, Subquery)) {
           fields = Object.fromEntries(
-            Object.keys(src._.selectedFields).map((key) => [key, src[key]])
+            Object.keys(src._.selectedFields).map((key2) => [key2, src[key2]])
           );
         } else if (is(src, PgViewBase)) {
           fields = src[ViewBaseConfig].selectedFields;
@@ -39424,7 +39424,7 @@ var init_select2 = __esm({
               }
               case "right": {
                 this.joinsNotNullableMap = Object.fromEntries(
-                  Object.entries(this.joinsNotNullableMap).map(([key]) => [key, false])
+                  Object.entries(this.joinsNotNullableMap).map(([key2]) => [key2, false])
                 );
                 this.joinsNotNullableMap[tableName] = true;
                 break;
@@ -39436,7 +39436,7 @@ var init_select2 = __esm({
               }
               case "full": {
                 this.joinsNotNullableMap = Object.fromEntries(
-                  Object.entries(this.joinsNotNullableMap).map(([key]) => [key, false])
+                  Object.entries(this.joinsNotNullableMap).map(([key2]) => [key2, false])
                 );
                 this.joinsNotNullableMap[tableName] = false;
                 break;
@@ -40942,7 +40942,7 @@ var init_update = __esm({
               }
               case "right": {
                 this.joinsNotNullableMap = Object.fromEntries(
-                  Object.entries(this.joinsNotNullableMap).map(([key]) => [key, false])
+                  Object.entries(this.joinsNotNullableMap).map(([key2]) => [key2, false])
                 );
                 this.joinsNotNullableMap[tableName] = true;
                 break;
@@ -40953,7 +40953,7 @@ var init_update = __esm({
               }
               case "full": {
                 this.joinsNotNullableMap = Object.fromEntries(
-                  Object.entries(this.joinsNotNullableMap).map(([key]) => [key, false])
+                  Object.entries(this.joinsNotNullableMap).map(([key2]) => [key2, false])
                 );
                 this.joinsNotNullableMap[tableName] = false;
                 break;
@@ -52522,7 +52522,7 @@ var require_lucide = __commonJS({
       ["path", { d: "M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" }],
       ["circle", { cx: "18", cy: "5", r: "3" }]
     ];
-    var Router22 = [
+    var Router23 = [
       ["rect", { width: "20", height: "8", x: "2", y: "14", rx: "2" }],
       ["path", { d: "M6.01 18H6" }],
       ["path", { d: "M10.01 18H10" }],
@@ -57592,7 +57592,7 @@ var require_lucide = __commonJS({
       RotateCwSquare,
       Route,
       RouteOff,
-      Router: Router22,
+      Router: Router23,
       Rows: Rows2,
       Rows2,
       Rows3,
@@ -59590,7 +59590,7 @@ var require_lucide = __commonJS({
     exports.RotateCwSquare = RotateCwSquare;
     exports.Route = Route;
     exports.RouteOff = RouteOff;
-    exports.Router = Router22;
+    exports.Router = Router23;
     exports.Rows = Rows2;
     exports.Rows2 = Rows2;
     exports.Rows3 = Rows3;
@@ -60112,7 +60112,7 @@ var require_lucide = __commonJS({
 });
 
 // src/app.ts
-var import_express22 = __toESM(require_express2(), 1);
+var import_express23 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_cookie_parser = __toESM(require_cookie_parser(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
@@ -60159,9 +60159,9 @@ var util;
   };
   util2.objectKeys = typeof Object.keys === "function" ? (obj) => Object.keys(obj) : (object) => {
     const keys = [];
-    for (const key in object) {
-      if (Object.prototype.hasOwnProperty.call(object, key)) {
-        keys.push(key);
+    for (const key2 in object) {
+      if (Object.prototype.hasOwnProperty.call(object, key2)) {
+        keys.push(key2);
       }
     }
     return keys;
@@ -60553,10 +60553,10 @@ var ParseStatus = class _ParseStatus {
   static async mergeObjectAsync(status, pairs) {
     const syncPairs = [];
     for (const pair of pairs) {
-      const key = await pair.key;
+      const key2 = await pair.key;
       const value = await pair.value;
       syncPairs.push({
-        key,
+        key: key2,
         value
       });
     }
@@ -60565,17 +60565,17 @@ var ParseStatus = class _ParseStatus {
   static mergeObjectSync(status, pairs) {
     const finalObject = {};
     for (const pair of pairs) {
-      const { key, value } = pair;
-      if (key.status === "aborted")
+      const { key: key2, value } = pair;
+      if (key2.status === "aborted")
         return INVALID;
       if (value.status === "aborted")
         return INVALID;
-      if (key.status === "dirty")
+      if (key2.status === "dirty")
         status.dirty();
       if (value.status === "dirty")
         status.dirty();
-      if (key.value !== "__proto__" && (typeof value.value !== "undefined" || pair.alwaysSet)) {
-        finalObject[key.value] = value.value;
+      if (key2.value !== "__proto__" && (typeof value.value !== "undefined" || pair.alwaysSet)) {
+        finalObject[key2.value] = value.value;
       }
     }
     return { status: status.value, value: finalObject };
@@ -60600,12 +60600,12 @@ var errorUtil;
 
 // ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/types.js
 var ParseInputLazyPath = class {
-  constructor(parent, value, path4, key) {
+  constructor(parent, value, path4, key2) {
     this._cachedPath = [];
     this.parent = parent;
     this.data = value;
     this._path = path4;
-    this._key = key;
+    this._key = key2;
   }
   get path() {
     if (!this._cachedPath.length) {
@@ -62350,9 +62350,9 @@ ZodArray.create = (schema, params) => {
 function deepPartialify(schema) {
   if (schema instanceof ZodObject) {
     const newShape = {};
-    for (const key in schema.shape) {
-      const fieldSchema = schema.shape[key];
-      newShape[key] = ZodOptional.create(deepPartialify(fieldSchema));
+    for (const key2 in schema.shape) {
+      const fieldSchema = schema.shape[key2];
+      newShape[key2] = ZodOptional.create(deepPartialify(fieldSchema));
     }
     return new ZodObject({
       ...schema._def,
@@ -62403,29 +62403,29 @@ var ZodObject = class _ZodObject extends ZodType {
     const { shape, keys: shapeKeys } = this._getCached();
     const extraKeys = [];
     if (!(this._def.catchall instanceof ZodNever && this._def.unknownKeys === "strip")) {
-      for (const key in ctx.data) {
-        if (!shapeKeys.includes(key)) {
-          extraKeys.push(key);
+      for (const key2 in ctx.data) {
+        if (!shapeKeys.includes(key2)) {
+          extraKeys.push(key2);
         }
       }
     }
     const pairs = [];
-    for (const key of shapeKeys) {
-      const keyValidator = shape[key];
-      const value = ctx.data[key];
+    for (const key2 of shapeKeys) {
+      const keyValidator = shape[key2];
+      const value = ctx.data[key2];
       pairs.push({
-        key: { status: "valid", value: key },
-        value: keyValidator._parse(new ParseInputLazyPath(ctx, value, ctx.path, key)),
-        alwaysSet: key in ctx.data
+        key: { status: "valid", value: key2 },
+        value: keyValidator._parse(new ParseInputLazyPath(ctx, value, ctx.path, key2)),
+        alwaysSet: key2 in ctx.data
       });
     }
     if (this._def.catchall instanceof ZodNever) {
       const unknownKeys = this._def.unknownKeys;
       if (unknownKeys === "passthrough") {
-        for (const key of extraKeys) {
+        for (const key2 of extraKeys) {
           pairs.push({
-            key: { status: "valid", value: key },
-            value: { status: "valid", value: ctx.data[key] }
+            key: { status: "valid", value: key2 },
+            value: { status: "valid", value: ctx.data[key2] }
           });
         }
       } else if (unknownKeys === "strict") {
@@ -62442,15 +62442,15 @@ var ZodObject = class _ZodObject extends ZodType {
       }
     } else {
       const catchall = this._def.catchall;
-      for (const key of extraKeys) {
-        const value = ctx.data[key];
+      for (const key2 of extraKeys) {
+        const value = ctx.data[key2];
         pairs.push({
-          key: { status: "valid", value: key },
+          key: { status: "valid", value: key2 },
           value: catchall._parse(
-            new ParseInputLazyPath(ctx, value, ctx.path, key)
+            new ParseInputLazyPath(ctx, value, ctx.path, key2)
             //, ctx.child(key), value, getParsedType(value)
           ),
-          alwaysSet: key in ctx.data
+          alwaysSet: key2 in ctx.data
         });
       }
     }
@@ -62458,10 +62458,10 @@ var ZodObject = class _ZodObject extends ZodType {
       return Promise.resolve().then(async () => {
         const syncPairs = [];
         for (const pair of pairs) {
-          const key = await pair.key;
+          const key2 = await pair.key;
           const value = await pair.value;
           syncPairs.push({
-            key,
+            key: key2,
             value,
             alwaysSet: pair.alwaysSet
           });
@@ -62586,8 +62586,8 @@ var ZodObject = class _ZodObject extends ZodType {
   //   }) as any;
   //   return merged;
   // }
-  setKey(key, schema) {
-    return this.augment({ [key]: schema });
+  setKey(key2, schema) {
+    return this.augment({ [key2]: schema });
   }
   // merge<Incoming extends AnyZodObject>(
   //   merging: Incoming
@@ -62618,9 +62618,9 @@ var ZodObject = class _ZodObject extends ZodType {
   }
   pick(mask) {
     const shape = {};
-    for (const key of util.objectKeys(mask)) {
-      if (mask[key] && this.shape[key]) {
-        shape[key] = this.shape[key];
+    for (const key2 of util.objectKeys(mask)) {
+      if (mask[key2] && this.shape[key2]) {
+        shape[key2] = this.shape[key2];
       }
     }
     return new _ZodObject({
@@ -62630,9 +62630,9 @@ var ZodObject = class _ZodObject extends ZodType {
   }
   omit(mask) {
     const shape = {};
-    for (const key of util.objectKeys(this.shape)) {
-      if (!mask[key]) {
-        shape[key] = this.shape[key];
+    for (const key2 of util.objectKeys(this.shape)) {
+      if (!mask[key2]) {
+        shape[key2] = this.shape[key2];
       }
     }
     return new _ZodObject({
@@ -62648,12 +62648,12 @@ var ZodObject = class _ZodObject extends ZodType {
   }
   partial(mask) {
     const newShape = {};
-    for (const key of util.objectKeys(this.shape)) {
-      const fieldSchema = this.shape[key];
-      if (mask && !mask[key]) {
-        newShape[key] = fieldSchema;
+    for (const key2 of util.objectKeys(this.shape)) {
+      const fieldSchema = this.shape[key2];
+      if (mask && !mask[key2]) {
+        newShape[key2] = fieldSchema;
       } else {
-        newShape[key] = fieldSchema.optional();
+        newShape[key2] = fieldSchema.optional();
       }
     }
     return new _ZodObject({
@@ -62663,16 +62663,16 @@ var ZodObject = class _ZodObject extends ZodType {
   }
   required(mask) {
     const newShape = {};
-    for (const key of util.objectKeys(this.shape)) {
-      if (mask && !mask[key]) {
-        newShape[key] = this.shape[key];
+    for (const key2 of util.objectKeys(this.shape)) {
+      if (mask && !mask[key2]) {
+        newShape[key2] = this.shape[key2];
       } else {
-        const fieldSchema = this.shape[key];
+        const fieldSchema = this.shape[key2];
         let newField = fieldSchema;
         while (newField instanceof ZodOptional) {
           newField = newField._def.innerType;
         }
-        newShape[key] = newField;
+        newShape[key2] = newField;
       }
     }
     return new _ZodObject({
@@ -62916,14 +62916,14 @@ function mergeValues(a, b) {
     return { valid: true, data: a };
   } else if (aType === ZodParsedType.object && bType === ZodParsedType.object) {
     const bKeys = util.objectKeys(b);
-    const sharedKeys = util.objectKeys(a).filter((key) => bKeys.indexOf(key) !== -1);
+    const sharedKeys = util.objectKeys(a).filter((key2) => bKeys.indexOf(key2) !== -1);
     const newObj = { ...a, ...b };
-    for (const key of sharedKeys) {
-      const sharedValue = mergeValues(a[key], b[key]);
+    for (const key2 of sharedKeys) {
+      const sharedValue = mergeValues(a[key2], b[key2]);
       if (!sharedValue.valid) {
         return { valid: false };
       }
-      newObj[key] = sharedValue.data;
+      newObj[key2] = sharedValue.data;
     }
     return { valid: true, data: newObj };
   } else if (aType === ZodParsedType.array && bType === ZodParsedType.array) {
@@ -63087,11 +63087,11 @@ var ZodRecord = class _ZodRecord extends ZodType {
     const pairs = [];
     const keyType = this._def.keyType;
     const valueType = this._def.valueType;
-    for (const key in ctx.data) {
+    for (const key2 in ctx.data) {
       pairs.push({
-        key: keyType._parse(new ParseInputLazyPath(ctx, key, ctx.path, key)),
-        value: valueType._parse(new ParseInputLazyPath(ctx, ctx.data[key], ctx.path, key)),
-        alwaysSet: key in ctx.data
+        key: keyType._parse(new ParseInputLazyPath(ctx, key2, ctx.path, key2)),
+        value: valueType._parse(new ParseInputLazyPath(ctx, ctx.data[key2], ctx.path, key2)),
+        alwaysSet: key2 in ctx.data
       });
     }
     if (ctx.common.async) {
@@ -63139,9 +63139,9 @@ var ZodMap = class extends ZodType {
     }
     const keyType = this._def.keyType;
     const valueType = this._def.valueType;
-    const pairs = [...ctx.data.entries()].map(([key, value], index) => {
+    const pairs = [...ctx.data.entries()].map(([key2, value], index) => {
       return {
-        key: keyType._parse(new ParseInputLazyPath(ctx, key, ctx.path, [index, "key"])),
+        key: keyType._parse(new ParseInputLazyPath(ctx, key2, ctx.path, [index, "key"])),
         value: valueType._parse(new ParseInputLazyPath(ctx, value, ctx.path, [index, "value"]))
       };
     });
@@ -63149,30 +63149,30 @@ var ZodMap = class extends ZodType {
       const finalMap = /* @__PURE__ */ new Map();
       return Promise.resolve().then(async () => {
         for (const pair of pairs) {
-          const key = await pair.key;
+          const key2 = await pair.key;
           const value = await pair.value;
-          if (key.status === "aborted" || value.status === "aborted") {
+          if (key2.status === "aborted" || value.status === "aborted") {
             return INVALID;
           }
-          if (key.status === "dirty" || value.status === "dirty") {
+          if (key2.status === "dirty" || value.status === "dirty") {
             status.dirty();
           }
-          finalMap.set(key.value, value.value);
+          finalMap.set(key2.value, value.value);
         }
         return { status: status.value, value: finalMap };
       });
     } else {
       const finalMap = /* @__PURE__ */ new Map();
       for (const pair of pairs) {
-        const key = pair.key;
+        const key2 = pair.key;
         const value = pair.value;
-        if (key.status === "aborted" || value.status === "aborted") {
+        if (key2.status === "aborted" || value.status === "aborted") {
           return INVALID;
         }
-        if (key.status === "dirty" || value.status === "dirty") {
+        if (key2.status === "dirty" || value.status === "dirty") {
           status.dirty();
         }
-        finalMap.set(key.value, value.value);
+        finalMap.set(key2.value, value.value);
       }
       return { status: status.value, value: finalMap };
     }
@@ -65862,19 +65862,19 @@ async function getDb2() {
     return null;
   }
 }
-function fileFor(key) {
-  return path.join(process.cwd(), "data", `${key}.json`);
+function fileFor(key2) {
+  return path.join(process.cwd(), "data", `${key2}.json`);
 }
-async function readConfig(key) {
+async function readConfig(key2) {
   const conn = await getDb2();
   if (conn) {
     try {
-      const rows = await conn.db.select().from(conn.configTable).where(eq(conn.configTable.key, key));
+      const rows = await conn.db.select().from(conn.configTable).where(eq(conn.configTable.key, key2));
       if (rows[0]) return rows[0].data;
     } catch {
     }
   }
-  const file = fileFor(key);
+  const file = fileFor(key2);
   try {
     if (fs.existsSync(file)) {
       return JSON.parse(fs.readFileSync(file, "utf-8"));
@@ -65883,18 +65883,18 @@ async function readConfig(key) {
   }
   return null;
 }
-async function writeConfig(key, value) {
+async function writeConfig(key2, value) {
   const conn = await getDb2();
   if (conn) {
     try {
-      await conn.db.insert(conn.configTable).values({ key, data: value }).onConflictDoUpdate({
+      await conn.db.insert(conn.configTable).values({ key: key2, data: value }).onConflictDoUpdate({
         target: conn.configTable.key,
         set: { data: value, updatedAt: /* @__PURE__ */ new Date() }
       });
     } catch {
     }
   }
-  const file = fileFor(key);
+  const file = fileFor(key2);
   try {
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, JSON.stringify(value, null, 2), "utf-8");
@@ -66009,17 +66009,17 @@ function botHeaders() {
   };
 }
 var _cache = /* @__PURE__ */ new Map();
-function cacheGet(key) {
-  const e = _cache.get(key);
+function cacheGet(key2) {
+  const e = _cache.get(key2);
   if (!e) return null;
   if (Date.now() > e.expiresAt) {
-    _cache.delete(key);
+    _cache.delete(key2);
     return null;
   }
   return e.data;
 }
-function cacheSet(key, data, ttlMs) {
-  _cache.set(key, { data, expiresAt: Date.now() + ttlMs });
+function cacheSet(key2, data, ttlMs) {
+  _cache.set(key2, { data, expiresAt: Date.now() + ttlMs });
 }
 var EMOJI_CACHE_TTL_MS = 60 * 60 * 1e3;
 function loadEmojiCache() {
@@ -67000,10 +67000,99 @@ router11.put("/profile/decoration", async (req, res) => {
 });
 var discord_auth_default = router11;
 
-// src/routes/icons.ts
+// src/routes/guild-features.ts
 var import_express12 = __toESM(require_express2(), 1);
-var import_lucide = __toESM(require_lucide(), 1);
 var router12 = (0, import_express12.Router)();
+var TOGGLEABLE = /* @__PURE__ */ new Set([
+  // Ekonomija
+  "baki",
+  "posao",
+  "daily",
+  "kradi",
+  "daj",
+  // Igre
+  "slots",
+  "blackjack",
+  "kviz",
+  "geografija",
+  "kaladont",
+  "wordle",
+  "vjasala",
+  "kpm",
+  "toplo-hladno",
+  "hunt",
+  "battle",
+  // Socijalne
+  "zagrljaj",
+  "poljubac",
+  "mazi",
+  "tapsi",
+  "high5",
+  "srce",
+  "brak",
+  "kompli",
+  "fora",
+  "crush",
+  "muv",
+  "cudan",
+  // Zabava
+  "meme",
+  "qr",
+  "poll",
+  "spotify",
+  "avatar",
+  "lottery",
+  "bingo"
+]);
+function key(guildId) {
+  return `guild:${guildId}:features`;
+}
+router12.use(["/guild"], (_req, res, next) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate");
+  next();
+});
+router12.get("/guild/:guildId/features", async (req, res) => {
+  const stored = await readConfig(key(req.params.guildId));
+  res.json({ ok: true, disabled: stored?.disabled ?? [] });
+});
+router12.put("/guild/:guildId/features", async (req, res) => {
+  const sess = verifySession(req.cookies?.[SESSION_COOKIE]);
+  if (!sess) {
+    res.status(401).json({ ok: false });
+    return;
+  }
+  const guildId = req.params.guildId;
+  const profile = await readConfig(`profile:${sess.uid}`);
+  const manages = (profile?.guilds ?? []).some((g) => g.id === guildId);
+  if (!manages) {
+    res.status(403).json({ ok: false, error: "Nema\u0161 pristup ovom serveru." });
+    return;
+  }
+  const body = req.body;
+  if (!Array.isArray(body.disabled)) {
+    res.status(400).json({ ok: false, error: "Neispravan format." });
+    return;
+  }
+  const disabled = Array.from(
+    new Set(
+      body.disabled.filter(
+        (x) => typeof x === "string" && TOGGLEABLE.has(x)
+      )
+    )
+  );
+  const value = {
+    disabled,
+    updatedAt: (/* @__PURE__ */ new Date()).toISOString()
+  };
+  await writeConfig(key(guildId), value);
+  res.json({ ok: true, disabled });
+});
+var guild_features_default = router12;
+
+// src/routes/icons.ts
+var import_express13 = __toESM(require_express2(), 1);
+var import_lucide = __toESM(require_lucide(), 1);
+var router13 = (0, import_express13.Router)();
 function buildSvg(iconName, bg, color) {
   const iconNodes = import_lucide.icons[iconName];
   if (!iconNodes) return null;
@@ -67021,7 +67110,7 @@ function buildSvg(iconName, bg, color) {
 </svg>`;
 }
 var cache = /* @__PURE__ */ new Map();
-router12.get("/api/icons/:name", async (req, res) => {
+router13.get("/api/icons/:name", async (req, res) => {
   const { name: name2 } = req.params;
   const bg = (req.query.bg ?? "18103a").replace(/^#/, "");
   const color = (req.query.color ?? "ffffff").replace(/^#/, "");
@@ -67052,12 +67141,12 @@ router12.get("/api/icons/:name", async (req, res) => {
     res.status(500).json({ error: "Render failed" });
   }
 });
-var icons_default = router12;
+var icons_default = router13;
 
 // src/routes/welcome-card.ts
-var import_express13 = __toESM(require_express2(), 1);
+var import_express14 = __toESM(require_express2(), 1);
 var import_lucide2 = __toESM(require_lucide(), 1);
-var router13 = (0, import_express13.Router)();
+var router14 = (0, import_express14.Router)();
 function esc(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
@@ -67125,7 +67214,7 @@ function btn(x, y, w, h, iconName, label, filled) {
   ${iconName ? licon(iconName, cx - 14, y + (h - 16) / 2, 16, "white") : ""}
   <text x="${tx}" y="${y + h / 2 + 5}" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="white">${esc(label)}</text>`;
 }
-router13.get("/api/welcome-card", async (req, res) => {
+router14.get("/api/welcome-card", async (req, res) => {
   const user = (req.query.user ?? "User").slice(0, 20);
   const avatarUrl = req.query.avatarUrl ?? "";
   const memberCount = req.query.memberCount ?? "?";
@@ -67317,12 +67406,12 @@ ${star4(584, 488, 4, "#8855a0", "0.85")}
     res.status(500).json({ error: "Render failed", detail: String(err) });
   }
 });
-var welcome_card_default = router13;
+var welcome_card_default = router14;
 
 // src/routes/games-play.ts
-var import_express14 = __toESM(require_express2(), 1);
+var import_express15 = __toESM(require_express2(), 1);
 import { randomBytes } from "crypto";
-var router14 = (0, import_express14.Router)();
+var router15 = (0, import_express15.Router)();
 var unoRooms = /* @__PURE__ */ new Map();
 function makeUnoDeck() {
   const colors = ["red", "green", "blue", "yellow"];
@@ -67368,7 +67457,7 @@ function nextIdx(room, skip = false) {
   if (skip) idx = (idx + room.direction + n) % n;
   return idx;
 }
-router14.post("/play/uno", (req, res) => {
+router15.post("/play/uno", (req, res) => {
   const code = randomBytes(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -67387,7 +67476,7 @@ router14.post("/play/uno", (req, res) => {
   unoRooms.set(code, room);
   res.json({ code });
 });
-router14.post("/play/uno/:code/join", (req, res) => {
+router15.post("/play/uno/:code/join", (req, res) => {
   const room = unoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -67399,7 +67488,7 @@ router14.post("/play/uno/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   res.json({ playerId: id, roomCode: room.code });
 });
-router14.post("/play/uno/:code/start", (req, res) => {
+router15.post("/play/uno/:code/start", (req, res) => {
   const room = unoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
@@ -67418,7 +67507,7 @@ router14.post("/play/uno/:code/start", (req, res) => {
   room.lastAction = "Igra je po\u010Dela!";
   res.json({ ok: true });
 });
-router14.get("/play/uno/:code", (req, res) => {
+router15.get("/play/uno/:code", (req, res) => {
   const room = unoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId } = req.query;
@@ -67442,7 +67531,7 @@ router14.get("/play/uno/:code", (req, res) => {
   };
   res.json(safeRoom);
 });
-router14.post("/play/uno/:code/action", (req, res) => {
+router15.post("/play/uno/:code/action", (req, res) => {
   const room = unoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
@@ -67522,7 +67611,7 @@ var SAFE_SQUARES = [0, 8, 13, 21, 26, 34, 39, 47];
 function ludoAbsPos(color, relPos) {
   return (LUDO_START[color] + relPos) % 52;
 }
-router14.post("/play/ludo", (req, res) => {
+router15.post("/play/ludo", (req, res) => {
   const code = randomBytes(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -67538,7 +67627,7 @@ router14.post("/play/ludo", (req, res) => {
   ludoRooms.set(code, room);
   res.json({ code });
 });
-router14.post("/play/ludo/:code/join", (req, res) => {
+router15.post("/play/ludo/:code/join", (req, res) => {
   const room = ludoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -67561,7 +67650,7 @@ router14.post("/play/ludo/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la kao ${color}`;
   res.json({ playerId: id, color, roomCode: room.code });
 });
-router14.post("/play/ludo/:code/start", (req, res) => {
+router15.post("/play/ludo/:code/start", (req, res) => {
   const room = ludoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
@@ -67569,12 +67658,12 @@ router14.post("/play/ludo/:code/start", (req, res) => {
   room.lastAction = "Igra je po\u010Dela!";
   res.json({ ok: true });
 });
-router14.get("/play/ludo/:code", (req, res) => {
+router15.get("/play/ludo/:code", (req, res) => {
   const room = ludoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   res.json(room);
 });
-router14.post("/play/ludo/:code/action", (req, res) => {
+router15.post("/play/ludo/:code/action", (req, res) => {
   const room = ludoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
@@ -67665,12 +67754,12 @@ setInterval(() => {
   for (const [k, v] of unoRooms) if (v.createdAt < cutoff) unoRooms.delete(k);
   for (const [k, v] of ludoRooms) if (v.createdAt < cutoff) ludoRooms.delete(k);
 }, 30 * 60 * 1e3);
-var games_play_default = router14;
+var games_play_default = router15;
 
 // src/routes/play-crtanje.ts
-var import_express15 = __toESM(require_express2(), 1);
+var import_express16 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes2 } from "crypto";
-var router15 = (0, import_express15.Router)();
+var router16 = (0, import_express16.Router)();
 var rooms = /* @__PURE__ */ new Map();
 var CHOOSE_TIME = 15e3;
 var DRAW_TIME = 7e4;
@@ -67894,7 +67983,7 @@ function advance(room) {
   }
 }
 var HOST = (room) => room.players[0]?.id;
-router15.post("/play/crtanje", (_req, res) => {
+router16.post("/play/crtanje", (_req, res) => {
   const code = randomBytes2(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -67918,7 +68007,7 @@ router15.post("/play/crtanje", (_req, res) => {
   rooms.set(code, room);
   res.json({ code });
 });
-router15.post("/play/crtanje/:code/join", (req, res) => {
+router16.post("/play/crtanje/:code/join", (req, res) => {
   const room = rooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -67930,7 +68019,7 @@ router15.post("/play/crtanje/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, roomCode: room.code });
 });
-router15.post("/play/crtanje/:code/start", (req, res) => {
+router16.post("/play/crtanje/:code/start", (req, res) => {
   const room = rooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
@@ -67942,7 +68031,7 @@ router15.post("/play/crtanje/:code/start", (req, res) => {
   room.lastAction = "Igra je po\u010Dela!";
   return res.json({ ok: true });
 });
-router15.get("/play/crtanje/:code", (req, res) => {
+router16.get("/play/crtanje/:code", (req, res) => {
   const room = rooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   advance(room);
@@ -67996,7 +68085,7 @@ router15.get("/play/crtanje/:code", (req, res) => {
   };
   return res.json(safe);
 });
-router15.post("/play/crtanje/:code/action", (req, res) => {
+router16.post("/play/crtanje/:code/action", (req, res) => {
   const room = rooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action } = req.body;
@@ -68094,12 +68183,12 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of rooms) if (v.createdAt < cutoff) rooms.delete(k);
 }, 30 * 60 * 1e3);
-var play_crtanje_default = router15;
+var play_crtanje_default = router16;
 
 // src/routes/play-spoji4.ts
-var import_express16 = __toESM(require_express2(), 1);
+var import_express17 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes3 } from "crypto";
-var router16 = (0, import_express16.Router)();
+var router17 = (0, import_express17.Router)();
 var COLS = 7;
 var ROWS = 6;
 var rooms2 = /* @__PURE__ */ new Map();
@@ -68144,7 +68233,7 @@ function resetRoom(room) {
   room.draw = false;
   room.lastAction = "Nova partija \u2014 crveni igra prvi";
 }
-router16.post("/play/spoji4", (_req, res) => {
+router17.post("/play/spoji4", (_req, res) => {
   const code = randomBytes3(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -68162,7 +68251,7 @@ router16.post("/play/spoji4", (_req, res) => {
   rooms2.set(code, room);
   return res.json({ code });
 });
-router16.post("/play/spoji4/:code/join", (req, res) => {
+router17.post("/play/spoji4/:code/join", (req, res) => {
   const room = rooms2.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -68175,14 +68264,14 @@ router16.post("/play/spoji4/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, roomCode: room.code, disc });
 });
-router16.post("/play/spoji4/:code/start", (req, res) => {
+router17.post("/play/spoji4/:code/start", (req, res) => {
   const room = rooms2.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebna su 2 igra\u010Da" });
   resetRoom(room);
   return res.json({ ok: true });
 });
-router16.get("/play/spoji4/:code", (req, res) => {
+router17.get("/play/spoji4/:code", (req, res) => {
   const room = rooms2.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId } = req.query;
@@ -68199,7 +68288,7 @@ router16.get("/play/spoji4/:code", (req, res) => {
     players: room.players.map((p) => ({ id: p.id === playerId ? p.id : "anon" + room.players.indexOf(p), name: p.name, disc: p.disc }))
   });
 });
-router16.post("/play/spoji4/:code/action", (req, res) => {
+router17.post("/play/spoji4/:code/action", (req, res) => {
   const room = rooms2.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action, col } = req.body;
@@ -68252,12 +68341,12 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of rooms2) if (v.createdAt < cutoff) rooms2.delete(k);
 }, 30 * 60 * 1e3);
-var play_spoji4_default = router16;
+var play_spoji4_default = router17;
 
 // src/routes/play-potapanje.ts
-var import_express17 = __toESM(require_express2(), 1);
+var import_express18 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes4 } from "crypto";
-var router17 = (0, import_express17.Router)();
+var router18 = (0, import_express18.Router)();
 var GRID = 10;
 var FLEET = [5, 4, 3, 3, 2];
 var rooms3 = /* @__PURE__ */ new Map();
@@ -68352,7 +68441,7 @@ function sunkCells(p) {
 function allSunk(p) {
   return p.ships.length > 0 && p.ships.every((s) => s.hits.length >= s.size);
 }
-router17.post("/play/potapanje", (_req, res) => {
+router18.post("/play/potapanje", (_req, res) => {
   const code = randomBytes4(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -68366,7 +68455,7 @@ router17.post("/play/potapanje", (_req, res) => {
   rooms3.set(code, room);
   res.json({ code });
 });
-router17.post("/play/potapanje/:code/join", (req, res) => {
+router18.post("/play/potapanje/:code/join", (req, res) => {
   const room = rooms3.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -68378,7 +68467,7 @@ router17.post("/play/potapanje/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, roomCode: room.code });
 });
-router17.post("/play/potapanje/:code/start", (req, res) => {
+router18.post("/play/potapanje/:code/start", (req, res) => {
   const room = rooms3.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno 2 igra\u010Da" });
@@ -68393,13 +68482,13 @@ router17.post("/play/potapanje/:code/start", (req, res) => {
   room.lastAction = "Postavite svoje brodove!";
   return res.json({ ok: true });
 });
-router17.get("/play/potapanje/:code", (req, res) => {
+router18.get("/play/potapanje/:code", (req, res) => {
   const room = rooms3.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId } = req.query;
   return res.json(sanitize(room, playerId));
 });
-router17.post("/play/potapanje/:code/action", (req, res) => {
+router18.post("/play/potapanje/:code/action", (req, res) => {
   const room = rooms3.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action } = req.body;
@@ -68494,12 +68583,12 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of rooms3) if (v.createdAt < cutoff) rooms3.delete(k);
 }, 30 * 60 * 1e3);
-var play_potapanje_default = router17;
+var play_potapanje_default = router18;
 
 // src/routes/play-kviz.ts
-var import_express18 = __toESM(require_express2(), 1);
+var import_express19 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes5 } from "crypto";
-var router18 = (0, import_express18.Router)();
+var router19 = (0, import_express19.Router)();
 var kvizRooms = /* @__PURE__ */ new Map();
 var QUESTION_MS = 15e3;
 var REVEAL_MS = 5500;
@@ -68644,7 +68733,7 @@ function tick(room) {
     }
   }
 }
-router18.post("/play/kviz", (_req, res) => {
+router19.post("/play/kviz", (_req, res) => {
   const code = randomBytes5(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -68662,7 +68751,7 @@ router18.post("/play/kviz", (_req, res) => {
   kvizRooms.set(code, room);
   res.json({ code });
 });
-router18.post("/play/kviz/:code/join", (req, res) => {
+router19.post("/play/kviz/:code/join", (req, res) => {
   const room = kvizRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -68683,7 +68772,7 @@ router18.post("/play/kviz/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, roomCode: room.code });
 });
-router18.post("/play/kviz/:code/start", (req, res) => {
+router19.post("/play/kviz/:code/start", (req, res) => {
   const room = kvizRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
@@ -68705,7 +68794,7 @@ router18.post("/play/kviz/:code/start", (req, res) => {
   room.lastAction = "Kviz je po\u010Deo!";
   return res.json({ ok: true });
 });
-router18.get("/play/kviz/:code", (req, res) => {
+router19.get("/play/kviz/:code", (req, res) => {
   const room = kvizRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   tick(room);
@@ -68746,7 +68835,7 @@ router18.get("/play/kviz/:code", (req, res) => {
     }))
   });
 });
-router18.post("/play/kviz/:code/action", (req, res) => {
+router19.post("/play/kviz/:code/action", (req, res) => {
   const room = kvizRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action, choice } = req.body;
@@ -68791,12 +68880,12 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of kvizRooms) if (v.createdAt < cutoff) kvizRooms.delete(k);
 }, 30 * 60 * 1e3);
-var play_kviz_default = router18;
+var play_kviz_default = router19;
 
 // src/routes/play-tacke.ts
-var import_express19 = __toESM(require_express2(), 1);
+var import_express20 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes6 } from "crypto";
-var router19 = (0, import_express19.Router)();
+var router20 = (0, import_express20.Router)();
 var PLAYER_COLORS = ["#ec4899", "#3b82f6", "#22c55e", "#f59e0b"];
 var tackeRooms = /* @__PURE__ */ new Map();
 function makeGrid(rows, cols) {
@@ -68811,7 +68900,7 @@ function makeGrid(rows, cols) {
 function boxComplete(room, br, bc) {
   return room.hLines[br][bc] && room.hLines[br + 1][bc] && room.vLines[br][bc] && room.vLines[br][bc + 1];
 }
-router19.post("/play/tacke", (req, res) => {
+router20.post("/play/tacke", (req, res) => {
   const { size } = req.body;
   let dots = 6;
   if (size === "small") dots = 5;
@@ -68835,7 +68924,7 @@ router19.post("/play/tacke", (req, res) => {
   tackeRooms.set(code, room);
   return res.json({ code });
 });
-router19.post("/play/tacke/:code/join", (req, res) => {
+router20.post("/play/tacke/:code/join", (req, res) => {
   const room = tackeRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -68848,7 +68937,7 @@ router19.post("/play/tacke/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, color, roomCode: room.code });
 });
-router19.post("/play/tacke/:code/start", (req, res) => {
+router20.post("/play/tacke/:code/start", (req, res) => {
   const room = tackeRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
@@ -68857,7 +68946,7 @@ router19.post("/play/tacke/:code/start", (req, res) => {
   room.lastAction = "Igra je po\u010Dela!";
   return res.json({ ok: true });
 });
-router19.get("/play/tacke/:code", (req, res) => {
+router20.get("/play/tacke/:code", (req, res) => {
   const room = tackeRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId } = req.query;
@@ -68868,7 +68957,7 @@ router19.get("/play/tacke/:code", (req, res) => {
     boxes: room.boxes.map((rowArr) => rowArr.map((o) => o == null ? null : pubMap.get(o) ?? o))
   });
 });
-router19.post("/play/tacke/:code/action", (req, res) => {
+router20.post("/play/tacke/:code/action", (req, res) => {
   const room = tackeRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action, type, row, col } = req.body;
@@ -68951,12 +69040,12 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of tackeRooms) if (v.createdAt < cutoff) tackeRooms.delete(k);
 }, 30 * 60 * 1e3);
-var play_tacke_default = router19;
+var play_tacke_default = router20;
 
 // src/routes/play-reversi.ts
-var import_express20 = __toESM(require_express2(), 1);
+var import_express21 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes7 } from "crypto";
-var router20 = (0, import_express20.Router)();
+var router21 = (0, import_express21.Router)();
 var reversiRooms = /* @__PURE__ */ new Map();
 var DIRS = [
   [-1, -1],
@@ -69022,7 +69111,7 @@ function resetRoom2(room) {
   room.passed = false;
   room.lastAction = "Igra je po\u010Dela! Crni je na potezu.";
 }
-router20.post("/play/reversi", (_req, res) => {
+router21.post("/play/reversi", (_req, res) => {
   const code = randomBytes7(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -69038,7 +69127,7 @@ router20.post("/play/reversi", (_req, res) => {
   reversiRooms.set(code, room);
   res.json({ code });
 });
-router20.post("/play/reversi/:code/join", (req, res) => {
+router21.post("/play/reversi/:code/join", (req, res) => {
   const room = reversiRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -69051,14 +69140,14 @@ router20.post("/play/reversi/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la (${disc === 1 ? "crni" : "bijeli"})`;
   return res.json({ playerId: id, roomCode: room.code, disc });
 });
-router20.post("/play/reversi/:code/start", (req, res) => {
+router21.post("/play/reversi/:code/start", (req, res) => {
   const room = reversiRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno je 2 igra\u010Da" });
   resetRoom2(room);
   return res.json({ ok: true });
 });
-router20.get("/play/reversi/:code", (req, res) => {
+router21.get("/play/reversi/:code", (req, res) => {
   const room = reversiRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId } = req.query;
@@ -69080,7 +69169,7 @@ router20.get("/play/reversi/:code", (req, res) => {
   });
   return;
 });
-router20.post("/play/reversi/:code/action", (req, res) => {
+router21.post("/play/reversi/:code/action", (req, res) => {
   const room = reversiRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action, row, col } = req.body;
@@ -69138,11 +69227,11 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of reversiRooms) if (v.createdAt < cutoff) reversiRooms.delete(k);
 }, 30 * 60 * 1e3);
-var play_reversi_default = router20;
+var play_reversi_default = router21;
 
 // src/routes/youtube.ts
-var import_express21 = __toESM(require_express2(), 1);
-var router21 = (0, import_express21.Router)();
+var import_express22 = __toESM(require_express2(), 1);
+var router22 = (0, import_express22.Router)();
 function extractJson(html, marker) {
   let i = html.indexOf(`${marker} =`);
   if (i === -1) i = html.indexOf(marker);
@@ -69193,7 +69282,7 @@ function txt(v) {
   if (Array.isArray(runs) && runs[0]?.text) return runs[0].text;
   return "";
 }
-router21.get("/youtube/search", async (req, res) => {
+router22.get("/youtube/search", async (req, res) => {
   const q = (req.query.q || "").trim();
   if (!q) {
     res.json({ results: [] });
@@ -69254,7 +69343,7 @@ router21.get("/youtube/search", async (req, res) => {
     res.status(500).json({ error: "search_failed", results: [] });
   }
 });
-var youtube_default = router21;
+var youtube_default = router22;
 
 // src/lib/logger.ts
 var import_pino = __toESM(require_pino(), 1);
@@ -69275,7 +69364,7 @@ var logger = (0, import_pino.default)({
 });
 
 // src/app.ts
-var app = (0, import_express22.default)();
+var app = (0, import_express23.default)();
 app.use(
   (0, import_pino_http.default)({
     logger,
@@ -69298,9 +69387,10 @@ app.use(
 app.set("trust proxy", true);
 app.use((0, import_cors.default)());
 app.use((0, import_cookie_parser.default)());
-app.use(import_express22.default.json());
-app.use(import_express22.default.urlencoded({ extended: true }));
+app.use(import_express23.default.json());
+app.use(import_express23.default.urlencoded({ extended: true }));
 app.use("/api", discord_auth_default);
+app.use("/api", guild_features_default);
 app.use(icons_default);
 app.use(welcome_card_default);
 app.use("/api", games_play_default);
@@ -69314,7 +69404,7 @@ app.use("/api", authMiddleware, youtube_default);
 app.use("/api", authMiddleware, routes_default);
 var staticDir = path3.join(process.cwd(), "public");
 if (fs3.existsSync(staticDir)) {
-  app.use(import_express22.default.static(staticDir));
+  app.use(import_express23.default.static(staticDir));
   app.use((_req, res) => {
     res.sendFile(path3.join(staticDir, "index.html"));
   });
