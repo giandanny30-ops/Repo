@@ -16504,7 +16504,7 @@ var require_sign = __commonJS({
   "../../node_modules/.pnpm/math-intrinsics@1.1.0/node_modules/math-intrinsics/sign.js"(exports, module) {
     "use strict";
     var $isNaN = require_isNaN();
-    module.exports = function sign(number) {
+    module.exports = function sign2(number) {
       if ($isNaN(number) || number === 0) {
         return number;
       }
@@ -16868,7 +16868,7 @@ var require_get_intrinsic = __commonJS({
     var min2 = require_min();
     var pow = require_pow();
     var round = require_round();
-    var sign = require_sign();
+    var sign2 = require_sign();
     var $Function = Function;
     var getEvalledConstructor = function(expressionSyntax) {
       try {
@@ -16982,7 +16982,7 @@ var require_get_intrinsic = __commonJS({
       "%Math.min%": min2,
       "%Math.pow%": pow,
       "%Math.round%": round,
-      "%Math.sign%": sign,
+      "%Math.sign%": sign2,
       "%Reflect.getPrototypeOf%": $ReflectGPO
     };
     if (getProto) {
@@ -18772,14 +18772,14 @@ var require_etag = __commonJS({
   "../../node_modules/.pnpm/etag@1.8.1/node_modules/etag/index.js"(exports, module) {
     "use strict";
     module.exports = etag;
-    var crypto2 = __require("crypto");
+    var crypto4 = __require("crypto");
     var Stats = __require("fs").Stats;
     var toString = Object.prototype.toString;
     function entitytag(entity) {
       if (entity.length === 0) {
         return '"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"';
       }
-      var hash = crypto2.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
+      var hash = crypto4.createHash("sha1").update(entity, "utf8").digest("base64").substring(0, 27);
       var len = typeof entity === "string" ? Buffer.byteLength(entity, "utf8") : entity.length;
       return '"' + len.toString(16) + "-" + hash + '"';
     }
@@ -20488,27 +20488,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router21;
+    module.exports = Router22;
     module.exports.Route = Route;
-    function Router21(options) {
-      if (!(this instanceof Router21)) {
-        return new Router21(options);
+    function Router22(options) {
+      if (!(this instanceof Router22)) {
+        return new Router22(options);
       }
       const opts = options || {};
-      function router21(req, res, next) {
-        router21.handle(req, res, next);
+      function router22(req, res, next) {
+        router22.handle(req, res, next);
       }
-      Object.setPrototypeOf(router21, this);
-      router21.caseSensitive = opts.caseSensitive;
-      router21.mergeParams = opts.mergeParams;
-      router21.params = {};
-      router21.strict = opts.strict;
-      router21.stack = [];
-      return router21;
+      Object.setPrototypeOf(router22, this);
+      router22.caseSensitive = opts.caseSensitive;
+      router22.mergeParams = opts.mergeParams;
+      router22.params = {};
+      router22.strict = opts.strict;
+      router22.stack = [];
+      return router22;
     }
-    Router21.prototype = function() {
+    Router22.prototype = function() {
     };
-    Router21.prototype.param = function param2(name2, fn) {
+    Router22.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20528,7 +20528,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router21.prototype.handle = function handle(req, res, callback) {
+    Router22.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20655,7 +20655,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router21.prototype.use = function use(handler) {
+    Router22.prototype.use = function use(handler) {
       let offset = 0;
       let path4 = "/";
       if (typeof handler !== "function") {
@@ -20688,7 +20688,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router21.prototype.route = function route(path4) {
+    Router22.prototype.route = function route(path4) {
       const route2 = new Route(path4);
       const layer = new Layer(path4, {
         sensitive: this.caseSensitive,
@@ -20703,7 +20703,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router21.prototype[method] = function(path4) {
+      Router22.prototype[method] = function(path4) {
         const route = this.route(path4);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -20886,13 +20886,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router21 = require_router();
+    var Router22 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router21 = null;
+      var router22 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -20901,13 +20901,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router21 === null) {
-            router21 = new Router21({
+          if (router22 === null) {
+            router22 = new Router22({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router21;
+          return router22;
         }
       });
     };
@@ -20978,15 +20978,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router21 = this.router;
+      var router22 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router21.use(path4, fn2);
+          return router22.use(path4, fn2);
         }
         debug(".use app under %s", path4);
         fn2.mountpath = path4;
         fn2.parent = this;
-        router21.use(path4, function mounted_app(req, res, next) {
+        router22.use(path4, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -21981,7 +21981,7 @@ var require_request = __commonJS({
     defineGetter(req, "path", function path4() {
       return parse(this).pathname;
     });
-    defineGetter(req, "host", function host() {
+    defineGetter(req, "host", function host2() {
       var trust = this.app.get("trust proxy fn");
       var val = this.get("X-Forwarded-Host");
       if (!val || !trust(this.socket.remoteAddress, 0)) {
@@ -21992,11 +21992,11 @@ var require_request = __commonJS({
       return val || void 0;
     });
     defineGetter(req, "hostname", function hostname() {
-      var host = this.host;
-      if (!host) return;
-      var offset = host[0] === "[" ? host.indexOf("]") + 1 : 0;
-      var index = host.indexOf(":", offset);
-      return index !== -1 ? host.substring(0, index) : host;
+      var host2 = this.host;
+      if (!host2) return;
+      var offset = host2[0] === "[" ? host2.indexOf("]") + 1 : 0;
+      var index = host2.indexOf(":", offset);
+      return index !== -1 ? host2.substring(0, index) : host2;
     });
     defineGetter(req, "fresh", function() {
       var method = this.method;
@@ -22194,17 +22194,17 @@ var require_content_disposition = __commonJS({
 // ../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js
 var require_cookie_signature = __commonJS({
   "../../node_modules/.pnpm/cookie-signature@1.2.2/node_modules/cookie-signature/index.js"(exports) {
-    var crypto2 = __require("crypto");
-    exports.sign = function(val, secret) {
+    var crypto4 = __require("crypto");
+    exports.sign = function(val, secret2) {
       if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
-      if (null == secret) throw new TypeError("Secret key must be provided.");
-      return val + "." + crypto2.createHmac("sha256", secret).update(val).digest("base64").replace(/\=+$/, "");
+      if (null == secret2) throw new TypeError("Secret key must be provided.");
+      return val + "." + crypto4.createHmac("sha256", secret2).update(val).digest("base64").replace(/\=+$/, "");
     };
-    exports.unsign = function(input, secret) {
+    exports.unsign = function(input, secret2) {
       if ("string" != typeof input) throw new TypeError("Signed cookie string must be provided.");
-      if (null == secret) throw new TypeError("Secret key must be provided.");
-      var tentativeValue = input.slice(0, input.lastIndexOf(".")), expectedInput = exports.sign(tentativeValue, secret), expectedBuffer = Buffer.from(expectedInput), inputBuffer = Buffer.from(input);
-      return expectedBuffer.length === inputBuffer.length && crypto2.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
+      if (null == secret2) throw new TypeError("Secret key must be provided.");
+      var tentativeValue = input.slice(0, input.lastIndexOf(".")), expectedInput = exports.sign(tentativeValue, secret2), expectedBuffer = Buffer.from(expectedInput), inputBuffer = Buffer.from(input);
+      return expectedBuffer.length === inputBuffer.length && crypto4.timingSafeEqual(expectedBuffer, inputBuffer) ? tentativeValue : false;
     };
   }
 });
@@ -22946,7 +22946,7 @@ var require_response = __commonJS({
     var path4 = __require("node:path");
     var pathIsAbsolute = __require("node:path").isAbsolute;
     var statuses = require_statuses();
-    var sign = require_cookie_signature().sign;
+    var sign2 = require_cookie_signature().sign;
     var normalizeType = require_utils3().normalizeType;
     var normalizeTypes = require_utils3().normalizeTypes;
     var setCharset = require_utils3().setCharset;
@@ -23230,14 +23230,14 @@ var require_response = __commonJS({
     };
     res.cookie = function(name2, value, options) {
       var opts = { ...options };
-      var secret = this.req.secret;
+      var secret2 = this.req.secret;
       var signed = opts.signed;
-      if (signed && !secret) {
+      if (signed && !secret2) {
         throw new Error('cookieParser("secret") required for signed cookies');
       }
       var val = typeof value === "object" ? "j:" + JSON.stringify(value) : String(value);
       if (signed) {
-        val = "s:" + sign(val, secret);
+        val = "s:" + sign2(val, secret2);
       }
       if (opts.maxAge != null) {
         var maxAge = opts.maxAge - 0;
@@ -23513,7 +23513,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router21 = require_router();
+    var Router22 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23535,8 +23535,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router21.Route;
-    exports.Router = Router21;
+    exports.Route = Router22.Route;
+    exports.Router = Router22;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -23828,6 +23828,119 @@ var require_lib3 = __commonJS({
       }
       module.exports = middlewareWrapper;
     })();
+  }
+});
+
+// ../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js
+var require_cookie_signature2 = __commonJS({
+  "../../node_modules/.pnpm/cookie-signature@1.0.6/node_modules/cookie-signature/index.js"(exports) {
+    var crypto4 = __require("crypto");
+    exports.sign = function(val, secret2) {
+      if ("string" != typeof val) throw new TypeError("Cookie value must be provided as a string.");
+      if ("string" != typeof secret2) throw new TypeError("Secret string must be provided.");
+      return val + "." + crypto4.createHmac("sha256", secret2).update(val).digest("base64").replace(/\=+$/, "");
+    };
+    exports.unsign = function(val, secret2) {
+      if ("string" != typeof val) throw new TypeError("Signed cookie string must be provided.");
+      if ("string" != typeof secret2) throw new TypeError("Secret string must be provided.");
+      var str = val.slice(0, val.lastIndexOf(".")), mac = exports.sign(str, secret2);
+      return sha1(mac) == sha1(val) ? str : false;
+    };
+    function sha1(str) {
+      return crypto4.createHash("sha1").update(str).digest("hex");
+    }
+  }
+});
+
+// ../../node_modules/.pnpm/cookie-parser@1.4.7/node_modules/cookie-parser/index.js
+var require_cookie_parser = __commonJS({
+  "../../node_modules/.pnpm/cookie-parser@1.4.7/node_modules/cookie-parser/index.js"(exports, module) {
+    "use strict";
+    var cookie = require_cookie();
+    var signature = require_cookie_signature2();
+    module.exports = cookieParser2;
+    module.exports.JSONCookie = JSONCookie;
+    module.exports.JSONCookies = JSONCookies;
+    module.exports.signedCookie = signedCookie;
+    module.exports.signedCookies = signedCookies;
+    function cookieParser2(secret2, options) {
+      var secrets = !secret2 || Array.isArray(secret2) ? secret2 || [] : [secret2];
+      return function cookieParser3(req, res, next) {
+        if (req.cookies) {
+          return next();
+        }
+        var cookies = req.headers.cookie;
+        req.secret = secrets[0];
+        req.cookies = /* @__PURE__ */ Object.create(null);
+        req.signedCookies = /* @__PURE__ */ Object.create(null);
+        if (!cookies) {
+          return next();
+        }
+        req.cookies = cookie.parse(cookies, options);
+        if (secrets.length !== 0) {
+          req.signedCookies = signedCookies(req.cookies, secrets);
+          req.signedCookies = JSONCookies(req.signedCookies);
+        }
+        req.cookies = JSONCookies(req.cookies);
+        next();
+      };
+    }
+    function JSONCookie(str) {
+      if (typeof str !== "string" || str.substr(0, 2) !== "j:") {
+        return void 0;
+      }
+      try {
+        return JSON.parse(str.slice(2));
+      } catch (err) {
+        return void 0;
+      }
+    }
+    function JSONCookies(obj) {
+      var cookies = Object.keys(obj);
+      var key;
+      var val;
+      for (var i = 0; i < cookies.length; i++) {
+        key = cookies[i];
+        val = JSONCookie(obj[key]);
+        if (val) {
+          obj[key] = val;
+        }
+      }
+      return obj;
+    }
+    function signedCookie(str, secret2) {
+      if (typeof str !== "string") {
+        return void 0;
+      }
+      if (str.substr(0, 2) !== "s:") {
+        return str;
+      }
+      var secrets = !secret2 || Array.isArray(secret2) ? secret2 || [] : [secret2];
+      for (var i = 0; i < secrets.length; i++) {
+        var val = signature.unsign(str.slice(2), secrets[i]);
+        if (val !== false) {
+          return val;
+        }
+      }
+      return false;
+    }
+    function signedCookies(obj, secret2) {
+      var cookies = Object.keys(obj);
+      var dec;
+      var key;
+      var ret = /* @__PURE__ */ Object.create(null);
+      var val;
+      for (var i = 0; i < cookies.length; i++) {
+        key = cookies[i];
+        val = obj[key];
+        dec = signedCookie(val, secret2);
+        if (val !== dec) {
+          ret[key] = dec;
+          delete obj[key];
+        }
+      }
+      return ret;
+    }
   }
 });
 
@@ -31405,8 +31518,8 @@ var init_timestamp = __esm({
         const shortened = value.toISOString().slice(0, -1).replace("T", " ");
         if (this.withTimezone) {
           const offset = value.getTimezoneOffset();
-          const sign = offset <= 0 ? "+" : "-";
-          return `${shortened}${sign}${Math.floor(Math.abs(offset) / 60).toString().padStart(2, "0")}`;
+          const sign2 = offset <= 0 ? "+" : "-";
+          return `${shortened}${sign2}${Math.floor(Math.abs(offset) / 60).toString().padStart(2, "0")}`;
         }
         return shortened;
       }
@@ -32692,9 +32805,9 @@ var require_postgres_date = __commonJS({
       if (type === "Z") {
         return 0;
       }
-      var sign = type === "-" ? -1 : 1;
+      var sign2 = type === "-" ? -1 : 1;
       var offset = parseInt(zone[2], 10) * 3600 + parseInt(zone[3] || 0, 10) * 60 + parseInt(zone[4] || 0, 10);
-      return offset * sign * 1e3;
+      return offset * sign2 * 1e3;
     }
     function bcYearToNegativeYear(year) {
       return -(year - 1);
@@ -33059,11 +33172,11 @@ var require_pg_int8 = __commonJS({
     function readInt8(buffer) {
       var high = buffer.readInt32BE(0);
       var low = buffer.readUInt32BE(4);
-      var sign = "";
+      var sign2 = "";
       if (high < 0) {
         high = ~high + (low === 0);
         low = ~low + 1 >>> 0;
-        sign = "-";
+        sign2 = "-";
       }
       var result = "";
       var carry;
@@ -33079,7 +33192,7 @@ var require_pg_int8 = __commonJS({
         low = t / BASE >>> 0;
         digits = "" + (t - BASE * low);
         if (low === 0 && high === 0) {
-          return sign + digits + result;
+          return sign2 + digits + result;
         }
         pad = "";
         l = 6 - digits.length;
@@ -33095,7 +33208,7 @@ var require_pg_int8 = __commonJS({
         low = t / BASE >>> 0;
         digits = "" + (t - BASE * low);
         if (low === 0 && high === 0) {
-          return sign + digits + result;
+          return sign2 + digits + result;
         }
         pad = "";
         l = 6 - digits.length;
@@ -33111,7 +33224,7 @@ var require_pg_int8 = __commonJS({
         low = t / BASE >>> 0;
         digits = "" + (t - BASE * low);
         if (low === 0 && high === 0) {
-          return sign + digits + result;
+          return sign2 + digits + result;
         }
         pad = "";
         l = 6 - digits.length;
@@ -33124,7 +33237,7 @@ var require_pg_int8 = __commonJS({
         carry = high % BASE;
         t = 4294967296 * carry + low;
         digits = "" + t % BASE;
-        return sign + digits + result;
+        return sign2 + digits + result;
       }
     }
     module.exports = readInt8;
@@ -33173,7 +33286,7 @@ var require_binaryParsers = __commonJS({
     };
     var parseFloatFromBits = function(data, precisionBits, exponentBits) {
       var bias = Math.pow(2, exponentBits - 1) - 1;
-      var sign = parseBits(data, 1);
+      var sign2 = parseBits(data, 1);
       var exponent = parseBits(data, exponentBits, 1);
       if (exponent === 0) {
         return 0;
@@ -33194,11 +33307,11 @@ var require_binaryParsers = __commonJS({
       var mantissa = parseBits(data, precisionBits, exponentBits + 1, false, parsePrecisionBits);
       if (exponent == Math.pow(2, exponentBits + 1) - 1) {
         if (mantissa === 0) {
-          return sign === 0 ? Infinity : -Infinity;
+          return sign2 === 0 ? Infinity : -Infinity;
         }
         return NaN;
       }
-      return (sign === 0 ? 1 : -1) * Math.pow(2, exponent - bias) * mantissa;
+      return (sign2 === 0 ? 1 : -1) * Math.pow(2, exponent - bias) * mantissa;
     };
     var parseInt16 = function(value) {
       if (parseBits(value, 1) == 1) {
@@ -33219,8 +33332,8 @@ var require_binaryParsers = __commonJS({
       return parseFloatFromBits(value, 52, 11);
     };
     var parseNumeric = function(value) {
-      var sign = parseBits(value, 16, 32);
-      if (sign == 49152) {
+      var sign2 = parseBits(value, 16, 32);
+      if (sign2 == 49152) {
         return NaN;
       }
       var weight = Math.pow(1e4, parseBits(value, 16, 16));
@@ -33232,12 +33345,12 @@ var require_binaryParsers = __commonJS({
         weight /= 1e4;
       }
       var scale = Math.pow(10, parseBits(value, 16, 48));
-      return (sign === 0 ? 1 : -1) * Math.round(result * scale) / scale;
+      return (sign2 === 0 ? 1 : -1) * Math.round(result * scale) / scale;
     };
     var parseDate = function(isUTC, value) {
-      var sign = parseBits(value, 1);
+      var sign2 = parseBits(value, 1);
       var rawValue = parseBits(value, 63, 1);
-      var result = new Date((sign === 0 ? 1 : -1) * rawValue / 1e3 + 9466848e5);
+      var result = new Date((sign2 === 0 ? 1 : -1) * rawValue / 1e3 + 9466848e5);
       if (!isUTC) {
         result.setTime(result.getTime() + result.getTimezoneOffset() * 6e4);
       }
@@ -33884,7 +33997,7 @@ var require_cert_signatures = __commonJS({
 var require_sasl = __commonJS({
   "../../node_modules/.pnpm/pg@8.20.0/node_modules/pg/lib/crypto/sasl.js"(exports, module) {
     "use strict";
-    var crypto2 = require_utils5();
+    var crypto4 = require_utils5();
     var { signatureAlgorithmHashFromCertificate } = require_cert_signatures();
     function startSession(mechanisms, stream) {
       const candidates = ["SCRAM-SHA-256"];
@@ -33896,7 +34009,7 @@ var require_sasl = __commonJS({
       if (mechanism === "SCRAM-SHA-256-PLUS" && typeof stream.getPeerCertificate !== "function") {
         throw new Error("SASL: Mechanism SCRAM-SHA-256-PLUS requires a certificate");
       }
-      const clientNonce = crypto2.randomBytes(18).toString("base64");
+      const clientNonce = crypto4.randomBytes(18).toString("base64");
       const gs2Header = mechanism === "SCRAM-SHA-256-PLUS" ? "p=tls-server-end-point" : stream ? "y" : "n";
       return {
         mechanism,
@@ -33931,20 +34044,20 @@ var require_sasl = __commonJS({
         const peerCert = stream.getPeerCertificate().raw;
         let hashName = signatureAlgorithmHashFromCertificate(peerCert);
         if (hashName === "MD5" || hashName === "SHA-1") hashName = "SHA-256";
-        const certHash = await crypto2.hashByName(hashName, peerCert);
+        const certHash = await crypto4.hashByName(hashName, peerCert);
         const bindingData = Buffer.concat([Buffer.from("p=tls-server-end-point,,"), Buffer.from(certHash)]);
         channelBinding = bindingData.toString("base64");
       }
       const clientFinalMessageWithoutProof = "c=" + channelBinding + ",r=" + sv.nonce;
       const authMessage = clientFirstMessageBare + "," + serverFirstMessage + "," + clientFinalMessageWithoutProof;
       const saltBytes = Buffer.from(sv.salt, "base64");
-      const saltedPassword = await crypto2.deriveKey(password, saltBytes, sv.iteration);
-      const clientKey = await crypto2.hmacSha256(saltedPassword, "Client Key");
-      const storedKey = await crypto2.sha256(clientKey);
-      const clientSignature = await crypto2.hmacSha256(storedKey, authMessage);
+      const saltedPassword = await crypto4.deriveKey(password, saltBytes, sv.iteration);
+      const clientKey = await crypto4.hmacSha256(saltedPassword, "Client Key");
+      const storedKey = await crypto4.sha256(clientKey);
+      const clientSignature = await crypto4.hmacSha256(storedKey, authMessage);
       const clientProof = xorBuffers(Buffer.from(clientKey), Buffer.from(clientSignature)).toString("base64");
-      const serverKey = await crypto2.hmacSha256(saltedPassword, "Server Key");
-      const serverSignatureBytes = await crypto2.hmacSha256(serverKey, authMessage);
+      const serverKey = await crypto4.hmacSha256(saltedPassword, "Server Key");
+      const serverSignatureBytes = await crypto4.hmacSha256(serverKey, authMessage);
       session.message = "SASLResponse";
       session.serverSignature = Buffer.from(serverSignatureBytes).toString("base64");
       session.response = clientFinalMessageWithoutProof + ",p=" + clientProof;
@@ -35655,11 +35768,11 @@ var require_connection = __commonJS({
           }
         });
       }
-      connect(port2, host) {
+      connect(port2, host2) {
         const self = this;
         this._connecting = true;
         this.stream.setNoDelay(true);
-        this.stream.connect(port2, host);
+        this.stream.connect(port2, host2);
         this.stream.once("connect", function() {
           if (self._keepAlive) {
             self.stream.setKeepAlive(true, self._keepAliveInitialDelayMillis);
@@ -35701,8 +35814,8 @@ var require_connection = __commonJS({
             }
           }
           const net = __require("net");
-          if (net.isIP && net.isIP(host) === 0) {
-            options.servername = host;
+          if (net.isIP && net.isIP(host2) === 0) {
+            options.servername = host2;
           }
           try {
             self.stream = getSecureStream(options);
@@ -36112,7 +36225,7 @@ var require_client = __commonJS({
     var Query2 = require_query();
     var defaults2 = require_defaults();
     var Connection2 = require_connection();
-    var crypto2 = require_utils5();
+    var crypto4 = require_utils5();
     var activeQueryDeprecationNotice = nodeUtils.deprecate(
       () => {
       },
@@ -36347,7 +36460,7 @@ var require_client = __commonJS({
       _handleAuthMD5Password(msg) {
         this._getPassword(async () => {
           try {
-            const hashedPassword = await crypto2.postgresMd5PasswordHash(this.user, this.password, msg.salt);
+            const hashedPassword = await crypto4.postgresMd5PasswordHash(this.user, this.password, msg.salt);
             this.connection.password(hashedPassword);
           } catch (e) {
             this.emit("error", e);
@@ -52409,7 +52522,7 @@ var require_lucide = __commonJS({
       ["path", { d: "M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" }],
       ["circle", { cx: "18", cy: "5", r: "3" }]
     ];
-    var Router21 = [
+    var Router22 = [
       ["rect", { width: "20", height: "8", x: "2", y: "14", rx: "2" }],
       ["path", { d: "M6.01 18H6" }],
       ["path", { d: "M10.01 18H10" }],
@@ -57479,7 +57592,7 @@ var require_lucide = __commonJS({
       RotateCwSquare,
       Route,
       RouteOff,
-      Router: Router21,
+      Router: Router22,
       Rows: Rows2,
       Rows2,
       Rows3,
@@ -59477,7 +59590,7 @@ var require_lucide = __commonJS({
     exports.RotateCwSquare = RotateCwSquare;
     exports.Route = Route;
     exports.RouteOff = RouteOff;
-    exports.Router = Router21;
+    exports.Router = Router22;
     exports.Rows = Rows2;
     exports.Rows2 = Rows2;
     exports.Rows3 = Rows3;
@@ -59999,8 +60112,9 @@ var require_lucide = __commonJS({
 });
 
 // src/app.ts
-var import_express21 = __toESM(require_express2(), 1);
+var import_express22 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
+var import_cookie_parser = __toESM(require_cookie_parser(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 import path3 from "path";
 import fs3 from "fs";
@@ -64044,12 +64158,12 @@ var import_express2 = __toESM(require_express2(), 1);
 
 // src/middleware/auth.ts
 import { createHash } from "crypto";
-function makeToken(secret) {
-  return createHash("sha256").update(secret + ":gianni-panel-v2").digest("hex");
+function makeToken(secret2) {
+  return createHash("sha256").update(secret2 + ":gianni-panel-v2").digest("hex");
 }
 function authMiddleware(req, res, next) {
-  const secret = process.env.PANEL_SECRET;
-  if (!secret) {
+  const secret2 = process.env.PANEL_SECRET;
+  if (!secret2) {
     next();
     return;
   }
@@ -64063,7 +64177,7 @@ function authMiddleware(req, res, next) {
   }
   const auth = req.headers.authorization ?? "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (!token || token !== makeToken(secret)) {
+  if (!token || token !== makeToken(secret2)) {
     res.status(401).json({ error: "Neautorizovano \u2014 prijava obavezna." });
     return;
   }
@@ -64077,25 +64191,25 @@ router2.use("/auth", (_req, res, next) => {
   next();
 });
 router2.post("/auth/login", (req, res) => {
-  const secret = process.env.PANEL_SECRET;
-  if (!secret) {
+  const secret2 = process.env.PANEL_SECRET;
+  if (!secret2) {
     return res.json({ token: "dev-mode", devMode: true });
   }
   const { password } = req.body;
-  if (!password || password !== secret) {
+  if (!password || password !== secret2) {
     req.log.warn({ ip: req.ip }, "Failed panel login attempt");
     return res.status(401).json({ error: "Pogre\u0161na lozinka panela." });
   }
-  const token = makeToken(secret);
+  const token = makeToken(secret2);
   req.log.info({ ip: req.ip }, "Panel login success");
   return res.json({ token, devMode: false });
 });
 router2.get("/auth/verify", (req, res) => {
-  const secret = process.env.PANEL_SECRET;
-  if (!secret) return res.json({ ok: true, devMode: true });
+  const secret2 = process.env.PANEL_SECRET;
+  if (!secret2) return res.json({ ok: true, devMode: true });
   const auth = req.headers.authorization ?? "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (!token || token !== makeToken(secret)) {
+  if (!token || token !== makeToken(secret2)) {
     return res.status(401).json({ ok: false });
   }
   return res.json({ ok: true, devMode: false });
@@ -66643,10 +66757,253 @@ router10.use(protection_default);
 router10.use(games_default);
 var routes_default = router10;
 
-// src/routes/icons.ts
+// src/routes/discord-auth.ts
 var import_express11 = __toESM(require_express2(), 1);
-var import_lucide = __toESM(require_lucide(), 1);
+import crypto3 from "crypto";
+
+// src/lib/session.ts
+import crypto2 from "crypto";
+var SESSION_COOKIE = "gianni_user";
+var SESSION_MAX_AGE_MS = 1e3 * 60 * 60 * 24 * 30;
+function secret() {
+  return process.env.SESSION_SECRET || process.env.PANEL_SECRET || "dev-insecure-session-secret";
+}
+function sign(body) {
+  return crypto2.createHmac("sha256", secret()).update(body).digest("base64url");
+}
+function signSession(data) {
+  const payload = { ...data, exp: Date.now() + SESSION_MAX_AGE_MS };
+  const body = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  return `${body}.${sign(body)}`;
+}
+function verifySession(token) {
+  if (!token) return null;
+  const dot = token.indexOf(".");
+  if (dot <= 0) return null;
+  const body = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = sign(body);
+  if (sig.length !== expected.length) return null;
+  if (!crypto2.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
+  try {
+    const data = JSON.parse(Buffer.from(body, "base64url").toString());
+    if (!data.exp || data.exp < Date.now()) return null;
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+// src/routes/discord-auth.ts
 var router11 = (0, import_express11.Router)();
+var CLIENT_ID = process.env.DISCORD_CLIENT_ID || "1496871647204999208";
+var SCOPE = "identify guilds";
+var STATE_COOKIE = "gianni_oauth_state";
+var ADMINISTRATOR = 0x8n;
+var MANAGE_GUILD = 0x20n;
+function host(req) {
+  return (req.headers["x-forwarded-host"] || req.get("host") || "").split(",")[0].trim();
+}
+function isProd(req) {
+  const h = host(req);
+  return !!h && !h.includes("localhost") && !h.includes("127.0.0.1");
+}
+function redirectUri(req) {
+  const proto = (req.headers["x-forwarded-proto"] || req.protocol || "https").split(",")[0].trim();
+  return `${proto}://${host(req)}/api/auth/discord/callback`;
+}
+router11.use(["/auth/discord", "/auth/me", "/profile"], (_req, res, next) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate");
+  next();
+});
+router11.get("/auth/discord", (req, res) => {
+  if (!process.env.DISCORD_CLIENT_SECRET) {
+    res.redirect("/?login=notconfigured");
+    return;
+  }
+  const state = crypto3.randomBytes(16).toString("hex");
+  res.cookie(STATE_COOKIE, state, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: isProd(req),
+    maxAge: 10 * 60 * 1e3,
+    path: "/"
+  });
+  const url = new URL("https://discord.com/api/oauth2/authorize");
+  url.searchParams.set("client_id", CLIENT_ID);
+  url.searchParams.set("redirect_uri", redirectUri(req));
+  url.searchParams.set("response_type", "code");
+  url.searchParams.set("scope", SCOPE);
+  url.searchParams.set("state", state);
+  res.redirect(url.toString());
+});
+router11.get("/auth/discord/callback", async (req, res) => {
+  const code = req.query.code;
+  const state = req.query.state;
+  const cookieState = req.cookies?.[STATE_COOKIE] ?? void 0;
+  res.clearCookie(STATE_COOKIE, { path: "/" });
+  if (!code || !state || state !== cookieState) {
+    res.redirect("/?login=error");
+    return;
+  }
+  const secret2 = process.env.DISCORD_CLIENT_SECRET;
+  if (!secret2) {
+    res.redirect("/?login=notconfigured");
+    return;
+  }
+  try {
+    const tokenRes = await fetch("https://discord.com/api/oauth2/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        client_id: CLIENT_ID,
+        client_secret: secret2,
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: redirectUri(req)
+      })
+    });
+    if (!tokenRes.ok) {
+      req.log.warn({ status: tokenRes.status }, "Discord token exchange failed");
+      res.redirect("/?login=error");
+      return;
+    }
+    const tokenData = await tokenRes.json();
+    const accessToken = tokenData.access_token;
+    if (!accessToken) {
+      res.redirect("/?login=error");
+      return;
+    }
+    const [meRes, guildsRes] = await Promise.all([
+      fetch("https://discord.com/api/users/@me", {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      }),
+      fetch("https://discord.com/api/users/@me/guilds", {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      })
+    ]);
+    if (!meRes.ok) {
+      res.redirect("/?login=error");
+      return;
+    }
+    const me = await meRes.json();
+    const rawGuilds = guildsRes.ok ? await guildsRes.json() : [];
+    const manageable = (Array.isArray(rawGuilds) ? rawGuilds : []).filter((g) => {
+      if (g.owner) return true;
+      try {
+        const p = BigInt(g.permissions || "0");
+        return (p & ADMINISTRATOR) !== 0n || (p & MANAGE_GUILD) !== 0n;
+      } catch {
+        return false;
+      }
+    }).map((g) => ({ id: g.id, name: g.name, icon: g.icon, owner: !!g.owner }));
+    const existing = await readConfig(`profile:${me.id}`) ?? {};
+    const profile = {
+      uid: me.id,
+      username: me.username,
+      globalName: me.global_name ?? null,
+      avatar: me.avatar ?? null,
+      decoration: existing.decoration ?? "none",
+      guilds: manageable,
+      updatedAt: (/* @__PURE__ */ new Date()).toISOString()
+    };
+    await writeConfig(`profile:${me.id}`, profile);
+    const cookie = signSession({
+      uid: me.id,
+      name: me.username,
+      gname: me.global_name ?? null,
+      avatar: me.avatar ?? null
+    });
+    res.cookie(SESSION_COOKIE, cookie, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: isProd(req),
+      maxAge: SESSION_MAX_AGE_MS,
+      path: "/"
+    });
+    req.log.info({ uid: me.id, guilds: manageable.length }, "Discord user login");
+    res.redirect("/profil");
+  } catch (err) {
+    req.log.error({ err }, "Discord OAuth callback error");
+    res.redirect("/?login=error");
+  }
+});
+var botGuilds = null;
+var botGuildsAt = 0;
+async function getBotGuilds() {
+  if (botGuilds && Date.now() - botGuildsAt < 6e4) return botGuilds;
+  const token = process.env.DISCORD_TOKEN;
+  if (!token) return botGuilds ?? /* @__PURE__ */ new Set();
+  try {
+    const r = await fetch("https://discord.com/api/users/@me/guilds", {
+      headers: { Authorization: `Bot ${token}` }
+    });
+    if (!r.ok) return botGuilds ?? /* @__PURE__ */ new Set();
+    const arr = await r.json();
+    botGuilds = new Set((Array.isArray(arr) ? arr : []).map((g) => g.id));
+    botGuildsAt = Date.now();
+    return botGuilds;
+  } catch {
+    return botGuilds ?? /* @__PURE__ */ new Set();
+  }
+}
+router11.get("/auth/me", async (req, res) => {
+  const sess = verifySession(req.cookies?.[SESSION_COOKIE]);
+  if (!sess) {
+    res.status(401).json({ ok: false });
+    return;
+  }
+  const profile = await readConfig(`profile:${sess.uid}`);
+  if (!profile) {
+    res.status(401).json({ ok: false });
+    return;
+  }
+  const bot = await getBotGuilds();
+  const guilds = (profile.guilds || []).map((g) => ({ ...g, hasBot: bot.has(g.id) }));
+  const ownerId = process.env.OWNER_DISCORD_ID;
+  res.json({
+    ok: true,
+    user: {
+      uid: profile.uid,
+      username: profile.username,
+      globalName: profile.globalName,
+      avatar: profile.avatar,
+      decoration: profile.decoration ?? "none"
+    },
+    guilds,
+    isOwner: ownerId ? profile.uid === ownerId : false
+  });
+});
+router11.post("/auth/discord/logout", (req, res) => {
+  res.clearCookie(SESSION_COOKIE, { path: "/" });
+  res.json({ ok: true });
+});
+router11.put("/profile/decoration", async (req, res) => {
+  const sess = verifySession(req.cookies?.[SESSION_COOKIE]);
+  if (!sess) {
+    res.status(401).json({ ok: false });
+    return;
+  }
+  const decoration = req.body?.decoration;
+  if (typeof decoration !== "string" || decoration.length > 32) {
+    res.status(400).json({ ok: false, error: "Neispravan okvir." });
+    return;
+  }
+  const profile = await readConfig(`profile:${sess.uid}`) ?? null;
+  if (!profile) {
+    res.status(401).json({ ok: false });
+    return;
+  }
+  profile.decoration = decoration;
+  await writeConfig(`profile:${sess.uid}`, profile);
+  res.json({ ok: true, decoration });
+});
+var discord_auth_default = router11;
+
+// src/routes/icons.ts
+var import_express12 = __toESM(require_express2(), 1);
+var import_lucide = __toESM(require_lucide(), 1);
+var router12 = (0, import_express12.Router)();
 function buildSvg(iconName, bg, color) {
   const iconNodes = import_lucide.icons[iconName];
   if (!iconNodes) return null;
@@ -66664,7 +67021,7 @@ function buildSvg(iconName, bg, color) {
 </svg>`;
 }
 var cache = /* @__PURE__ */ new Map();
-router11.get("/api/icons/:name", async (req, res) => {
+router12.get("/api/icons/:name", async (req, res) => {
   const { name: name2 } = req.params;
   const bg = (req.query.bg ?? "18103a").replace(/^#/, "");
   const color = (req.query.color ?? "ffffff").replace(/^#/, "");
@@ -66695,12 +67052,12 @@ router11.get("/api/icons/:name", async (req, res) => {
     res.status(500).json({ error: "Render failed" });
   }
 });
-var icons_default = router11;
+var icons_default = router12;
 
 // src/routes/welcome-card.ts
-var import_express12 = __toESM(require_express2(), 1);
+var import_express13 = __toESM(require_express2(), 1);
 var import_lucide2 = __toESM(require_lucide(), 1);
-var router12 = (0, import_express12.Router)();
+var router13 = (0, import_express13.Router)();
 function esc(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
@@ -66768,7 +67125,7 @@ function btn(x, y, w, h, iconName, label, filled) {
   ${iconName ? licon(iconName, cx - 14, y + (h - 16) / 2, 16, "white") : ""}
   <text x="${tx}" y="${y + h / 2 + 5}" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="13" fill="white">${esc(label)}</text>`;
 }
-router12.get("/api/welcome-card", async (req, res) => {
+router13.get("/api/welcome-card", async (req, res) => {
   const user = (req.query.user ?? "User").slice(0, 20);
   const avatarUrl = req.query.avatarUrl ?? "";
   const memberCount = req.query.memberCount ?? "?";
@@ -66960,12 +67317,12 @@ ${star4(584, 488, 4, "#8855a0", "0.85")}
     res.status(500).json({ error: "Render failed", detail: String(err) });
   }
 });
-var welcome_card_default = router12;
+var welcome_card_default = router13;
 
 // src/routes/games-play.ts
-var import_express13 = __toESM(require_express2(), 1);
+var import_express14 = __toESM(require_express2(), 1);
 import { randomBytes } from "crypto";
-var router13 = (0, import_express13.Router)();
+var router14 = (0, import_express14.Router)();
 var unoRooms = /* @__PURE__ */ new Map();
 function makeUnoDeck() {
   const colors = ["red", "green", "blue", "yellow"];
@@ -67011,7 +67368,7 @@ function nextIdx(room, skip = false) {
   if (skip) idx = (idx + room.direction + n) % n;
   return idx;
 }
-router13.post("/play/uno", (req, res) => {
+router14.post("/play/uno", (req, res) => {
   const code = randomBytes(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -67030,7 +67387,7 @@ router13.post("/play/uno", (req, res) => {
   unoRooms.set(code, room);
   res.json({ code });
 });
-router13.post("/play/uno/:code/join", (req, res) => {
+router14.post("/play/uno/:code/join", (req, res) => {
   const room = unoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -67042,7 +67399,7 @@ router13.post("/play/uno/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   res.json({ playerId: id, roomCode: room.code });
 });
-router13.post("/play/uno/:code/start", (req, res) => {
+router14.post("/play/uno/:code/start", (req, res) => {
   const room = unoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
@@ -67061,7 +67418,7 @@ router13.post("/play/uno/:code/start", (req, res) => {
   room.lastAction = "Igra je po\u010Dela!";
   res.json({ ok: true });
 });
-router13.get("/play/uno/:code", (req, res) => {
+router14.get("/play/uno/:code", (req, res) => {
   const room = unoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId } = req.query;
@@ -67085,7 +67442,7 @@ router13.get("/play/uno/:code", (req, res) => {
   };
   res.json(safeRoom);
 });
-router13.post("/play/uno/:code/action", (req, res) => {
+router14.post("/play/uno/:code/action", (req, res) => {
   const room = unoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
@@ -67165,7 +67522,7 @@ var SAFE_SQUARES = [0, 8, 13, 21, 26, 34, 39, 47];
 function ludoAbsPos(color, relPos) {
   return (LUDO_START[color] + relPos) % 52;
 }
-router13.post("/play/ludo", (req, res) => {
+router14.post("/play/ludo", (req, res) => {
   const code = randomBytes(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -67181,7 +67538,7 @@ router13.post("/play/ludo", (req, res) => {
   ludoRooms.set(code, room);
   res.json({ code });
 });
-router13.post("/play/ludo/:code/join", (req, res) => {
+router14.post("/play/ludo/:code/join", (req, res) => {
   const room = ludoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -67204,7 +67561,7 @@ router13.post("/play/ludo/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la kao ${color}`;
   res.json({ playerId: id, color, roomCode: room.code });
 });
-router13.post("/play/ludo/:code/start", (req, res) => {
+router14.post("/play/ludo/:code/start", (req, res) => {
   const room = ludoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
@@ -67212,12 +67569,12 @@ router13.post("/play/ludo/:code/start", (req, res) => {
   room.lastAction = "Igra je po\u010Dela!";
   res.json({ ok: true });
 });
-router13.get("/play/ludo/:code", (req, res) => {
+router14.get("/play/ludo/:code", (req, res) => {
   const room = ludoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   res.json(room);
 });
-router13.post("/play/ludo/:code/action", (req, res) => {
+router14.post("/play/ludo/:code/action", (req, res) => {
   const room = ludoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
@@ -67308,12 +67665,12 @@ setInterval(() => {
   for (const [k, v] of unoRooms) if (v.createdAt < cutoff) unoRooms.delete(k);
   for (const [k, v] of ludoRooms) if (v.createdAt < cutoff) ludoRooms.delete(k);
 }, 30 * 60 * 1e3);
-var games_play_default = router13;
+var games_play_default = router14;
 
 // src/routes/play-crtanje.ts
-var import_express14 = __toESM(require_express2(), 1);
+var import_express15 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes2 } from "crypto";
-var router14 = (0, import_express14.Router)();
+var router15 = (0, import_express15.Router)();
 var rooms = /* @__PURE__ */ new Map();
 var CHOOSE_TIME = 15e3;
 var DRAW_TIME = 7e4;
@@ -67537,7 +67894,7 @@ function advance(room) {
   }
 }
 var HOST = (room) => room.players[0]?.id;
-router14.post("/play/crtanje", (_req, res) => {
+router15.post("/play/crtanje", (_req, res) => {
   const code = randomBytes2(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -67561,7 +67918,7 @@ router14.post("/play/crtanje", (_req, res) => {
   rooms.set(code, room);
   res.json({ code });
 });
-router14.post("/play/crtanje/:code/join", (req, res) => {
+router15.post("/play/crtanje/:code/join", (req, res) => {
   const room = rooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -67573,7 +67930,7 @@ router14.post("/play/crtanje/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, roomCode: room.code });
 });
-router14.post("/play/crtanje/:code/start", (req, res) => {
+router15.post("/play/crtanje/:code/start", (req, res) => {
   const room = rooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
@@ -67585,7 +67942,7 @@ router14.post("/play/crtanje/:code/start", (req, res) => {
   room.lastAction = "Igra je po\u010Dela!";
   return res.json({ ok: true });
 });
-router14.get("/play/crtanje/:code", (req, res) => {
+router15.get("/play/crtanje/:code", (req, res) => {
   const room = rooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   advance(room);
@@ -67639,7 +67996,7 @@ router14.get("/play/crtanje/:code", (req, res) => {
   };
   return res.json(safe);
 });
-router14.post("/play/crtanje/:code/action", (req, res) => {
+router15.post("/play/crtanje/:code/action", (req, res) => {
   const room = rooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action } = req.body;
@@ -67737,12 +68094,12 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of rooms) if (v.createdAt < cutoff) rooms.delete(k);
 }, 30 * 60 * 1e3);
-var play_crtanje_default = router14;
+var play_crtanje_default = router15;
 
 // src/routes/play-spoji4.ts
-var import_express15 = __toESM(require_express2(), 1);
+var import_express16 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes3 } from "crypto";
-var router15 = (0, import_express15.Router)();
+var router16 = (0, import_express16.Router)();
 var COLS = 7;
 var ROWS = 6;
 var rooms2 = /* @__PURE__ */ new Map();
@@ -67787,7 +68144,7 @@ function resetRoom(room) {
   room.draw = false;
   room.lastAction = "Nova partija \u2014 crveni igra prvi";
 }
-router15.post("/play/spoji4", (_req, res) => {
+router16.post("/play/spoji4", (_req, res) => {
   const code = randomBytes3(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -67805,7 +68162,7 @@ router15.post("/play/spoji4", (_req, res) => {
   rooms2.set(code, room);
   return res.json({ code });
 });
-router15.post("/play/spoji4/:code/join", (req, res) => {
+router16.post("/play/spoji4/:code/join", (req, res) => {
   const room = rooms2.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -67818,14 +68175,14 @@ router15.post("/play/spoji4/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, roomCode: room.code, disc });
 });
-router15.post("/play/spoji4/:code/start", (req, res) => {
+router16.post("/play/spoji4/:code/start", (req, res) => {
   const room = rooms2.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebna su 2 igra\u010Da" });
   resetRoom(room);
   return res.json({ ok: true });
 });
-router15.get("/play/spoji4/:code", (req, res) => {
+router16.get("/play/spoji4/:code", (req, res) => {
   const room = rooms2.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId } = req.query;
@@ -67842,7 +68199,7 @@ router15.get("/play/spoji4/:code", (req, res) => {
     players: room.players.map((p) => ({ id: p.id === playerId ? p.id : "anon" + room.players.indexOf(p), name: p.name, disc: p.disc }))
   });
 });
-router15.post("/play/spoji4/:code/action", (req, res) => {
+router16.post("/play/spoji4/:code/action", (req, res) => {
   const room = rooms2.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action, col } = req.body;
@@ -67895,12 +68252,12 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of rooms2) if (v.createdAt < cutoff) rooms2.delete(k);
 }, 30 * 60 * 1e3);
-var play_spoji4_default = router15;
+var play_spoji4_default = router16;
 
 // src/routes/play-potapanje.ts
-var import_express16 = __toESM(require_express2(), 1);
+var import_express17 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes4 } from "crypto";
-var router16 = (0, import_express16.Router)();
+var router17 = (0, import_express17.Router)();
 var GRID = 10;
 var FLEET = [5, 4, 3, 3, 2];
 var rooms3 = /* @__PURE__ */ new Map();
@@ -67995,7 +68352,7 @@ function sunkCells(p) {
 function allSunk(p) {
   return p.ships.length > 0 && p.ships.every((s) => s.hits.length >= s.size);
 }
-router16.post("/play/potapanje", (_req, res) => {
+router17.post("/play/potapanje", (_req, res) => {
   const code = randomBytes4(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -68009,7 +68366,7 @@ router16.post("/play/potapanje", (_req, res) => {
   rooms3.set(code, room);
   res.json({ code });
 });
-router16.post("/play/potapanje/:code/join", (req, res) => {
+router17.post("/play/potapanje/:code/join", (req, res) => {
   const room = rooms3.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -68021,7 +68378,7 @@ router16.post("/play/potapanje/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, roomCode: room.code });
 });
-router16.post("/play/potapanje/:code/start", (req, res) => {
+router17.post("/play/potapanje/:code/start", (req, res) => {
   const room = rooms3.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno 2 igra\u010Da" });
@@ -68036,13 +68393,13 @@ router16.post("/play/potapanje/:code/start", (req, res) => {
   room.lastAction = "Postavite svoje brodove!";
   return res.json({ ok: true });
 });
-router16.get("/play/potapanje/:code", (req, res) => {
+router17.get("/play/potapanje/:code", (req, res) => {
   const room = rooms3.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId } = req.query;
   return res.json(sanitize(room, playerId));
 });
-router16.post("/play/potapanje/:code/action", (req, res) => {
+router17.post("/play/potapanje/:code/action", (req, res) => {
   const room = rooms3.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action } = req.body;
@@ -68137,12 +68494,12 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of rooms3) if (v.createdAt < cutoff) rooms3.delete(k);
 }, 30 * 60 * 1e3);
-var play_potapanje_default = router16;
+var play_potapanje_default = router17;
 
 // src/routes/play-kviz.ts
-var import_express17 = __toESM(require_express2(), 1);
+var import_express18 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes5 } from "crypto";
-var router17 = (0, import_express17.Router)();
+var router18 = (0, import_express18.Router)();
 var kvizRooms = /* @__PURE__ */ new Map();
 var QUESTION_MS = 15e3;
 var REVEAL_MS = 5500;
@@ -68287,7 +68644,7 @@ function tick(room) {
     }
   }
 }
-router17.post("/play/kviz", (_req, res) => {
+router18.post("/play/kviz", (_req, res) => {
   const code = randomBytes5(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -68305,7 +68662,7 @@ router17.post("/play/kviz", (_req, res) => {
   kvizRooms.set(code, room);
   res.json({ code });
 });
-router17.post("/play/kviz/:code/join", (req, res) => {
+router18.post("/play/kviz/:code/join", (req, res) => {
   const room = kvizRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -68326,7 +68683,7 @@ router17.post("/play/kviz/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, roomCode: room.code });
 });
-router17.post("/play/kviz/:code/start", (req, res) => {
+router18.post("/play/kviz/:code/start", (req, res) => {
   const room = kvizRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
@@ -68348,7 +68705,7 @@ router17.post("/play/kviz/:code/start", (req, res) => {
   room.lastAction = "Kviz je po\u010Deo!";
   return res.json({ ok: true });
 });
-router17.get("/play/kviz/:code", (req, res) => {
+router18.get("/play/kviz/:code", (req, res) => {
   const room = kvizRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   tick(room);
@@ -68389,7 +68746,7 @@ router17.get("/play/kviz/:code", (req, res) => {
     }))
   });
 });
-router17.post("/play/kviz/:code/action", (req, res) => {
+router18.post("/play/kviz/:code/action", (req, res) => {
   const room = kvizRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action, choice } = req.body;
@@ -68434,12 +68791,12 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of kvizRooms) if (v.createdAt < cutoff) kvizRooms.delete(k);
 }, 30 * 60 * 1e3);
-var play_kviz_default = router17;
+var play_kviz_default = router18;
 
 // src/routes/play-tacke.ts
-var import_express18 = __toESM(require_express2(), 1);
+var import_express19 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes6 } from "crypto";
-var router18 = (0, import_express18.Router)();
+var router19 = (0, import_express19.Router)();
 var PLAYER_COLORS = ["#ec4899", "#3b82f6", "#22c55e", "#f59e0b"];
 var tackeRooms = /* @__PURE__ */ new Map();
 function makeGrid(rows, cols) {
@@ -68454,7 +68811,7 @@ function makeGrid(rows, cols) {
 function boxComplete(room, br, bc) {
   return room.hLines[br][bc] && room.hLines[br + 1][bc] && room.vLines[br][bc] && room.vLines[br][bc + 1];
 }
-router18.post("/play/tacke", (req, res) => {
+router19.post("/play/tacke", (req, res) => {
   const { size } = req.body;
   let dots = 6;
   if (size === "small") dots = 5;
@@ -68478,7 +68835,7 @@ router18.post("/play/tacke", (req, res) => {
   tackeRooms.set(code, room);
   return res.json({ code });
 });
-router18.post("/play/tacke/:code/join", (req, res) => {
+router19.post("/play/tacke/:code/join", (req, res) => {
   const room = tackeRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -68491,7 +68848,7 @@ router18.post("/play/tacke/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, color, roomCode: room.code });
 });
-router18.post("/play/tacke/:code/start", (req, res) => {
+router19.post("/play/tacke/:code/start", (req, res) => {
   const room = tackeRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
@@ -68500,7 +68857,7 @@ router18.post("/play/tacke/:code/start", (req, res) => {
   room.lastAction = "Igra je po\u010Dela!";
   return res.json({ ok: true });
 });
-router18.get("/play/tacke/:code", (req, res) => {
+router19.get("/play/tacke/:code", (req, res) => {
   const room = tackeRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId } = req.query;
@@ -68511,7 +68868,7 @@ router18.get("/play/tacke/:code", (req, res) => {
     boxes: room.boxes.map((rowArr) => rowArr.map((o) => o == null ? null : pubMap.get(o) ?? o))
   });
 });
-router18.post("/play/tacke/:code/action", (req, res) => {
+router19.post("/play/tacke/:code/action", (req, res) => {
   const room = tackeRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action, type, row, col } = req.body;
@@ -68594,12 +68951,12 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of tackeRooms) if (v.createdAt < cutoff) tackeRooms.delete(k);
 }, 30 * 60 * 1e3);
-var play_tacke_default = router18;
+var play_tacke_default = router19;
 
 // src/routes/play-reversi.ts
-var import_express19 = __toESM(require_express2(), 1);
+var import_express20 = __toESM(require_express2(), 1);
 import { randomBytes as randomBytes7 } from "crypto";
-var router19 = (0, import_express19.Router)();
+var router20 = (0, import_express20.Router)();
 var reversiRooms = /* @__PURE__ */ new Map();
 var DIRS = [
   [-1, -1],
@@ -68665,7 +69022,7 @@ function resetRoom2(room) {
   room.passed = false;
   room.lastAction = "Igra je po\u010Dela! Crni je na potezu.";
 }
-router19.post("/play/reversi", (_req, res) => {
+router20.post("/play/reversi", (_req, res) => {
   const code = randomBytes7(3).toString("hex").toUpperCase();
   const room = {
     code,
@@ -68681,7 +69038,7 @@ router19.post("/play/reversi", (_req, res) => {
   reversiRooms.set(code, room);
   res.json({ code });
 });
-router19.post("/play/reversi/:code/join", (req, res) => {
+router20.post("/play/reversi/:code/join", (req, res) => {
   const room = reversiRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
@@ -68694,14 +69051,14 @@ router19.post("/play/reversi/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la (${disc === 1 ? "crni" : "bijeli"})`;
   return res.json({ playerId: id, roomCode: room.code, disc });
 });
-router19.post("/play/reversi/:code/start", (req, res) => {
+router20.post("/play/reversi/:code/start", (req, res) => {
   const room = reversiRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno je 2 igra\u010Da" });
   resetRoom2(room);
   return res.json({ ok: true });
 });
-router19.get("/play/reversi/:code", (req, res) => {
+router20.get("/play/reversi/:code", (req, res) => {
   const room = reversiRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId } = req.query;
@@ -68723,7 +69080,7 @@ router19.get("/play/reversi/:code", (req, res) => {
   });
   return;
 });
-router19.post("/play/reversi/:code/action", (req, res) => {
+router20.post("/play/reversi/:code/action", (req, res) => {
   const room = reversiRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   const { playerId, action, row, col } = req.body;
@@ -68781,11 +69138,11 @@ setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of reversiRooms) if (v.createdAt < cutoff) reversiRooms.delete(k);
 }, 30 * 60 * 1e3);
-var play_reversi_default = router19;
+var play_reversi_default = router20;
 
 // src/routes/youtube.ts
-var import_express20 = __toESM(require_express2(), 1);
-var router20 = (0, import_express20.Router)();
+var import_express21 = __toESM(require_express2(), 1);
+var router21 = (0, import_express21.Router)();
 function extractJson(html, marker) {
   let i = html.indexOf(`${marker} =`);
   if (i === -1) i = html.indexOf(marker);
@@ -68836,7 +69193,7 @@ function txt(v) {
   if (Array.isArray(runs) && runs[0]?.text) return runs[0].text;
   return "";
 }
-router20.get("/youtube/search", async (req, res) => {
+router21.get("/youtube/search", async (req, res) => {
   const q = (req.query.q || "").trim();
   if (!q) {
     res.json({ results: [] });
@@ -68897,7 +69254,7 @@ router20.get("/youtube/search", async (req, res) => {
     res.status(500).json({ error: "search_failed", results: [] });
   }
 });
-var youtube_default = router20;
+var youtube_default = router21;
 
 // src/lib/logger.ts
 var import_pino = __toESM(require_pino(), 1);
@@ -68918,7 +69275,7 @@ var logger = (0, import_pino.default)({
 });
 
 // src/app.ts
-var app = (0, import_express21.default)();
+var app = (0, import_express22.default)();
 app.use(
   (0, import_pino_http.default)({
     logger,
@@ -68938,9 +69295,12 @@ app.use(
     }
   })
 );
+app.set("trust proxy", true);
 app.use((0, import_cors.default)());
-app.use(import_express21.default.json());
-app.use(import_express21.default.urlencoded({ extended: true }));
+app.use((0, import_cookie_parser.default)());
+app.use(import_express22.default.json());
+app.use(import_express22.default.urlencoded({ extended: true }));
+app.use("/api", discord_auth_default);
 app.use(icons_default);
 app.use(welcome_card_default);
 app.use("/api", games_play_default);
@@ -68954,7 +69314,7 @@ app.use("/api", authMiddleware, youtube_default);
 app.use("/api", authMiddleware, routes_default);
 var staticDir = path3.join(process.cwd(), "public");
 if (fs3.existsSync(staticDir)) {
-  app.use(import_express21.default.static(staticDir));
+  app.use(import_express22.default.static(staticDir));
   app.use((_req, res) => {
     res.sendFile(path3.join(staticDir, "index.html"));
   });
@@ -69301,6 +69661,14 @@ object-assign/index.js:
   (c) Sindre Sorhus
   @license MIT
   *)
+
+cookie-parser/index.js:
+  (*!
+   * cookie-parser
+   * Copyright(c) 2014 TJ Holowaychuk
+   * Copyright(c) 2015 Douglas Christopher Wilson
+   * MIT Licensed
+   *)
 
 lucide/dist/cjs/lucide.js:
   (**
