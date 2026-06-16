@@ -64237,9 +64237,9 @@ var ALL_COMMANDS = [
     category: "Moderacija",
     icon: "Shield",
     commands: [
-      { name: "ban", description: "Ban korisnika [VLASNIK / GIANNI]", usage: "/ban <korisnik> [razlog]", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
-      { name: "ban-dozvola", description: "Dozvoli/oduzmi pravo na /ban za GIANNI \u010Dlana [VLASNIK]", usage: "/ban-dozvola <akcija> <korisnik>", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
-      { name: "kick", description: "Pravi kick / dodjela GIANNI oznake [VLASNIK]", usage: "/kick <korisnik> [razlog]", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
+      { name: "ban", description: "Ban korisnika [VLASNIK / GIAN]", usage: "/ban <korisnik> [razlog]", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
+      { name: "ban-dozvola", description: "Dozvoli/oduzmi pravo na /ban za GIAN \u010Dlana [VLASNIK]", usage: "/ban-dozvola <akcija> <korisnik>", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
+      { name: "kick", description: "Pravi kick / dodjela GIAN oznake [VLASNIK]", usage: "/kick <korisnik> [razlog]", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
       { name: "timeout", description: "U\u0107utkaj korisnika", usage: "/timeout <korisnik> [minuta] [razlog]", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
       { name: "warn", description: "Upozori korisnika", usage: "/warn <korisnik> [razlog]", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
       { name: "warnings", description: "Upozorenja korisnika", usage: "/warnings <korisnik>", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
@@ -64358,7 +64358,7 @@ var ALL_COMMANDS = [
     icon: "Settings",
     commands: [
       { name: "setup", description: "Postavi sve kanale i uloge servera odjednom [ADMIN]", usage: "/setup", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
-      { name: "setup-roles", description: "Kreiraj sve GIANNI uloge odjednom [ADMIN]", usage: "/setup-roles", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
+      { name: "setup-roles", description: "Kreiraj sve GIAN uloge odjednom [ADMIN]", usage: "/setup-roles", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
       { name: "setup-welcome", description: "Postavi welcome kanal [ADMIN]", usage: "/setup-welcome <kanal>", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
       { name: "setup-leave", description: "Postavi leave kanal [ADMIN]", usage: "/setup-leave <kanal>", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
       { name: "setup-autorole", description: "Postavi automatsku ulogu pri ulasku [ADMIN]", usage: "/setup-autorole <uloga>", prefix: false, adminOnly: true, cooldown: null, aliases: [] },
@@ -64438,10 +64438,10 @@ var DEFAULT_EMBEDS = [
   {
     name: "welcome",
     title: "",
-    description: "\u256D\u30FB\u{1F338} Welcome to **GIANNI**\n\u2506\n\u2506 \u2726 User: {user}\n\u2506 \u2726 Member: `#{memberCount}`\n\u2506 \u2726 Account: {accountAge}\n\u2506\n\u2570\u30FBEnjoy your stay \u{1F495}",
+    description: "\u256D\u30FB\u{1F338} Welcome to **GIAN**\n\u2506\n\u2506 \u2726 User: {user}\n\u2506 \u2726 Member: `#{memberCount}`\n\u2506 \u2726 Account: {accountAge}\n\u2506\n\u2570\u30FBEnjoy your stay \u{1F495}",
     color: "#ec4899",
     category: "Sistem",
-    footer: "\u2726 GIANNI \u2022 WELCOME SYSTEM \u2726",
+    footer: "\u2726 GIAN \u2022 WELCOME SYSTEM \u2726",
     thumbnail: "{user.avatar}",
     fields: [],
     buttons: [
@@ -64457,7 +64457,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F622} \u017Dao nam je \u0161to si oti\u0161ao/la.\n\u{1F48C} Uvijek si dobrodo\u0161ao/la nazad!",
     color: "#9B59B6",
     category: "Sistem",
-    footer: "GIANNI (Custom) \u2022 Do vi\u0111enja!",
+    footer: "GIAN (Custom) \u2022 Do vi\u0111enja!",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u23F3 Proveo/la na serveru", value: "{timeOnServer}", inline: true },
@@ -64467,10 +64467,10 @@ var DEFAULT_EMBEDS = [
   {
     name: "dm-welcome",
     title: "\u{1F48C}  Dobrodo\u0161ao/la na GIAN, {user}!",
-    description: "\u{1F38A} Hvala ti \u0161to si se pridru\u017Eio/la!\n\n\u{1F451} **discord.gg/gian**\n\n\u{1F4CB} Pro\u010Ditaj pravila u kanalu `#pravila` i u\u017Eivaj!\n\u{1F4AC} Za pomo\u0107, pi\u0161ite u `#podr\u0161ka`.",
+    description: "\u{1F38A} Hvala ti \u0161to si se pridru\u017Eio/la!\n\n\u{1F4CB} Pro\u010Ditaj pravila u kanalu `#pravila` i u\u017Eivaj!\n\u{1F4AC} Za pomo\u0107, pi\u0161ite u `#podr\u0161ka`.",
     color: "#FF85C8",
     category: "Sistem",
-    footer: "GIANNI (Custom) \u2022 Dobrodo\u0161ao/la!",
+    footer: "GIAN (Custom) \u2022 Dobrodo\u0161ao/la!",
     thumbnail: null,
     fields: []
   },
@@ -64480,7 +64480,7 @@ var DEFAULT_EMBEDS = [
     description: "\u26A1 **{user}** je upravo **boostovao server**!\n\u{1F49C} Hvala ti na podr\u0161ci \u2014 server je sad jo\u0161 ja\u010Di!",
     color: "#9B59B6",
     category: "Sistem",
-    footer: "GIANNI (Custom) \u2022 Hvala na podr\u0161ci",
+    footer: "GIAN (Custom) \u2022 Hvala na podr\u0161ci",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F680} Ukupno boostova", value: "`{boostCount}`", inline: true },
@@ -64494,7 +64494,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F389} Danas je poseban dan za **{user}**!\n\n\u{1F381} Svi mu/joj \u010Destitajte!\n\u{1F31F} Neka ti je sre\u0107an i blagoslovljen dan!",
     color: "#FF85C8",
     category: "Sistem",
-    footer: "GIANNI (Custom) \u2022 Sretan Ro\u0111endan!",
+    footer: "GIAN (Custom) \u2022 Sretan Ro\u0111endan!",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F388} Godine", value: "`{age}` godina", inline: true },
@@ -64507,7 +64507,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2728 Ova poruka je dobila **{stars}** zvjezdica!\n\u{1F4CD} Kanal: {channel}\n\u270D\uFE0F Autor: {author}",
     color: "#F1C40F",
     category: "Sistem",
-    footer: "GIANNI (Custom) \u2022 Starboard",
+    footer: "GIAN (Custom) \u2022 Starboard",
     thumbnail: null,
     fields: []
   },
@@ -64517,7 +64517,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F451} \u010Cestitamo **{user}** na tituli!\n\u{1F31F} Ova sedmica pripada tebi!\n",
     color: "#F1C40F",
     category: "Sistem",
-    footer: "GIANNI (Custom) \u2022 Aktivni \u010Clan Sedmice",
+    footer: "GIAN (Custom) \u2022 Aktivni \u010Clan Sedmice",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F4AC} Poruka", value: "`{messageCount}`", inline: true },
@@ -64531,7 +64531,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F464} **{user}** se pridru\u017Eio serveru.\n\u{1F4C5} Registracija: {accountAge}",
     color: "#f59e0b",
     category: "Log",
-    footer: "GIANNI (Custom) \u2022 Log",
+    footer: "GIAN (Custom) \u2022 Log",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F194} ID", value: "`{userId}`", inline: true },
@@ -64544,7 +64544,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F464} **{user}** je izmijenio/la poruku u {channel}.\n\n\u{1F4DD} **Stara poruka:**\n`{oldContent}`\n\n\u2705 **Nova poruka:**\n`{newContent}`",
     color: "#f59e0b",
     category: "Log",
-    footer: "GIANNI (Custom) \u2022 Log Editovanje",
+    footer: "GIAN (Custom) \u2022 Log Editovanje",
     thumbnail: null,
     fields: []
   },
@@ -64554,7 +64554,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F464} **{user}** je obrisao/la poruku u {channel}.\n\n\u{1F4DD} **Sadr\u017Eaj:**\n`{content}`",
     color: "#f59e0b",
     category: "Log",
-    footer: "GIANNI (Custom) \u2022 Log Brisanje",
+    footer: "GIAN (Custom) \u2022 Log Brisanje",
     thumbnail: null,
     fields: []
   },
@@ -64564,7 +64564,7 @@ var DEFAULT_EMBEDS = [
     description: "\u26A0\uFE0F **{reporter}** je prijavio/la **{reported}**.\n\n\u{1F4CB} **Razlog:** {reason}",
     color: "#f59e0b",
     category: "Log",
-    footer: "GIANNI (Custom) \u2022 Prijava",
+    footer: "GIAN (Custom) \u2022 Prijava",
     thumbnail: "{reported.avatar}",
     fields: [
       { name: "\u{1F194} ID prijavljenog", value: "`{reportedId}`", inline: true },
@@ -64578,7 +64578,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F514} **{user}** je dobio/la upozorenje.\n\n\u{1F4CB} **Razlog:** {reason}",
     color: "#ef4444",
     category: "Moderacija",
-    footer: "GIANNI (Custom) \u2022 Moderacija",
+    footer: "GIAN (Custom) \u2022 Moderacija",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F6E1}\uFE0F Moderator", value: "{mod}", inline: true },
@@ -64591,7 +64591,7 @@ var DEFAULT_EMBEDS = [
     description: "\u26D4 **{user}** je banovan sa servera.\n\n\u{1F4CB} **Razlog:** {reason}",
     color: "#ef4444",
     category: "Moderacija",
-    footer: "GIANNI (Custom) \u2022 Ban",
+    footer: "GIAN (Custom) \u2022 Ban",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F6E1}\uFE0F Moderator", value: "{mod}", inline: true },
@@ -64604,7 +64604,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F6AA} **{user}** je izba\u010Den sa servera.\n\n\u{1F4CB} **Razlog:** {reason}",
     color: "#ef4444",
     category: "Moderacija",
-    footer: "GIANNI (Custom) \u2022 Kick",
+    footer: "GIAN (Custom) \u2022 Kick",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F6E1}\uFE0F Moderator", value: "{mod}", inline: true }
@@ -64616,7 +64616,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F910} **{user}** je mutovan.\n\n\u{1F4CB} **Razlog:** {reason}",
     color: "#ef4444",
     category: "Moderacija",
-    footer: "GIANNI (Custom) \u2022 Mute",
+    footer: "GIAN (Custom) \u2022 Mute",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F6E1}\uFE0F Moderator", value: "{mod}", inline: true },
@@ -64629,7 +64629,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2705 **{user}** je odmutovan \u2014 mo\u017Ee opet pisati.",
     color: "#22c55e",
     category: "Moderacija",
-    footer: "GIANNI (Custom) \u2022 Unmute",
+    footer: "GIAN (Custom) \u2022 Unmute",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F6E1}\uFE0F Moderator", value: "{mod}", inline: true }
@@ -64641,7 +64641,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F550} **{user}** je stavljen u timeout.\n\n\u{1F4CB} **Razlog:** {reason}",
     color: "#ef4444",
     category: "Moderacija",
-    footer: "GIANNI (Custom) \u2022 Timeout",
+    footer: "GIAN (Custom) \u2022 Timeout",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F6E1}\uFE0F Moderator", value: "{mod}", inline: true },
@@ -64654,7 +64654,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F5D1}\uFE0F **{mod}** je obrisao/la **{count}** poruka u {channel}.",
     color: "#ef4444",
     category: "Moderacija",
-    footer: "GIANNI (Custom) \u2022 Purge",
+    footer: "GIAN (Custom) \u2022 Purge",
     thumbnail: null,
     fields: []
   },
@@ -64664,7 +64664,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2705 **{user}** je odbanovan sa servera.\n\u{1F91D} Dobrodo\u0161ao/la nazad!",
     color: "#22c55e",
     category: "Moderacija",
-    footer: "GIANNI (Custom) \u2022 Unban",
+    footer: "GIAN (Custom) \u2022 Unban",
     thumbnail: null,
     fields: [
       { name: "\u{1F6E1}\uFE0F Moderator", value: "{mod}", inline: true }
@@ -64677,7 +64677,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2B06\uFE0F Dostigao/la si novi nivo!\n\u{1F31F} Nastavi tako \u2014 odli\u010Dno!\n",
     color: "#22c55e",
     category: "XP",
-    footer: "GIANNI (Custom) \u2022 Level Up",
+    footer: "GIAN (Custom) \u2022 Level Up",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F4CA} Novi nivo", value: "`Level {level}`", inline: true },
@@ -64690,7 +64690,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2B50 **{user}** je zaradio/la novu vatricu!\n\u{1F3C6} Ukupno vatrica: **{count}**",
     color: "#FF6A00",
     category: "XP",
-    footer: "GIANNI (Custom) \u2022 Vatrica",
+    footer: "GIAN (Custom) \u2022 Vatrica",
     thumbnail: "{user.avatar}",
     fields: []
   },
@@ -64700,7 +64700,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4C8} Pregled aktivnosti za **{user}**:",
     color: "#22c55e",
     category: "XP",
-    footer: "GIANNI (Custom) \u2022 Aktivnost",
+    footer: "GIAN (Custom) \u2022 Aktivnost",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F4AC} Poruke", value: "`{messages}`", inline: true },
@@ -64714,7 +64714,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4CA} Tvoj trenutni rank profil:",
     color: "#22c55e",
     category: "XP",
-    footer: "GIANNI (Custom) \u2022 Rank",
+    footer: "GIAN (Custom) \u2022 Rank",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u2B50 XP", value: "`{xp}`", inline: true },
@@ -64730,7 +64730,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F31F} Najaktivniji \u010Dlanovi servera:\n{leaderboard}",
     color: "#22c55e",
     category: "XP",
-    footer: "GIANNI (Custom) \u2022 XP Leaderboard",
+    footer: "GIAN (Custom) \u2022 XP Leaderboard",
     thumbnail: null,
     fields: []
   },
@@ -64740,7 +64740,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3E6} Najbogatiji \u010Dlanovi servera:\n{leaderboard}",
     color: "#f97316",
     category: "XP",
-    footer: "GIANNI (Custom) \u2022 Novac Leaderboard",
+    footer: "GIAN (Custom) \u2022 Novac Leaderboard",
     thumbnail: null,
     fields: []
   },
@@ -64751,7 +64751,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3AF} **{user}** planira plja\u010Dku banke!\n\u{1F465} Pridru\u017Ei se ekipi \u2014 klikni dugme!\n\u23F3 Po\u010Dinje za: **{countdown}**\n",
     color: "#f97316",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Heist",
+    footer: "GIAN (Custom) \u2022 Heist",
     thumbnail: null,
     fields: [
       { name: "\u{1F465} U\u010Desnici", value: "`{count}`", inline: true },
@@ -64764,7 +64764,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3AB} Kupi tiket i osvoji jackpot!\n\u23F3 \u017Drijeb: **{drawTime}**\n",
     color: "#f97316",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Loto",
+    footer: "GIAN (Custom) \u2022 Loto",
     thumbnail: null,
     fields: [
       { name: "\u{1F4B0} Jackpot", value: "`{pot} \u{1FA99}`", inline: true },
@@ -64778,7 +64778,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2705 Ispuni zadatke i osvoji nagrade!\n{quests}",
     color: "#f97316",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Dnevni Zadaci",
+    footer: "GIAN (Custom) \u2022 Dnevni Zadaci",
     thumbnail: null,
     fields: []
   },
@@ -64788,7 +64788,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F389} **{host}** pokre\u0107e nagradnu igru!\n\u23F3 Zavr\u0161ava: **{endTime}**\n",
     color: "#f97316",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Giveaway",
+    footer: "GIAN (Custom) \u2022 Giveaway",
     thumbnail: null,
     fields: [
       { name: "\u{1F3C6} Nagrada", value: "{prize}", inline: true },
@@ -64801,7 +64801,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F389} Nagradna igra je gotova!\n\n\u{1F947} **Pobjednici:**\n{winners}",
     color: "#f97316",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Giveaway Kraj",
+    footer: "GIAN (Custom) \u2022 Giveaway Kraj",
     thumbnail: null,
     fields: []
   },
@@ -64811,7 +64811,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4B3} Pregled tvog ra\u010Duna:",
     color: "#f97316",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Balans",
+    footer: "GIAN (Custom) \u2022 Balans",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1FA99} Nov\u010Danik", value: "`{wallet} \u{1FA99}`", inline: true },
@@ -64825,7 +64825,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2705 **{user}** je preuzeo/la dnevnu nagradu!\n\u23F0 Sljede\u0107a nagrada za: **24h**",
     color: "#f97316",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Daily",
+    footer: "GIAN (Custom) \u2022 Daily",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1FA99} Nagrada", value: "`+{amount} \u{1FA99}`", inline: true },
@@ -64838,7 +64838,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F527} **{user}** je radio/la kao **{job}** i zaradio/la!",
     color: "#f97316",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Posao",
+    footer: "GIAN (Custom) \u2022 Posao",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1FA99} Zarada", value: "`+{amount} \u{1FA99}`", inline: true },
@@ -64851,7 +64851,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3EA} Dostupni predmeti:\n{items}",
     color: "#f97316",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Shop",
+    footer: "GIAN (Custom) \u2022 Shop",
     thumbnail: null,
     fields: []
   },
@@ -64861,7 +64861,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F6CD}\uFE0F **{user}** je kupio/la **{item}**!\n\u{1FA99} Potro\u0161eno: `{price} \u{1FA99}`",
     color: "#22c55e",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Kupovina",
+    footer: "GIAN (Custom) \u2022 Kupovina",
     thumbnail: null,
     fields: []
   },
@@ -64871,7 +64871,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2194\uFE0F **{from}** je poslao/la **{amount} \u{1FA99}** korisniku **{to}**!",
     color: "#f97316",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Transfer",
+    footer: "GIAN (Custom) \u2022 Transfer",
     thumbnail: null,
     fields: []
   },
@@ -64881,7 +64881,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4B0} **{robber}** je poku\u0161ao/la oplja\u010Dkati **{victim}**!\n\n{result}",
     color: "#ef4444",
     category: "Ekonomija",
-    footer: "GIANNI (Custom) \u2022 Plja\u010Dka",
+    footer: "GIAN (Custom) \u2022 Plja\u010Dka",
     thumbnail: null,
     fields: [
       { name: "\u{1F4B0} Iznos", value: "`{amount} \u{1FA99}`", inline: true },
@@ -64895,7 +64895,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3B2} **{user}** vrti slotove!\n\n[ {r1} | {r2} | {r3} ]\n\n{result}\n",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Slots",
+    footer: "GIAN (Custom) \u2022 Slots",
     thumbnail: null,
     fields: [
       { name: "\u{1FA99} Ulog", value: "`{bet} \u{1FA99}`", inline: true },
@@ -64908,7 +64908,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3B4} **{user}** igra blackjack!\n",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Blackjack",
+    footer: "GIAN (Custom) \u2022 Blackjack",
     thumbnail: null,
     fields: [
       { name: "\u{1F3B4} Tvoje karte", value: "{playerHand} (`{playerScore}`)", inline: true },
@@ -64922,7 +64922,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F0CF} **{host}** otvara poker stol!\n\u{1F465} \u010Cekamo igra\u010De... ({count}/{max})\n",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Poker",
+    footer: "GIAN (Custom) \u2022 Poker",
     thumbnail: null,
     fields: [
       { name: "\u{1FA99} Buy-in", value: "`{buyin} \u{1FA99}`", inline: true },
@@ -64935,7 +64935,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2660\uFE0F Runda **{round}** \u2014 {phase}\n\u{1F0CF} Stol: {communityCards}",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Poker",
+    footer: "GIAN (Custom) \u2022 Poker",
     thumbnail: null,
     fields: [
       { name: "\u{1F4B0} Pot", value: "`{pot} \u{1FA99}`", inline: true },
@@ -64948,7 +64948,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3C6} **{winner}** pobijedio/la!\n\n\u{1F0CF} Pobjedni\u010Dka kombinacija: **{hand}**",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Poker Showdown",
+    footer: "GIAN (Custom) \u2022 Poker Showdown",
     thumbnail: null,
     fields: [
       { name: "\u{1FA99} Dobitak", value: "`{pot} \u{1FA99}`", inline: true }
@@ -64960,7 +64960,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F468}\u200D\u{1F680} **{host}** otvara igru!\n\u{1F465} Igra\u010Di: {count}/{max}\n",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Among Us",
+    footer: "GIAN (Custom) \u2022 Among Us",
     thumbnail: null,
     fields: []
   },
@@ -64970,7 +64970,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F440} Imposter je me\u0111u nama...\n\n\u{1F465} Preostalo igra\u010Da: **{alive}**\n\u{1F480} Eliminirani: **{dead}**",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Among Us",
+    footer: "GIAN (Custom) \u2022 Among Us",
     thumbnail: null,
     fields: []
   },
@@ -64980,7 +64980,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F389} Igra je zavr\u0161ena!\n\n\u{1F947} **Pobjednici:** {winners}\n\u{1F52A} **Imposter:** {imposter}",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Among Us",
+    footer: "GIAN (Custom) \u2022 Among Us",
     thumbnail: null,
     fields: []
   },
@@ -64990,7 +64990,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4DD} Igra po\u010Dinje! Prva rije\u010D:\n\u279C **{word}**\n",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Kaladont",
+    footer: "GIAN (Custom) \u2022 Kaladont",
     thumbnail: null,
     fields: []
   },
@@ -65000,7 +65000,7 @@ var DEFAULT_EMBEDS = [
     description: "\u23F3 **{user}**, tvoj red!\n\n\u279C Zadnje slovo: **{letter}**\n\u231B Ima\u0161 **{seconds}** sekundi!",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Kaladont",
+    footer: "GIAN (Custom) \u2022 Kaladont",
     thumbnail: null,
     fields: []
   },
@@ -65010,7 +65010,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F44D} **{user}** je rekao/la: **{word}**\n\u279C Sljede\u0107e slovo: **{nextLetter}**",
     color: "#22c55e",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Kaladont",
+    footer: "GIAN (Custom) \u2022 Kaladont",
     thumbnail: null,
     fields: []
   },
@@ -65020,7 +65020,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F389} **{winner}** pobijedio/la!\n\u{1FA99} Nagrada: `+{reward} \u{1FA99}`",
     color: "#22c55e",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Kaladont",
+    footer: "GIAN (Custom) \u2022 Kaladont",
     thumbnail: null,
     fields: []
   },
@@ -65030,7 +65030,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3B2} Izvu\u010Deni brojevi:\n{numbers}\n",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Bingo",
+    footer: "GIAN (Custom) \u2022 Bingo",
     thumbnail: null,
     fields: []
   },
@@ -65040,7 +65040,7 @@ var DEFAULT_EMBEDS = [
     description: "```{drawing}```\n\u{1F524} Rije\u010D: **{display}**\n",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Vje\u0161ala",
+    footer: "GIAN (Custom) \u2022 Vje\u0161ala",
     thumbnail: null,
     fields: [
       { name: "\u274C Gre\u0161ke", value: "`{wrong}/{max}`", inline: true },
@@ -65053,7 +65053,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2705 **{user}** je pogodio/la: **{word}**!\n\u{1FA99} Nagrada: `+{reward} \u{1FA99}`",
     color: "#22c55e",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Vje\u0161ala",
+    footer: "GIAN (Custom) \u2022 Vje\u0161ala",
     thumbnail: null,
     fields: []
   },
@@ -65063,7 +65063,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3AF} **{user}** poku\u0161ava pogoditi broj!\n\n\u279C Pogodak: **{guess}**\n\u{1F4CA} **{feedback}**",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Toplo-Hladno",
+    footer: "GIAN (Custom) \u2022 Toplo-Hladno",
     thumbnail: null,
     fields: [
       { name: "\u{1F522} Poku\u0161aji", value: "`{attempts}`", inline: true }
@@ -65075,7 +65075,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2753 **{question}**\n{options}",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Kviz",
+    footer: "GIAN (Custom) \u2022 Kviz",
     thumbnail: null,
     fields: [
       { name: "\u23F0 Vrijeme", value: "`{time}s`", inline: true },
@@ -65088,7 +65088,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F5FA}\uFE0F **{question}**\n{options}",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Geografija",
+    footer: "GIAN (Custom) \u2022 Geografija",
     thumbnail: null,
     fields: [
       { name: "\u23F0 Vrijeme", value: "`{time}s`", inline: true },
@@ -65101,7 +65101,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F52B} **{host}** pokrenuo/la Mafia igru!\n\u{1F465} Igra\u010Di: {count}/{max}\n",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Mafia",
+    footer: "GIAN (Custom) \u2022 Mafia",
     thumbnail: null,
     fields: []
   },
@@ -65111,7 +65111,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3C6} **{winners}** pobijedio/la!\n\n\u{1F575}\uFE0F Mafia: {mafia}\n\u{1F46E} Grad: {town}",
     color: "#3b82f6",
     category: "Igre",
-    footer: "GIANNI (Custom) \u2022 Mafia",
+    footer: "GIAN (Custom) \u2022 Mafia",
     thumbnail: null,
     fields: []
   },
@@ -65122,7 +65122,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F98C} **{user}** je ulovio/la: **{animal}**!\n\u{1FA99} Zarada: `+{amount} \u{1FA99}`",
     color: "#ec4899",
     category: "Fun",
-    footer: "GIANNI (Custom) \u2022 Lov",
+    footer: "GIAN (Custom) \u2022 Lov",
     thumbnail: null,
     fields: []
   },
@@ -65132,7 +65132,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F43E} **{user}** ima sljede\u0107e \u017Eivotinje:",
     color: "#ec4899",
     category: "Fun",
-    footer: "GIANNI (Custom) \u2022 Zoo",
+    footer: "GIAN (Custom) \u2022 Zoo",
     thumbnail: "{user.avatar}",
     fields: []
   },
@@ -65142,7 +65142,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F6E1}\uFE0F **{challenger}** vs **{opponent}**!\n{result}",
     color: "#ec4899",
     category: "Fun",
-    footer: "GIANNI (Custom) \u2022 Bitka",
+    footer: "GIAN (Custom) \u2022 Bitka",
     thumbnail: null,
     fields: []
   },
@@ -65152,7 +65152,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2728 **{user}** se molio/la i...\n\n{result}",
     color: "#ec4899",
     category: "Fun",
-    footer: "GIANNI (Custom) \u2022 Molitva",
+    footer: "GIAN (Custom) \u2022 Molitva",
     thumbnail: null,
     fields: []
   },
@@ -65162,7 +65162,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3B5} **{user}** baca verse:\n\n```{verse}```",
     color: "#ec4899",
     category: "Fun",
-    footer: "GIANNI (Custom) \u2022 Vers",
+    footer: "GIAN (Custom) \u2022 Vers",
     thumbnail: "{user.avatar}",
     fields: []
   },
@@ -65172,7 +65172,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F495} **{from}** ka\u017Ee **{to}**:\n\n*{compliment}*",
     color: "#ec4899",
     category: "Fun",
-    footer: "GIANNI (Custom) \u2022 Kompliment",
+    footer: "GIAN (Custom) \u2022 Kompliment",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65182,7 +65182,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F60F} **{from}** je pogledao/la **{to}** i shvatio/la:\n\n*{joke}*",
     color: "#ec4899",
     category: "Fun",
-    footer: "GIANNI (Custom) \u2022 Fora",
+    footer: "GIAN (Custom) \u2022 Fora",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65192,7 +65192,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F60D} **{from}** \u2192 **{to}**:\n\n*{pickup}*",
     color: "#ec4899",
     category: "Fun",
-    footer: "GIANNI (Custom) \u2022 Balkan Muvanje",
+    footer: "GIAN (Custom) \u2022 Balkan Muvanje",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65202,7 +65202,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2764\uFE0F **{user}** ima crush na nekoga!\nSaznaj koga \u2014 svi glasajte!",
     color: "#ec4899",
     category: "Fun",
-    footer: "GIANNI (Custom) \u2022 Crush",
+    footer: "GIAN (Custom) \u2022 Crush",
     thumbnail: "{user.avatar}",
     fields: []
   },
@@ -65213,7 +65213,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F495} **{from}** grli **{to}**!\nBudi slobodan/na primiti ovaj zagrljaj! \u{1FAC2}",
     color: "#FF85C8",
     category: "Ljubavne",
-    footer: "GIANNI (Custom) \u2022 Zagrljaj",
+    footer: "GIAN (Custom) \u2022 Zagrljaj",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65223,7 +65223,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F618} **{from}** \u0161alje poljubac **{to}**!",
     color: "#FF85C8",
     category: "Ljubavne",
-    footer: "GIANNI (Custom) \u2022 Poljubac",
+    footer: "GIAN (Custom) \u2022 Poljubac",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65233,7 +65233,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F495} **{from}** mazi **{to}**!",
     color: "#FF85C8",
     category: "Ljubavne",
-    footer: "GIANNI (Custom) \u2022 Mazi",
+    footer: "GIAN (Custom) \u2022 Mazi",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65243,7 +65243,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1FAF6} **{from}** tapsi **{to}** po glavi!",
     color: "#FF85C8",
     category: "Ljubavne",
-    footer: "GIANNI (Custom) \u2022 Tapsi",
+    footer: "GIAN (Custom) \u2022 Tapsi",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65253,7 +65253,7 @@ var DEFAULT_EMBEDS = [
     description: "\u270B **{from}** daje high five **{to}**!",
     color: "#FF85C8",
     category: "Ljubavne",
-    footer: "GIANNI (Custom) \u2022 High Five",
+    footer: "GIAN (Custom) \u2022 High Five",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65263,7 +65263,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F440} **{from}** gleda \u010Dudno u **{to}**...\nNiko ne zna za\u0161to! \u{1F914}",
     color: "#FF85C8",
     category: "Ljubavne",
-    footer: "GIANNI (Custom) \u2022 \u0106udan",
+    footer: "GIAN (Custom) \u2022 \u0106udan",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65273,7 +65273,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F495} **{from}** \u0161alje srce **{to}**!",
     color: "#FF85C8",
     category: "Ljubavne",
-    footer: "GIANNI (Custom) \u2022 Srce",
+    footer: "GIAN (Custom) \u2022 Srce",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65283,7 +65283,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F492} **{from}** prosi **{to}**!\n\u{1F451} Ho\u0107e\u0161 li prihvatiti?\n",
     color: "#FF85C8",
     category: "Ljubavne",
-    footer: "GIANNI (Custom) \u2022 Prosidba",
+    footer: "GIAN (Custom) \u2022 Prosidba",
     thumbnail: "{to.avatar}",
     fields: []
   },
@@ -65294,7 +65294,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3B6} **{user}** slu\u0161a muziku:",
     color: "#1DB954",
     category: "Info",
-    footer: "GIANNI (Custom) \u2022 Spotify",
+    footer: "GIAN (Custom) \u2022 Spotify",
     thumbnail: "{albumArt}",
     fields: [
       { name: "\u{1F3B5} Pjesma", value: "**{song}**", inline: true },
@@ -65308,7 +65308,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4E8} Pregled pozivnica za **{user}**:",
     color: "#14b8a6",
     category: "Info",
-    footer: "GIANNI (Custom) \u2022 Pozivnice",
+    footer: "GIAN (Custom) \u2022 Pozivnice",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u2705 Pozvano", value: "`{invites}`", inline: true },
@@ -65322,7 +65322,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F464} Avatar od **{user}**:",
     color: "#14b8a6",
     category: "Info",
-    footer: "GIANNI (Custom) \u2022 Avatar",
+    footer: "GIAN (Custom) \u2022 Avatar",
     thumbnail: null,
     fields: []
   },
@@ -65332,7 +65332,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4CA} Trenutno stanje brojanja na serveru:",
     color: "#14b8a6",
     category: "Info",
-    footer: "GIANNI (Custom) \u2022 Brojanje",
+    footer: "GIAN (Custom) \u2022 Brojanje",
     thumbnail: null,
     fields: [
       { name: "\u{1F522} Broj", value: "`{count}`", inline: true },
@@ -65347,7 +65347,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4E9} Treba\u0161 pomo\u0107? Klikni dugme ispod!\n\u{1F6E1}\uFE0F Staff \u0107e ti odgovoriti \u0161to prije.\n",
     color: "#a78bfa",
     category: "Sistem paneli",
-    footer: "GIANNI (Custom) \u2022 Support",
+    footer: "GIAN (Custom) \u2022 Support",
     thumbnail: null,
     fields: []
   },
@@ -65357,7 +65357,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3AB} **{user}**, tiket je otvoren!\n\n\u{1F4DD} Opi\u0161i problem i staff \u0107e ti pomo\u0107i.\n\u23F3 Odgovor sti\u017Ee \u0161to prije!",
     color: "#22c55e",
     category: "Sistem paneli",
-    footer: "GIANNI (Custom) \u2022 Tiket",
+    footer: "GIAN (Custom) \u2022 Tiket",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F194} Tiket ID", value: "`#{ticketId}`", inline: true },
@@ -65370,7 +65370,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2B50 \u017Deli postati staff?\n\u{1F4DD} Ispuni prijavu klikom na dugme!\n",
     color: "#a78bfa",
     category: "Sistem paneli",
-    footer: "GIANNI (Custom) \u2022 Staff Prijava",
+    footer: "GIAN (Custom) \u2022 Staff Prijava",
     thumbnail: null,
     fields: []
   },
@@ -65380,7 +65380,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F512} Upravljaj privatnim voice kanalom!\n",
     color: "#a78bfa",
     category: "Sistem paneli",
-    footer: "GIANNI (Custom) \u2022 Privatni VC",
+    footer: "GIAN (Custom) \u2022 Privatni VC",
     thumbnail: null,
     fields: []
   },
@@ -65390,7 +65390,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4CB} **Pravila za Voice kanale:**\n\n\u{1F507} Ne uznemiravaj ostale\n\u{1F3B5} Muzika samo uz pristanak\n\u{1F6AB} Nema neprimjerenog sadr\u017Eaja\n",
     color: "#a78bfa",
     category: "Sistem paneli",
-    footer: "GIANNI (Custom) \u2022 Voice Pravila",
+    footer: "GIAN (Custom) \u2022 Voice Pravila",
     thumbnail: null,
     fields: []
   },
@@ -65401,7 +65401,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2B50 Najtopliji \u010Dlanovi servera:\n{leaderboard}",
     color: "#FF6A00",
     category: "Vatrice",
-    footer: "GIANNI (Custom) \u2022 Vatrice Top",
+    footer: "GIAN (Custom) \u2022 Vatrice Top",
     thumbnail: null,
     fields: []
   },
@@ -65411,7 +65411,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2B50 Vatrica sistem je aktivan!\n\u{1F4AC} Prikupljaj vatrice aktivno\u0161\u0107u!",
     color: "#FF6A00",
     category: "Vatrice",
-    footer: "GIANNI (Custom) \u2022 Vatrice",
+    footer: "GIAN (Custom) \u2022 Vatrice",
     thumbnail: null,
     fields: []
   },
@@ -65421,7 +65421,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4CD} Kanal za vatrice: {channel}\n\u2705 Sve vatrice idu u ovaj kanal!",
     color: "#FF6A00",
     category: "Vatrice",
-    footer: "GIANNI (Custom) \u2022 Vatrice",
+    footer: "GIAN (Custom) \u2022 Vatrice",
     thumbnail: null,
     fields: []
   },
@@ -65431,7 +65431,7 @@ var DEFAULT_EMBEDS = [
     description: "\u270F\uFE0F Emoji za vatrice promijenjen!\n\u279C Novi emoji: {emoji}",
     color: "#FF6A00",
     category: "Vatrice",
-    footer: "GIANNI (Custom) \u2022 Vatrice",
+    footer: "GIAN (Custom) \u2022 Vatrice",
     thumbnail: null,
     fields: []
   },
@@ -65442,7 +65442,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F43E} Tvoja Poo kreatura!\n",
     color: "#92400e",
     category: "Poo",
-    footer: "GIANNI (Custom) \u2022 Poo",
+    footer: "GIAN (Custom) \u2022 Poo",
     thumbnail: null,
     fields: [
       { name: "\u2764\uFE0F Zdravlje", value: "`{health}/100`", inline: true },
@@ -65456,7 +65456,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2705 Ispuni zadatke da hrani\u0161 svoju Poo!\n\n{tasks}",
     color: "#92400e",
     category: "Poo",
-    footer: "GIANNI (Custom) \u2022 Poo Zadaci",
+    footer: "GIAN (Custom) \u2022 Poo Zadaci",
     thumbnail: null,
     fields: []
   },
@@ -65466,7 +65466,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4A9} Najbolji \u010Duvari Poo kreatura:\n{leaderboard}",
     color: "#92400e",
     category: "Poo",
-    footer: "GIANNI (Custom) \u2022 Poo Top",
+    footer: "GIAN (Custom) \u2022 Poo Top",
     thumbnail: null,
     fields: []
   },
@@ -65476,7 +65476,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2705 **{user}** je hranio/la svoju Poo!\n\u{1F604} Sre\u0107a: +{happiness} | \u{1F356} Sitost: +{hunger}",
     color: "#22c55e",
     category: "Poo",
-    footer: "GIANNI (Custom) \u2022 Poo Hrani",
+    footer: "GIAN (Custom) \u2022 Poo Hrani",
     thumbnail: null,
     fields: []
   },
@@ -65486,7 +65486,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F43E} **{user}** briga o Poo kreaturama:",
     color: "#92400e",
     category: "Poo",
-    footer: "GIANNI (Custom) \u2022 Poo Info",
+    footer: "GIAN (Custom) \u2022 Poo Info",
     thumbnail: "{user.avatar}",
     fields: [
       { name: "\u{1F356} Hranjenja", value: "`{feedings}`", inline: true },
@@ -65500,7 +65500,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2705 Server backup uspje\u0161no snimljen!\n\u{1F4C5} Datum: **{datum}**",
     color: "#64748b",
     category: "Admin",
-    footer: "GIANNI (Custom) \u2022 Backup",
+    footer: "GIAN (Custom) \u2022 Backup",
     thumbnail: null,
     fields: [
       { name: "\u{1F4BE} Veli\u010Dina", value: "`{size}`", inline: true },
@@ -65513,7 +65513,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2705 Server backup vra\u0107en!\n\u279C Svi podaci prepisani backupom od **{datum}**.",
     color: "#64748b",
     category: "Admin",
-    footer: "GIANNI (Custom) \u2022 Backup Restore",
+    footer: "GIAN (Custom) \u2022 Backup Restore",
     thumbnail: null,
     fields: []
   },
@@ -65523,7 +65523,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F4BE} Pregled backup stanja:",
     color: "#64748b",
     category: "Admin",
-    footer: "GIANNI (Custom) \u2022 Backup Status",
+    footer: "GIAN (Custom) \u2022 Backup Status",
     thumbnail: null,
     fields: [
       { name: "\u2705 Zadnji backup", value: "{lastBackup}", inline: true },
@@ -65536,7 +65536,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F512} Prijava je zatvoren od strane **{mod}**.\n\n\u{1F4CB} **Ishod:** {outcome}",
     color: "#64748b",
     category: "Admin",
-    footer: "GIANNI (Custom) \u2022 Report Zatvoren",
+    footer: "GIAN (Custom) \u2022 Report Zatvoren",
     thumbnail: null,
     fields: []
   },
@@ -65546,7 +65546,7 @@ var DEFAULT_EMBEDS = [
     description: "\u26A0\uFE0F **{reporter}** prijavio/la **{reported}**!\n\n\u{1F4CB} **Razlog:** {reason}",
     color: "#64748b",
     category: "Admin",
-    footer: "GIANNI (Custom) \u2022 Nova Prijava",
+    footer: "GIAN (Custom) \u2022 Nova Prijava",
     thumbnail: null,
     fields: [
       { name: "\u{1F194} ID", value: "`{reportId}`", inline: true },
@@ -65560,7 +65560,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3B5} **{title}**\n\u{1F3A4} Izvo\u0111a\u010D: **{artist}**\n",
     color: "#8b5cf6",
     category: "Muzika",
-    footer: "GIANNI (Custom) \u2022 Muzika",
+    footer: "GIAN (Custom) \u2022 Muzika",
     thumbnail: "{thumbnail}",
     fields: [
       { name: "\u23F1\uFE0F Trajanje", value: "`{duration}`", inline: true },
@@ -65574,7 +65574,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3B5} **Trenutno:** {current}\n\n\u{1F4CB} **Sljede\u0107e:**\n{queue}\n",
     color: "#8b5cf6",
     category: "Muzika",
-    footer: "GIANNI (Custom) \u2022 Queue",
+    footer: "GIAN (Custom) \u2022 Queue",
     thumbnail: null,
     fields: [
       { name: "\u{1F3B5} Pjesama u redu", value: "`{count}`", inline: true }
@@ -65586,7 +65586,7 @@ var DEFAULT_EMBEDS = [
     description: "\u23ED\uFE0F **{user}** je presko\u010Dio/la: **{title}**\n\u25B6\uFE0F Sljede\u0107e: **{next}**",
     color: "#8b5cf6",
     category: "Muzika",
-    footer: "GIANNI (Custom) \u2022 Skip",
+    footer: "GIAN (Custom) \u2022 Skip",
     thumbnail: null,
     fields: []
   },
@@ -65596,7 +65596,7 @@ var DEFAULT_EMBEDS = [
     description: "\u23F8\uFE0F Muzika pauzirana od **{user}**.\n\u25B6\uFE0F Nastavi sa `/resume`.",
     color: "#8b5cf6",
     category: "Muzika",
-    footer: "GIANNI (Custom) \u2022 Pauza",
+    footer: "GIAN (Custom) \u2022 Pauza",
     thumbnail: null,
     fields: []
   },
@@ -65606,7 +65606,7 @@ var DEFAULT_EMBEDS = [
     description: "\u23F9\uFE0F **{user}** je zaustavio/la muziku.\n\u{1F3B5} Red \u010Dekanja obrisan.",
     color: "#8b5cf6",
     category: "Muzika",
-    footer: "GIANNI (Custom) \u2022 Stop",
+    footer: "GIAN (Custom) \u2022 Stop",
     thumbnail: null,
     fields: []
   },
@@ -65616,7 +65616,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3B5} **{title}** \u2014 {artist}\n\n{lyrics}\n",
     color: "#8b5cf6",
     category: "Muzika",
-    footer: "GIANNI (Custom) \u2022 Lyrics",
+    footer: "GIAN (Custom) \u2022 Lyrics",
     thumbnail: null,
     fields: []
   },
@@ -65627,7 +65627,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2705 Verificiraj se da pristupi\u0161 serveru!\n\u{1F512} Klikni dugme ispod.\n",
     color: "#06b6d4",
     category: "Verifikacija",
-    footer: "GIANNI (Custom) \u2022 Verifikacija",
+    footer: "GIAN (Custom) \u2022 Verifikacija",
     thumbnail: null,
     fields: []
   },
@@ -65637,7 +65637,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F389} **{user}**, uspje\u0161no si verificiran/a!\n\u{1F680} Dobrodo\u0161ao/la na server!",
     color: "#22c55e",
     category: "Verifikacija",
-    footer: "GIANNI (Custom) \u2022 Verifikacija",
+    footer: "GIAN (Custom) \u2022 Verifikacija",
     thumbnail: "{user.avatar}",
     fields: []
   },
@@ -65647,7 +65647,7 @@ var DEFAULT_EMBEDS = [
     description: "\u26A0\uFE0F **{user}**, verifikacija nije uspjela.\n\u{1F504} Poku\u0161aj ponovo.",
     color: "#ef4444",
     category: "Verifikacija",
-    footer: "GIANNI (Custom) \u2022 Verifikacija",
+    footer: "GIAN (Custom) \u2022 Verifikacija",
     thumbnail: null,
     fields: []
   },
@@ -65658,7 +65658,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2753 **{question}**\n{options}",
     color: "#f43f5e",
     category: "Ankete",
-    footer: "GIANNI (Custom) \u2022 Anketa",
+    footer: "GIAN (Custom) \u2022 Anketa",
     thumbnail: null,
     fields: [
       { name: "\u23F0 Zavr\u0161ava", value: "{endTime}", inline: true }
@@ -65670,7 +65670,7 @@ var DEFAULT_EMBEDS = [
     description: "\u2753 **{question}**\n{results}",
     color: "#f43f5e",
     category: "Ankete",
-    footer: "GIANNI (Custom) \u2022 Anketa Rezultati",
+    footer: "GIAN (Custom) \u2022 Anketa Rezultati",
     thumbnail: null,
     fields: [
       { name: "\u{1F465} Ukupno glasova", value: "`{total}`", inline: true }
@@ -65683,7 +65683,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3AD} Odaberi svoju ulogu klikom na dugme!\n",
     color: "#d946ef",
     category: "Reaction Roles",
-    footer: "GIANNI (Custom) \u2022 Reaction Roles",
+    footer: "GIAN (Custom) \u2022 Reaction Roles",
     thumbnail: null,
     fields: []
   },
@@ -65693,7 +65693,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3AD} **{user}** dobio/la ulogu **{role}**!",
     color: "#22c55e",
     category: "Reaction Roles",
-    footer: "GIANNI (Custom) \u2022 Reaction Roles",
+    footer: "GIAN (Custom) \u2022 Reaction Roles",
     thumbnail: null,
     fields: []
   },
@@ -65703,7 +65703,7 @@ var DEFAULT_EMBEDS = [
     description: "\u{1F3AD} **{user}** izgubio/la ulogu **{role}**.",
     color: "#d946ef",
     category: "Reaction Roles",
-    footer: "GIANNI (Custom) \u2022 Reaction Roles",
+    footer: "GIAN (Custom) \u2022 Reaction Roles",
     thumbnail: null,
     fields: []
   }
@@ -65906,7 +65906,7 @@ async function writeConfig(key2, value) {
 var router5 = (0, import_express5.Router)();
 var KEY = "settings";
 var DEFAULT_SETTINGS = {
-  botName: "GIANNI (Custom)",
+  botName: "GIAN (Custom)",
   version: "v2.0",
   prefix: ".",
   officialGuildId: "1496860022066385016",
@@ -66527,7 +66527,7 @@ router6.post("/discord/channels/:channelId/send-embed", async (req, res) => {
     "{user}": "@TestUser",
     "{user.name}": "TestUser",
     "{user.avatar}": "https://cdn.discordapp.com/embed/avatars/0.png",
-    "{server}": "GIANNI",
+    "{server}": "GIAN",
     "{accountAge}": "2g 3m",
     "{joinedAt}": now.toLocaleString("sr-Latn", { month: "short", year: "numeric" }),
     "{count}": "1.234",
@@ -66978,6 +66978,65 @@ router11.post("/auth/discord/logout", (req, res) => {
   res.clearCookie(SESSION_COOKIE, { path: "/" });
   res.json({ ok: true });
 });
+function safeEqual(a, b) {
+  const ab = Buffer.from(a);
+  const bb = Buffer.from(b);
+  if (ab.length !== bb.length) return false;
+  return crypto3.timingSafeEqual(ab, bb);
+}
+router11.post("/profile/add-guild", async (req, res) => {
+  const sess = verifySession(req.cookies?.[SESSION_COOKIE]);
+  if (!sess) {
+    res.status(401).json({ ok: false, error: "Niste prijavljeni." });
+    return;
+  }
+  const { guildId, password } = req.body;
+  if (typeof guildId !== "string" || !/^\d{15,25}$/.test(guildId.trim())) {
+    res.status(400).json({ ok: false, error: "Neispravan ID servera." });
+    return;
+  }
+  const secret2 = process.env.PANEL_SECRET;
+  if (secret2) {
+    if (typeof password !== "string" || !safeEqual(password, secret2)) {
+      res.status(403).json({ ok: false, error: "Pogre\u0161na \u0161ifra." });
+      return;
+    }
+  }
+  const id = guildId.trim();
+  const profile = await readConfig(`profile:${sess.uid}`) ?? null;
+  if (!profile) {
+    res.status(401).json({ ok: false, error: "Profil nije prona\u0111en." });
+    return;
+  }
+  let name2 = `Server ${id}`;
+  let icon = null;
+  const token = process.env.DISCORD_TOKEN;
+  if (token) {
+    try {
+      const r = await fetch(`https://discord.com/api/guilds/${id}`, {
+        headers: { Authorization: `Bot ${token}` }
+      });
+      if (r.ok) {
+        const g = await r.json();
+        if (g.name) name2 = g.name;
+        icon = g.icon ?? null;
+      }
+    } catch {
+    }
+  }
+  const guilds = Array.isArray(profile.guilds) ? profile.guilds : [];
+  const idx = guilds.findIndex((g) => g.id === id);
+  if (idx >= 0) {
+    guilds[idx] = { id, name: name2, icon, owner: true };
+  } else {
+    guilds.push({ id, name: name2, icon, owner: true });
+  }
+  profile.guilds = guilds;
+  profile.updatedAt = (/* @__PURE__ */ new Date()).toISOString();
+  await writeConfig(`profile:${sess.uid}`, profile);
+  const bot = await getBotGuilds();
+  res.json({ ok: true, guild: { id, name: name2, icon, owner: true, hasBot: bot.has(id) } });
+});
 router11.put("/profile/decoration", async (req, res) => {
   const sess = verifySession(req.cookies?.[SESSION_COOKIE]);
   if (!sess) {
@@ -67387,7 +67446,7 @@ ${btn(493, 414, 128, 45, "MessageCircle", cardBtn4, false)}
 
 <!-- \u2500\u2500\u2500 FOOTER \u2500\u2500\u2500 -->
 ${star4(316, 488, 4, "#8855a0", "0.85")}
-<text x="450" y="492" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#8855a0" letter-spacing="1.5">GIANNI  *  WELCOME SYSTEM</text>
+<text x="450" y="492" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#8855a0" letter-spacing="1.5">GIAN  *  WELCOME SYSTEM</text>
 ${star4(584, 488, 4, "#8855a0", "0.85")}
 </svg>`;
   try {
