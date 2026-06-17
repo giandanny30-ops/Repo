@@ -69304,7 +69304,7 @@ function freshDeck() {
   return d;
 }
 function makePlayer(id, name2) {
-  return { id, name: name2, chips: START_CHIPS, hand: [], currentBet: 0, folded: false, allin: false, hasActed: false, hasDrawn: false, discardCount: 0 };
+  return { id, name: name2, chips: START_CHIPS, hand: [], currentBet: 0, committed: 0, folded: false, allin: false, hasActed: false, hasDrawn: false, discardCount: 0 };
 }
 function activePlayers(room) {
   return room.players.filter((p) => !p.folded);
@@ -69317,6 +69317,7 @@ function putIn(p, target) {
   if (delta <= 0) return;
   p.chips -= delta;
   p.currentBet += delta;
+  p.committed += delta;
   if (p.chips === 0) p.allin = true;
 }
 function collectBets(room) {
@@ -69326,23 +69327,29 @@ function collectBets(room) {
     p.hasActed = false;
   }
 }
-function firstActiveAfterDealer(room) {
+function nextSeat(room, from, includeAllin) {
   for (let i = 1; i <= room.players.length; i++) {
-    const idx = (room.dealerIdx + i) % room.players.length;
+    const idx = (from + i) % room.players.length;
     const p = room.players[idx];
-    if (!p.folded && !p.allin) return idx;
+    if (!p.folded && (includeAllin || !p.allin)) return idx;
   }
-  return room.dealerIdx;
+  return -1;
+}
+function firstActiveAfterDealer(room) {
+  const i = nextSeat(room, room.dealerIdx, false);
+  return i === -1 ? room.dealerIdx : i;
+}
+function firstToDrawAfterDealer(room) {
+  const i = nextSeat(room, room.dealerIdx, true);
+  return i === -1 ? room.dealerIdx : i;
 }
 function advanceTurn2(room) {
-  for (let i = 1; i <= room.players.length; i++) {
-    const idx = (room.turnIdx + i) % room.players.length;
-    const p = room.players[idx];
-    if (!p.folded && !p.allin) {
-      room.turnIdx = idx;
-      return;
-    }
-  }
+  const i = nextSeat(room, room.turnIdx, false);
+  if (i !== -1) room.turnIdx = i;
+}
+function advanceDrawTurn(room) {
+  const i = nextSeat(room, room.turnIdx, true);
+  if (i !== -1) room.turnIdx = i;
 }
 function bettingComplete(room) {
   const act = activePlayers(room);
@@ -69419,10 +69426,45 @@ function settleShowdown(room) {
     room.phase = "showdown";
     return;
   }
+  const totalPot = room.pot;
+  const handVal = /* @__PURE__ */ new Map();
+  for (const p of contenders) handVal.set(p.id, evalHand(p.hand));
+  const levels = [...new Set(room.players.map((p) => p.committed).filter((c) => c > 0))].sort((a, b) => a - b);
+  const payout = /* @__PURE__ */ new Map();
+  let prev = 0;
+  for (const lvl of levels) {
+    const layer = lvl - prev;
+    prev = lvl;
+    if (layer <= 0) continue;
+    const contributors = room.players.filter((p) => p.committed >= lvl);
+    const potAmt = layer * contributors.length;
+    if (potAmt <= 0) continue;
+    const eligible = contributors.filter((p) => !p.folded);
+    if (eligible.length === 0) continue;
+    let layerBest = null;
+    let layerWinners = [];
+    for (const p of eligible) {
+      const v = handVal.get(p.id);
+      if (!layerBest || cmpHand(v, layerBest) > 0) {
+        layerBest = v;
+        layerWinners = [p];
+      } else if (cmpHand(v, layerBest) === 0) {
+        layerWinners.push(p);
+      }
+    }
+    const share = Math.floor(potAmt / layerWinners.length);
+    const rem = potAmt - share * layerWinners.length;
+    for (const w of layerWinners) payout.set(w.id, (payout.get(w.id) || 0) + share);
+    if (rem > 0) payout.set(layerWinners[0].id, (payout.get(layerWinners[0].id) || 0) + rem);
+  }
+  for (const [pid, amt] of payout) {
+    const p = room.players.find((x) => x.id === pid);
+    if (p) p.chips += amt;
+  }
   let best = null;
   let winners = [];
   for (const p of contenders) {
-    const v = evalHand(p.hand);
+    const v = handVal.get(p.id);
     if (!best || cmpHand(v, best) > 0) {
       best = v;
       winners = [p];
@@ -69430,12 +69472,8 @@ function settleShowdown(room) {
       winners.push(p);
     }
   }
-  const share = Math.floor(room.pot / winners.length);
-  for (const w of winners) w.chips += share;
-  const remainder = room.pot - share * winners.length;
-  if (remainder > 0) winners[0].chips += remainder;
   room.winner = winners.map((w) => w.name).join(" & ");
-  room.lastAction = winners.length === 1 ? `\u{1F3C6} ${winners[0].name} pobje\u0111uje sa: ${best.name} (pot ${room.pot})` : `Podijeljen pot: ${room.winner} (${best.name})`;
+  room.lastAction = winners.length === 1 ? `\u{1F3C6} ${winners[0].name} pobje\u0111uje sa: ${best.name} (pot ${totalPot})` : `Podijeljen pot: ${room.winner} (${best.name})`;
   room.pot = 0;
   room.phase = "showdown";
 }
@@ -69449,7 +69487,7 @@ function endBettingRoundIfDone(room) {
     collectBets(room);
     room.phase = "draw";
     for (const p of room.players) p.hasDrawn = false;
-    room.turnIdx = firstActiveAfterDealer(room);
+    room.turnIdx = firstToDrawAfterDealer(room);
     room.lastAction = "Faza skidanja \u2014 bacite karte koje ne \u017Eelite";
   } else if (room.phase === "bet2") {
     settleShowdown(room);
@@ -69462,8 +69500,9 @@ function advanceDrawIfDone(room) {
     for (const p of room.players) p.hasActed = false;
     room.turnIdx = firstActiveAfterDealer(room);
     room.lastAction = "Drugi krug uloga";
+    if (bettingComplete(room)) endBettingRoundIfDone(room);
   } else {
-    advanceTurn2(room);
+    advanceDrawTurn(room);
   }
 }
 function sanitize2(room, playerId) {
@@ -69512,6 +69551,7 @@ router22.post("/play/poker", (_req, res) => {
     players: [],
     phase: "waiting",
     deck: [],
+    discards: [],
     pot: 0,
     turnIdx: 0,
     dealerIdx: 0,
@@ -69536,11 +69576,13 @@ router22.post("/play/poker/:code/join", (req, res) => {
 });
 function dealHand(room) {
   room.deck = freshDeck();
+  room.discards = [];
   room.pot = 0;
   room.winner = null;
   for (const p of room.players) {
     p.hand = [];
     p.currentBet = 0;
+    p.committed = 0;
     p.folded = false;
     p.allin = false;
     p.hasActed = false;
@@ -69550,6 +69592,7 @@ function dealHand(room) {
   for (const p of room.players) {
     const a = Math.min(ANTE, p.chips);
     p.chips -= a;
+    p.committed += a;
     room.pot += a;
     if (p.chips === 0) p.allin = true;
   }
@@ -69557,6 +69600,7 @@ function dealHand(room) {
   room.phase = "bet1";
   room.turnIdx = firstActiveAfterDealer(room);
   room.lastAction = `Podijeljeno! Ante ${ANTE}. Prvi krug uloga.`;
+  if (bettingComplete(room)) endBettingRoundIfDone(room);
 }
 router22.post("/play/poker/:code/start", (req, res) => {
   const room = rooms4.get(req.params.code);
@@ -69625,12 +69669,22 @@ router22.post("/play/poker/:code/action", (req, res) => {
     const idxs = Array.isArray(discard) ? [...new Set(discard)].filter((i) => Number.isInteger(i) && i >= 0 && i < 5) : [];
     if (idxs.length > 5) return res.status(400).json({ error: "Najvi\u0161e 5 karata" });
     const keep = me.hand.filter((_, i) => !idxs.includes(i));
+    const removed = me.hand.filter((_, i) => idxs.includes(i));
     const drawn = [];
     for (let i = 0; i < idxs.length; i++) {
+      if (room.deck.length === 0 && room.discards.length > 0) {
+        room.deck = room.discards;
+        room.discards = [];
+        for (let k = room.deck.length - 1; k > 0; k--) {
+          const j = Math.floor(Math.random() * (k + 1));
+          [room.deck[k], room.deck[j]] = [room.deck[j], room.deck[k]];
+        }
+      }
       const c = room.deck.pop();
       if (c) drawn.push(c);
     }
     me.hand = [...keep, ...drawn];
+    room.discards.push(...removed);
     me.hasDrawn = true;
     me.discardCount = idxs.length;
     room.lastAction = `${me.name} mijenja ${idxs.length} ${idxs.length === 1 ? "kartu" : "karata"}`;
