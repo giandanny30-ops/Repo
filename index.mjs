@@ -64161,6 +64161,10 @@ import { createHash } from "crypto";
 function makeToken(secret2) {
   return createHash("sha256").update(secret2 + ":gianni-panel-v2").digest("hex");
 }
+function makePremiumToken(secret2) {
+  return createHash("sha256").update(secret2 + ":gian-premium-readonly-v1").digest("hex");
+}
+var READ_METHODS = /* @__PURE__ */ new Set(["GET", "HEAD", "OPTIONS"]);
 function authMiddleware(req, res, next) {
   const secret2 = process.env.PANEL_SECRET;
   if (!secret2) {
@@ -64177,11 +64181,80 @@ function authMiddleware(req, res, next) {
   }
   const auth = req.headers.authorization ?? "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (!token || token !== makeToken(secret2)) {
-    res.status(401).json({ error: "Neautorizovano \u2014 prijava obavezna." });
+  if (token && token === makeToken(secret2)) {
+    next();
     return;
   }
-  next();
+  if (token && token === makePremiumToken(secret2)) {
+    if (READ_METHODS.has(req.method)) {
+      next();
+      return;
+    }
+    res.status(403).json({ error: "Premium pristup je samo za gledanje \u2014 izmjene nisu dozvoljene." });
+    return;
+  }
+  res.status(401).json({ error: "Neautorizovano \u2014 prijava obavezna." });
+}
+
+// src/lib/config-store.ts
+init_drizzle_orm();
+import fs from "fs";
+import path from "path";
+var _db = null;
+var _configTable = null;
+var _dbAvailable = null;
+async function getDb() {
+  if (_dbAvailable === false) return null;
+  if (_db && _configTable) return { db: _db, configTable: _configTable };
+  try {
+    const mod = await Promise.resolve().then(() => (init_src(), src_exports));
+    _db = mod.db;
+    _configTable = mod.configTable;
+    _dbAvailable = true;
+    return { db: _db, configTable: _configTable };
+  } catch {
+    _dbAvailable = false;
+    return null;
+  }
+}
+function fileFor(key2) {
+  return path.join(process.cwd(), "data", `${key2}.json`);
+}
+async function readConfig(key2) {
+  const conn = await getDb();
+  if (conn) {
+    try {
+      const rows = await conn.db.select().from(conn.configTable).where(eq(conn.configTable.key, key2));
+      if (rows[0]) return rows[0].data;
+    } catch {
+    }
+  }
+  const file = fileFor(key2);
+  try {
+    if (fs.existsSync(file)) {
+      return JSON.parse(fs.readFileSync(file, "utf-8"));
+    }
+  } catch {
+  }
+  return null;
+}
+async function writeConfig(key2, value) {
+  const conn = await getDb();
+  if (conn) {
+    try {
+      await conn.db.insert(conn.configTable).values({ key: key2, data: value }).onConflictDoUpdate({
+        target: conn.configTable.key,
+        set: { data: value, updatedAt: /* @__PURE__ */ new Date() }
+      });
+    } catch {
+    }
+  }
+  const file = fileFor(key2);
+  try {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, JSON.stringify(value, null, 2), "utf-8");
+  } catch {
+  }
 }
 
 // src/routes/auth.ts
@@ -64190,6 +64263,11 @@ router2.use("/auth", (_req, res, next) => {
   res.set("Cache-Control", "no-store, no-cache, must-revalidate");
   next();
 });
+async function getPremiumCode() {
+  const settings = await readConfig("settings");
+  const code = settings?.premiumCode;
+  return code && typeof code === "string" && code.trim().length > 0 ? code.trim() : null;
+}
 router2.post("/auth/login", (req, res) => {
   const secret2 = process.env.PANEL_SECRET;
   if (!secret2) {
@@ -64204,15 +64282,36 @@ router2.post("/auth/login", (req, res) => {
   req.log.info({ ip: req.ip }, "Panel login success");
   return res.json({ token, devMode: false });
 });
+router2.post("/auth/premium-login", async (req, res) => {
+  const secret2 = process.env.PANEL_SECRET;
+  if (!secret2) {
+    return res.json({ token: "dev-mode", devMode: true, premium: true });
+  }
+  const { code } = req.body;
+  const premiumCode = await getPremiumCode();
+  if (!premiumCode) {
+    return res.status(503).json({ error: "Premium trenutno nije aktiviran. Kontaktiraj vlasnika." });
+  }
+  if (!code || code.trim() !== premiumCode) {
+    req.log.warn({ ip: req.ip }, "Failed premium login attempt");
+    return res.status(401).json({ error: "Pogre\u0161an premium kod." });
+  }
+  const token = makePremiumToken(secret2);
+  req.log.info({ ip: req.ip }, "Premium login success");
+  return res.json({ token, devMode: false, premium: true });
+});
 router2.get("/auth/verify", (req, res) => {
   const secret2 = process.env.PANEL_SECRET;
   if (!secret2) return res.json({ ok: true, devMode: true });
   const auth = req.headers.authorization ?? "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (!token || token !== makeToken(secret2)) {
-    return res.status(401).json({ ok: false });
+  if (token && token === makeToken(secret2)) {
+    return res.json({ ok: true, devMode: false });
   }
-  return res.json({ ok: true, devMode: false });
+  if (token && token === makePremiumToken(secret2)) {
+    return res.json({ ok: true, devMode: false, premium: true });
+  }
+  return res.status(401).json({ ok: false });
 });
 var auth_default = router2;
 
@@ -64416,20 +64515,20 @@ var commands_default = router3;
 var import_express4 = __toESM(require_express2(), 1);
 init_drizzle_orm();
 var router4 = (0, import_express4.Router)();
-var _db = null;
+var _db2 = null;
 var _embedsTable = null;
-var _dbAvailable = null;
-async function getDb() {
-  if (_dbAvailable === false) return null;
-  if (_db && _embedsTable) return { db: _db, embedsTable: _embedsTable };
+var _dbAvailable2 = null;
+async function getDb2() {
+  if (_dbAvailable2 === false) return null;
+  if (_db2 && _embedsTable) return { db: _db2, embedsTable: _embedsTable };
   try {
     const mod = await Promise.resolve().then(() => (init_src(), src_exports));
-    _db = mod.db;
+    _db2 = mod.db;
     _embedsTable = mod.embedsTable;
-    _dbAvailable = true;
-    return { db: _db, embedsTable: _embedsTable };
+    _dbAvailable2 = true;
+    return { db: _db2, embedsTable: _embedsTable };
   } catch {
-    _dbAvailable = false;
+    _dbAvailable2 = false;
     return null;
   }
 }
@@ -65710,7 +65809,7 @@ var DEFAULT_EMBEDS = [
 ];
 var DEFAULT_NAMES = new Set(DEFAULT_EMBEDS.map((e) => e.name));
 async function loadEmbeds() {
-  const conn = await getDb();
+  const conn = await getDb2();
   if (!conn) return DEFAULT_EMBEDS;
   const { db: db2, embedsTable: embedsTable2 } = conn;
   const rows = await db2.select().from(embedsTable2);
@@ -65736,7 +65835,7 @@ router4.get("/embeds", async (req, res) => {
 });
 router4.get("/embeds/:name", async (req, res) => {
   try {
-    const conn = await getDb();
+    const conn = await getDb2();
     if (conn) {
       const { db: db2, embedsTable: embedsTable2 } = conn;
       const rows = await db2.select().from(embedsTable2).where(eq(embedsTable2.name, req.params.name));
@@ -65753,7 +65852,7 @@ router4.get("/embeds/:name", async (req, res) => {
 });
 router4.post("/embeds/reset-all", async (req, res) => {
   try {
-    const conn = await getDb();
+    const conn = await getDb2();
     if (!conn) return res.status(503).json({ error: "Database not available" });
     const { db: db2, embedsTable: embedsTable2 } = conn;
     for (const embed of DEFAULT_EMBEDS) {
@@ -65772,7 +65871,7 @@ router4.put("/embeds/:name", async (req, res) => {
   try {
     const name2 = req.params.name;
     const def = DEFAULT_EMBEDS.find((e) => e.name === name2);
-    const conn = await getDb();
+    const conn = await getDb2();
     if (!conn) {
       return res.json({ ...def ?? { name: name2 }, ...req.body, name: name2 });
     }
@@ -65796,7 +65895,7 @@ router4.post("/embeds", async (req, res) => {
     if (DEFAULT_NAMES.has(name2)) {
       return res.status(409).json({ error: "Embed sa tim nazivom ve\u0107 postoji." });
     }
-    const conn = await getDb();
+    const conn = await getDb2();
     if (!conn) return res.status(503).json({ error: "Baza nije dostupna." });
     const { db: db2, embedsTable: embedsTable2 } = conn;
     const data = {
@@ -65827,7 +65926,7 @@ router4.delete("/embeds/:name", async (req, res) => {
     if (DEFAULT_NAMES.has(name2)) {
       return res.status(400).json({ error: "Sistemski embed se ne mo\u017Ee obrisati (samo resetovati)." });
     }
-    const conn = await getDb();
+    const conn = await getDb2();
     if (!conn) return res.status(503).json({ error: "Baza nije dostupna." });
     await conn.db.delete(conn.embedsTable).where(eq(conn.embedsTable.name, name2));
     return res.json({ ok: true });
@@ -65840,71 +65939,15 @@ var embeds_default = router4;
 
 // src/routes/settings.ts
 var import_express5 = __toESM(require_express2(), 1);
-
-// src/lib/config-store.ts
-init_drizzle_orm();
-import fs from "fs";
-import path from "path";
-var _db2 = null;
-var _configTable = null;
-var _dbAvailable2 = null;
-async function getDb2() {
-  if (_dbAvailable2 === false) return null;
-  if (_db2 && _configTable) return { db: _db2, configTable: _configTable };
-  try {
-    const mod = await Promise.resolve().then(() => (init_src(), src_exports));
-    _db2 = mod.db;
-    _configTable = mod.configTable;
-    _dbAvailable2 = true;
-    return { db: _db2, configTable: _configTable };
-  } catch {
-    _dbAvailable2 = false;
-    return null;
-  }
-}
-function fileFor(key2) {
-  return path.join(process.cwd(), "data", `${key2}.json`);
-}
-async function readConfig(key2) {
-  const conn = await getDb2();
-  if (conn) {
-    try {
-      const rows = await conn.db.select().from(conn.configTable).where(eq(conn.configTable.key, key2));
-      if (rows[0]) return rows[0].data;
-    } catch {
-    }
-  }
-  const file = fileFor(key2);
-  try {
-    if (fs.existsSync(file)) {
-      return JSON.parse(fs.readFileSync(file, "utf-8"));
-    }
-  } catch {
-  }
-  return null;
-}
-async function writeConfig(key2, value) {
-  const conn = await getDb2();
-  if (conn) {
-    try {
-      await conn.db.insert(conn.configTable).values({ key: key2, data: value }).onConflictDoUpdate({
-        target: conn.configTable.key,
-        set: { data: value, updatedAt: /* @__PURE__ */ new Date() }
-      });
-    } catch {
-    }
-  }
-  const file = fileFor(key2);
-  try {
-    fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, JSON.stringify(value, null, 2), "utf-8");
-  } catch {
-  }
-}
-
-// src/routes/settings.ts
 var router5 = (0, import_express5.Router)();
 var KEY = "settings";
+function isOwner(req) {
+  const secret2 = process.env.PANEL_SECRET;
+  if (!secret2) return true;
+  const auth = req.headers.authorization ?? "";
+  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  return !!token && token === makeToken(secret2);
+}
 var DEFAULT_SETTINGS = {
   botName: "GIAN (Custom)",
   version: "v2.0",
@@ -65934,7 +65977,31 @@ async function loadSettings() {
   return { ...DEFAULT_SETTINGS, ...stored ?? {} };
 }
 router5.get("/settings", async (_req, res) => {
-  res.json(await loadSettings());
+  const settings = await loadSettings();
+  const { discordToken, premiumCode, ...safe } = settings;
+  void discordToken;
+  void premiumCode;
+  res.json(safe);
+});
+router5.get("/settings/premium-code", async (req, res) => {
+  if (!isOwner(req)) {
+    res.status(403).json({ error: "Samo vlasnik mo\u017Ee vidjeti premium kod." });
+    return;
+  }
+  const settings = await loadSettings();
+  const code = settings.premiumCode;
+  res.json({ code: typeof code === "string" ? code : "" });
+});
+router5.put("/settings/premium-code", async (req, res) => {
+  if (!isOwner(req)) {
+    res.status(403).json({ error: "Samo vlasnik mo\u017Ee mijenjati premium kod." });
+    return;
+  }
+  const { code } = req.body;
+  const current = await loadSettings();
+  current.premiumCode = typeof code === "string" ? code.trim() : "";
+  await writeConfig(KEY, current);
+  res.json({ ok: true });
 });
 router5.put("/settings", async (req, res) => {
   const current = await loadSettings();
