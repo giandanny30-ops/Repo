@@ -20488,27 +20488,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router23;
+    module.exports = Router24;
     module.exports.Route = Route;
-    function Router23(options) {
-      if (!(this instanceof Router23)) {
-        return new Router23(options);
+    function Router24(options) {
+      if (!(this instanceof Router24)) {
+        return new Router24(options);
       }
       const opts = options || {};
-      function router23(req, res, next) {
-        router23.handle(req, res, next);
+      function router24(req, res, next) {
+        router24.handle(req, res, next);
       }
-      Object.setPrototypeOf(router23, this);
-      router23.caseSensitive = opts.caseSensitive;
-      router23.mergeParams = opts.mergeParams;
-      router23.params = {};
-      router23.strict = opts.strict;
-      router23.stack = [];
-      return router23;
+      Object.setPrototypeOf(router24, this);
+      router24.caseSensitive = opts.caseSensitive;
+      router24.mergeParams = opts.mergeParams;
+      router24.params = {};
+      router24.strict = opts.strict;
+      router24.stack = [];
+      return router24;
     }
-    Router23.prototype = function() {
+    Router24.prototype = function() {
     };
-    Router23.prototype.param = function param2(name2, fn) {
+    Router24.prototype.param = function param2(name2, fn) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20528,7 +20528,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router23.prototype.handle = function handle(req, res, callback) {
+    Router24.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20655,7 +20655,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router23.prototype.use = function use(handler) {
+    Router24.prototype.use = function use(handler) {
       let offset = 0;
       let path4 = "/";
       if (typeof handler !== "function") {
@@ -20688,7 +20688,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router23.prototype.route = function route(path4) {
+    Router24.prototype.route = function route(path4) {
       const route2 = new Route(path4);
       const layer = new Layer(path4, {
         sensitive: this.caseSensitive,
@@ -20703,7 +20703,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router23.prototype[method] = function(path4) {
+      Router24.prototype[method] = function(path4) {
         const route = this.route(path4);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -20886,13 +20886,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router23 = require_router();
+    var Router24 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router23 = null;
+      var router24 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -20901,13 +20901,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router23 === null) {
-            router23 = new Router23({
+          if (router24 === null) {
+            router24 = new Router24({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router23;
+          return router24;
         }
       });
     };
@@ -20978,15 +20978,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router23 = this.router;
+      var router24 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router23.use(path4, fn2);
+          return router24.use(path4, fn2);
         }
         debug(".use app under %s", path4);
         fn2.mountpath = path4;
         fn2.parent = this;
-        router23.use(path4, function mounted_app(req, res, next) {
+        router24.use(path4, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -23513,7 +23513,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router23 = require_router();
+    var Router24 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module.exports = createApplication;
@@ -23535,8 +23535,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router23.Route;
-    exports.Router = Router23;
+    exports.Route = Router24.Route;
+    exports.Router = Router24;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -33822,7 +33822,7 @@ var require_utils_webcrypto = __commonJS({
     var nodeCrypto = __require("crypto");
     module.exports = {
       postgresMd5PasswordHash,
-      randomBytes: randomBytes8,
+      randomBytes: randomBytes9,
       deriveKey,
       sha256,
       hashByName,
@@ -33832,7 +33832,7 @@ var require_utils_webcrypto = __commonJS({
     var webCrypto = nodeCrypto.webcrypto || globalThis.crypto;
     var subtleCrypto = webCrypto.subtle;
     var textEncoder = new TextEncoder();
-    function randomBytes8(length) {
+    function randomBytes9(length) {
       return webCrypto.getRandomValues(Buffer.alloc(length));
     }
     async function md5(string) {
@@ -52522,7 +52522,7 @@ var require_lucide = __commonJS({
       ["path", { d: "M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" }],
       ["circle", { cx: "18", cy: "5", r: "3" }]
     ];
-    var Router23 = [
+    var Router24 = [
       ["rect", { width: "20", height: "8", x: "2", y: "14", rx: "2" }],
       ["path", { d: "M6.01 18H6" }],
       ["path", { d: "M10.01 18H10" }],
@@ -57592,7 +57592,7 @@ var require_lucide = __commonJS({
       RotateCwSquare,
       Route,
       RouteOff,
-      Router: Router23,
+      Router: Router24,
       Rows: Rows2,
       Rows2,
       Rows3,
@@ -59590,7 +59590,7 @@ var require_lucide = __commonJS({
     exports.RotateCwSquare = RotateCwSquare;
     exports.Route = Route;
     exports.RouteOff = RouteOff;
-    exports.Router = Router23;
+    exports.Router = Router24;
     exports.Rows = Rows2;
     exports.Rows2 = Rows2;
     exports.Rows3 = Rows3;
@@ -60112,7 +60112,7 @@ var require_lucide = __commonJS({
 });
 
 // src/app.ts
-var import_express23 = __toESM(require_express2(), 1);
+var import_express24 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_cookie_parser = __toESM(require_cookie_parser(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
@@ -69286,9 +69286,378 @@ setInterval(() => {
 }, 30 * 60 * 1e3);
 var play_reversi_default = router21;
 
-// src/routes/youtube.ts
+// src/routes/play-poker.ts
 var import_express22 = __toESM(require_express2(), 1);
+import { randomBytes as randomBytes8 } from "crypto";
 var router22 = (0, import_express22.Router)();
+var START_CHIPS = 1e3;
+var ANTE = 10;
+var MIN_BET = 10;
+var rooms4 = /* @__PURE__ */ new Map();
+function freshDeck() {
+  const d = [];
+  for (let s = 0; s < 4; s++) for (let r = 2; r <= 14; r++) d.push({ rank: r, suit: s });
+  for (let i = d.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [d[i], d[j]] = [d[j], d[i]];
+  }
+  return d;
+}
+function makePlayer(id, name2) {
+  return { id, name: name2, chips: START_CHIPS, hand: [], currentBet: 0, folded: false, allin: false, hasActed: false, hasDrawn: false, discardCount: 0 };
+}
+function activePlayers(room) {
+  return room.players.filter((p) => !p.folded);
+}
+function roundBet(room) {
+  return room.players.reduce((m, p) => Math.max(m, p.currentBet), 0);
+}
+function putIn(p, target) {
+  const delta = Math.min(target - p.currentBet, p.chips);
+  if (delta <= 0) return;
+  p.chips -= delta;
+  p.currentBet += delta;
+  if (p.chips === 0) p.allin = true;
+}
+function collectBets(room) {
+  for (const p of room.players) {
+    room.pot += p.currentBet;
+    p.currentBet = 0;
+    p.hasActed = false;
+  }
+}
+function firstActiveAfterDealer(room) {
+  for (let i = 1; i <= room.players.length; i++) {
+    const idx = (room.dealerIdx + i) % room.players.length;
+    const p = room.players[idx];
+    if (!p.folded && !p.allin) return idx;
+  }
+  return room.dealerIdx;
+}
+function advanceTurn2(room) {
+  for (let i = 1; i <= room.players.length; i++) {
+    const idx = (room.turnIdx + i) % room.players.length;
+    const p = room.players[idx];
+    if (!p.folded && !p.allin) {
+      room.turnIdx = idx;
+      return;
+    }
+  }
+}
+function bettingComplete(room) {
+  const act = activePlayers(room);
+  if (act.length <= 1) return true;
+  const rb = roundBet(room);
+  return act.every((p) => p.allin || p.hasActed && p.currentBet === rb);
+}
+var CAT_NAMES = [
+  "Najvi\u0161a karta",
+  "Par",
+  "Dva para",
+  "Tri iste",
+  "Skala",
+  "Boja",
+  "Ful",
+  "Poker (4 iste)",
+  "Royal/Skala u boji"
+];
+function evalHand(cards) {
+  const ranks = cards.map((c) => c.rank).sort((a, b) => b - a);
+  const suits = cards.map((c) => c.suit);
+  const flush = suits.every((s) => s === suits[0]);
+  const uniq = [...new Set(ranks)];
+  let straight = false;
+  let straightHigh = 0;
+  if (uniq.length === 5) {
+    if (ranks[0] - ranks[4] === 4) {
+      straight = true;
+      straightHigh = ranks[0];
+    } else if (ranks[0] === 14 && ranks[1] === 5 && ranks[4] === 2) {
+      straight = true;
+      straightHigh = 5;
+    }
+  }
+  const counts = {};
+  for (const r of ranks) counts[r] = (counts[r] || 0) + 1;
+  const groups = Object.entries(counts).map(([r, c]) => ({ r: +r, c })).sort((a, b) => b.c - a.c || b.r - a.r);
+  const pattern = groups.map((g) => g.c).join("");
+  const tb = groups.map((g) => g.r);
+  const mk = (cat, t) => ({ cat, tb: t, name: CAT_NAMES[cat] });
+  if (straight && flush) return mk(8, [straightHigh]);
+  if (pattern === "41") return mk(7, tb);
+  if (pattern === "32") return mk(6, tb);
+  if (flush) return mk(5, ranks);
+  if (straight) return mk(4, [straightHigh]);
+  if (pattern === "311") return mk(3, tb);
+  if (pattern === "221") return mk(2, tb);
+  if (pattern === "2111") return mk(1, tb);
+  return mk(0, ranks);
+}
+function cmpHand(a, b) {
+  if (a.cat !== b.cat) return a.cat - b.cat;
+  const n = Math.max(a.tb.length, b.tb.length);
+  for (let i = 0; i < n; i++) {
+    const x = a.tb[i] || 0;
+    const y = b.tb[i] || 0;
+    if (x !== y) return x - y;
+  }
+  return 0;
+}
+function settleShowdown(room) {
+  collectBets(room);
+  const contenders = activePlayers(room);
+  if (contenders.length === 0) {
+    room.phase = "finished";
+    return;
+  }
+  if (contenders.length === 1) {
+    const w = contenders[0];
+    w.chips += room.pot;
+    room.winner = w.name;
+    room.lastAction = `${w.name} osvaja pot (${room.pot}) \u2014 svi ostali odustali`;
+    room.pot = 0;
+    room.phase = "showdown";
+    return;
+  }
+  let best = null;
+  let winners = [];
+  for (const p of contenders) {
+    const v = evalHand(p.hand);
+    if (!best || cmpHand(v, best) > 0) {
+      best = v;
+      winners = [p];
+    } else if (cmpHand(v, best) === 0) {
+      winners.push(p);
+    }
+  }
+  const share = Math.floor(room.pot / winners.length);
+  for (const w of winners) w.chips += share;
+  const remainder = room.pot - share * winners.length;
+  if (remainder > 0) winners[0].chips += remainder;
+  room.winner = winners.map((w) => w.name).join(" & ");
+  room.lastAction = winners.length === 1 ? `\u{1F3C6} ${winners[0].name} pobje\u0111uje sa: ${best.name} (pot ${room.pot})` : `Podijeljen pot: ${room.winner} (${best.name})`;
+  room.pot = 0;
+  room.phase = "showdown";
+}
+function endBettingRoundIfDone(room) {
+  if (!bettingComplete(room)) return;
+  if (activePlayers(room).length <= 1) {
+    settleShowdown(room);
+    return;
+  }
+  if (room.phase === "bet1") {
+    collectBets(room);
+    room.phase = "draw";
+    for (const p of room.players) p.hasDrawn = false;
+    room.turnIdx = firstActiveAfterDealer(room);
+    room.lastAction = "Faza skidanja \u2014 bacite karte koje ne \u017Eelite";
+  } else if (room.phase === "bet2") {
+    settleShowdown(room);
+  }
+}
+function advanceDrawIfDone(room) {
+  const pending = activePlayers(room).filter((p) => !p.hasDrawn);
+  if (pending.length === 0) {
+    room.phase = "bet2";
+    for (const p of room.players) p.hasActed = false;
+    room.turnIdx = firstActiveAfterDealer(room);
+    room.lastAction = "Drugi krug uloga";
+  } else {
+    advanceTurn2(room);
+  }
+}
+function sanitize2(room, playerId) {
+  const me = room.players.find((p) => p.id === playerId);
+  const reveal = room.phase === "showdown" || room.phase === "finished";
+  return {
+    code: room.code,
+    phase: room.phase,
+    pot: room.pot,
+    roundBet: roundBet(room),
+    minBet: MIN_BET,
+    ante: ANTE,
+    winner: room.winner,
+    lastAction: room.lastAction,
+    turnId: room.players[room.turnIdx]?.id ?? null,
+    dealerId: room.players[room.dealerIdx]?.id ?? null,
+    players: room.players.map((p) => ({
+      id: p.id,
+      name: p.name,
+      chips: p.chips,
+      currentBet: p.currentBet,
+      folded: p.folded,
+      allin: p.allin,
+      hasDrawn: p.hasDrawn,
+      discardCount: p.discardCount,
+      cardCount: p.hand.length,
+      // reveal opponents' hands only at showdown (and only if not folded)
+      hand: p.id === playerId || reveal && !p.folded ? p.hand : null,
+      handName: (p.id === playerId || reveal && !p.folded) && p.hand.length === 5 ? evalHand(p.hand).name : null
+    })),
+    me: me ? {
+      id: me.id,
+      name: me.name,
+      chips: me.chips,
+      hand: me.hand,
+      folded: me.folded,
+      isTurn: room.players[room.turnIdx]?.id === me.id,
+      handName: me.hand.length === 5 ? evalHand(me.hand).name : null
+    } : null
+  };
+}
+router22.post("/play/poker", (_req, res) => {
+  const code = randomBytes8(3).toString("hex").toUpperCase();
+  const room = {
+    code,
+    players: [],
+    phase: "waiting",
+    deck: [],
+    pot: 0,
+    turnIdx: 0,
+    dealerIdx: 0,
+    winner: null,
+    lastAction: "Soba kreirana",
+    createdAt: Date.now()
+  };
+  rooms4.set(code, room);
+  res.json({ code });
+});
+router22.post("/play/poker/:code/join", (req, res) => {
+  const room = rooms4.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.phase !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 6) return res.status(400).json({ error: "Soba je puna (max 6)" });
+  const { name: name2 } = req.body;
+  if (!name2?.trim()) return res.status(400).json({ error: "Ime je obavezno" });
+  const id = randomBytes8(4).toString("hex");
+  room.players.push(makePlayer(id, name2.trim()));
+  room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
+  return res.json({ playerId: id, roomCode: room.code });
+});
+function dealHand(room) {
+  room.deck = freshDeck();
+  room.pot = 0;
+  room.winner = null;
+  for (const p of room.players) {
+    p.hand = [];
+    p.currentBet = 0;
+    p.folded = false;
+    p.allin = false;
+    p.hasActed = false;
+    p.hasDrawn = false;
+    p.discardCount = 0;
+  }
+  for (const p of room.players) {
+    const a = Math.min(ANTE, p.chips);
+    p.chips -= a;
+    room.pot += a;
+    if (p.chips === 0) p.allin = true;
+  }
+  for (let i = 0; i < 5; i++) for (const p of room.players) p.hand.push(room.deck.pop());
+  room.phase = "bet1";
+  room.turnIdx = firstActiveAfterDealer(room);
+  room.lastAction = `Podijeljeno! Ante ${ANTE}. Prvi krug uloga.`;
+}
+router22.post("/play/poker/:code/start", (req, res) => {
+  const room = rooms4.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.players.length < 2) return res.status(400).json({ error: "Potrebno najmanje 2 igra\u010Da" });
+  if (room.phase !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  room.dealerIdx = 0;
+  dealHand(room);
+  return res.json({ ok: true });
+});
+router22.get("/play/poker/:code", (req, res) => {
+  const room = rooms4.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId } = req.query;
+  return res.json(sanitize2(room, playerId));
+});
+router22.post("/play/poker/:code/action", (req, res) => {
+  const room = rooms4.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  const { playerId, action } = req.body;
+  const me = room.players.find((p) => p.id === playerId);
+  if (!me) return res.status(400).json({ error: "Nisi u sobi" });
+  const isBetting = room.phase === "bet1" || room.phase === "bet2";
+  if (action === "fold" || action === "check" || action === "call" || action === "bet" || action === "raise") {
+    if (!isBetting) return res.status(400).json({ error: "Nije faza uloga" });
+    if (room.players[room.turnIdx]?.id !== me.id) return res.status(400).json({ error: "Nije tvoj red" });
+    const rb = roundBet(room);
+    if (action === "fold") {
+      me.folded = true;
+      me.hasActed = true;
+      room.lastAction = `${me.name} odustaje`;
+    } else if (action === "check") {
+      if (me.currentBet !== rb) return res.status(400).json({ error: "Ne mo\u017Ee\u0161 \u010Dekati \u2014 mora\u0161 platiti ili odustati" });
+      me.hasActed = true;
+      room.lastAction = `${me.name} \u010Deka`;
+    } else if (action === "call") {
+      if (me.currentBet >= rb) return res.status(400).json({ error: "Nema \u0161ta za platiti \u2014 \u010Dekaj" });
+      putIn(me, rb);
+      me.hasActed = true;
+      room.lastAction = `${me.name} pla\u0107a (${me.currentBet})`;
+    } else {
+      const { amount } = req.body;
+      if (typeof amount !== "number" || !Number.isFinite(amount)) return res.status(400).json({ error: "Nevalidan iznos" });
+      if (action === "bet" && rb !== 0) return res.status(400).json({ error: "Ve\u0107 ima uloga \u2014 koristi raise" });
+      if (action === "raise" && rb === 0) return res.status(400).json({ error: "Nema uloga \u2014 koristi bet" });
+      const minTarget = rb === 0 ? MIN_BET : rb + MIN_BET;
+      if (amount < minTarget) return res.status(400).json({ error: `Najmanji iznos je ${minTarget}` });
+      if (amount - me.currentBet > me.chips) return res.status(400).json({ error: "Nema\u0161 dovoljno \u010Dipova" });
+      putIn(me, amount);
+      me.hasActed = true;
+      for (const p of room.players) if (p.id !== me.id && !p.folded && !p.allin) p.hasActed = false;
+      room.lastAction = `${me.name} ${rb === 0 ? "ula\u017Ee" : "podi\u017Ee na"} ${me.currentBet}`;
+    }
+    if (bettingComplete(room)) {
+      endBettingRoundIfDone(room);
+    } else {
+      advanceTurn2(room);
+    }
+    return res.json({ ok: true });
+  }
+  if (action === "draw") {
+    if (room.phase !== "draw") return res.status(400).json({ error: "Nije faza skidanja" });
+    if (room.players[room.turnIdx]?.id !== me.id) return res.status(400).json({ error: "Nije tvoj red" });
+    if (me.hasDrawn) return res.status(400).json({ error: "Ve\u0107 si mijenjao/la" });
+    const { discard } = req.body;
+    const idxs = Array.isArray(discard) ? [...new Set(discard)].filter((i) => Number.isInteger(i) && i >= 0 && i < 5) : [];
+    if (idxs.length > 5) return res.status(400).json({ error: "Najvi\u0161e 5 karata" });
+    const keep = me.hand.filter((_, i) => !idxs.includes(i));
+    const drawn = [];
+    for (let i = 0; i < idxs.length; i++) {
+      const c = room.deck.pop();
+      if (c) drawn.push(c);
+    }
+    me.hand = [...keep, ...drawn];
+    me.hasDrawn = true;
+    me.discardCount = idxs.length;
+    room.lastAction = `${me.name} mijenja ${idxs.length} ${idxs.length === 1 ? "kartu" : "karata"}`;
+    advanceDrawIfDone(room);
+    return res.json({ ok: true });
+  }
+  if (action === "next" || action === "rematch") {
+    if (room.phase !== "showdown" && room.phase !== "finished") return res.status(400).json({ error: "Runda nije gotova" });
+    const withChips = room.players.filter((p) => p.chips > 0);
+    if (withChips.length < 2) {
+      for (const p of room.players) p.chips = START_CHIPS;
+    }
+    room.dealerIdx = (room.dealerIdx + 1) % room.players.length;
+    dealHand(room);
+    return res.json({ ok: true });
+  }
+  return res.status(400).json({ error: "Nepoznata akcija" });
+});
+setInterval(() => {
+  const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
+  for (const [k, v] of rooms4) if (v.createdAt < cutoff) rooms4.delete(k);
+}, 30 * 60 * 1e3);
+var play_poker_default = router22;
+
+// src/routes/youtube.ts
+var import_express23 = __toESM(require_express2(), 1);
+var router23 = (0, import_express23.Router)();
 function extractJson(html, marker) {
   let i = html.indexOf(`${marker} =`);
   if (i === -1) i = html.indexOf(marker);
@@ -69339,7 +69708,7 @@ function txt(v) {
   if (Array.isArray(runs) && runs[0]?.text) return runs[0].text;
   return "";
 }
-router22.get("/youtube/search", async (req, res) => {
+router23.get("/youtube/search", async (req, res) => {
   const q = (req.query.q || "").trim();
   if (!q) {
     res.json({ results: [] });
@@ -69400,7 +69769,7 @@ router22.get("/youtube/search", async (req, res) => {
     res.status(500).json({ error: "search_failed", results: [] });
   }
 });
-var youtube_default = router22;
+var youtube_default = router23;
 
 // src/lib/logger.ts
 var import_pino = __toESM(require_pino(), 1);
@@ -69421,7 +69790,7 @@ var logger = (0, import_pino.default)({
 });
 
 // src/app.ts
-var app = (0, import_express23.default)();
+var app = (0, import_express24.default)();
 app.use(
   (0, import_pino_http.default)({
     logger,
@@ -69444,8 +69813,8 @@ app.use(
 app.set("trust proxy", true);
 app.use((0, import_cors.default)());
 app.use((0, import_cookie_parser.default)());
-app.use(import_express23.default.json());
-app.use(import_express23.default.urlencoded({ extended: true }));
+app.use(import_express24.default.json());
+app.use(import_express24.default.urlencoded({ extended: true }));
 app.use("/api", discord_auth_default);
 app.use("/api", guild_features_default);
 app.use(icons_default);
@@ -69457,11 +69826,12 @@ app.use("/api", play_potapanje_default);
 app.use("/api", play_kviz_default);
 app.use("/api", play_tacke_default);
 app.use("/api", play_reversi_default);
+app.use("/api", play_poker_default);
 app.use("/api", authMiddleware, youtube_default);
 app.use("/api", authMiddleware, routes_default);
 var staticDir = path3.join(process.cwd(), "public");
 if (fs3.existsSync(staticDir)) {
-  app.use(import_express23.default.static(staticDir));
+  app.use(import_express24.default.static(staticDir));
   app.use((_req, res) => {
     res.sendFile(path3.join(staticDir, "index.html"));
   });
