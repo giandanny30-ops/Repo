@@ -64158,43 +64158,6 @@ var import_express2 = __toESM(require_express2(), 1);
 
 // src/middleware/auth.ts
 import { createHash } from "crypto";
-function makeToken(secret2) {
-  return createHash("sha256").update(secret2 + ":gianni-panel-v2").digest("hex");
-}
-function makePremiumToken(secret2) {
-  return createHash("sha256").update(secret2 + ":gian-premium-readonly-v1").digest("hex");
-}
-var READ_METHODS = /* @__PURE__ */ new Set(["GET", "HEAD", "OPTIONS"]);
-function authMiddleware(req, res, next) {
-  const secret2 = process.env.PANEL_SECRET;
-  if (!secret2) {
-    next();
-    return;
-  }
-  if (req.path.startsWith("/auth/")) {
-    next();
-    return;
-  }
-  if (req.path === "/healthz" || req.path === "/health") {
-    next();
-    return;
-  }
-  const auth = req.headers.authorization ?? "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (token && token === makeToken(secret2)) {
-    next();
-    return;
-  }
-  if (token && token === makePremiumToken(secret2)) {
-    if (READ_METHODS.has(req.method)) {
-      next();
-      return;
-    }
-    res.status(403).json({ error: "Premium pristup je samo za gledanje \u2014 izmjene nisu dozvoljene." });
-    return;
-  }
-  res.status(401).json({ error: "Neautorizovano \u2014 prijava obavezna." });
-}
 
 // src/lib/config-store.ts
 init_drizzle_orm();
@@ -64257,6 +64220,73 @@ async function writeConfig(key2, value) {
   }
 }
 
+// src/middleware/auth.ts
+function makeToken(secret2) {
+  return createHash("sha256").update(secret2 + ":gianni-panel-v2").digest("hex");
+}
+function makePremiumToken(secret2, code) {
+  return createHash("sha256").update(secret2 + ":gian-premium-readonly-v1:" + code).digest("hex");
+}
+function bearer(req) {
+  const auth = req.headers.authorization ?? "";
+  return auth.startsWith("Bearer ") ? auth.slice(7) : "";
+}
+function isOwnerRequest(req) {
+  const secret2 = process.env.PANEL_SECRET;
+  if (!secret2) return true;
+  const token = bearer(req);
+  return !!token && token === makeToken(secret2);
+}
+var _pcCache = null;
+var PC_TTL_MS = 3e4;
+async function getPremiumCodeCached() {
+  const now = Date.now();
+  if (_pcCache && now - _pcCache.ts < PC_TTL_MS) return _pcCache.code;
+  let code = null;
+  try {
+    const settings = await readConfig("settings");
+    const c = settings?.premiumCode;
+    code = c && typeof c === "string" && c.trim().length > 0 ? c.trim() : null;
+  } catch {
+    code = _pcCache?.code ?? null;
+  }
+  _pcCache = { code, ts: now };
+  return code;
+}
+var READ_METHODS = /* @__PURE__ */ new Set(["GET", "HEAD", "OPTIONS"]);
+async function authMiddleware(req, res, next) {
+  const secret2 = process.env.PANEL_SECRET;
+  if (!secret2) {
+    next();
+    return;
+  }
+  if (req.path.startsWith("/auth/")) {
+    next();
+    return;
+  }
+  if (req.path === "/healthz" || req.path === "/health") {
+    next();
+    return;
+  }
+  const token = bearer(req);
+  if (token && token === makeToken(secret2)) {
+    next();
+    return;
+  }
+  if (token) {
+    const code = await getPremiumCodeCached();
+    if (code && token === makePremiumToken(secret2, code)) {
+      if (READ_METHODS.has(req.method)) {
+        next();
+        return;
+      }
+      res.status(403).json({ error: "Premium pristup je samo za gledanje \u2014 izmjene nisu dozvoljene." });
+      return;
+    }
+  }
+  res.status(401).json({ error: "Neautorizovano \u2014 prijava obavezna." });
+}
+
 // src/routes/auth.ts
 var router2 = (0, import_express2.Router)();
 router2.use("/auth", (_req, res, next) => {
@@ -64296,11 +64326,11 @@ router2.post("/auth/premium-login", async (req, res) => {
     req.log.warn({ ip: req.ip }, "Failed premium login attempt");
     return res.status(401).json({ error: "Pogre\u0161an premium kod." });
   }
-  const token = makePremiumToken(secret2);
+  const token = makePremiumToken(secret2, premiumCode);
   req.log.info({ ip: req.ip }, "Premium login success");
   return res.json({ token, devMode: false, premium: true });
 });
-router2.get("/auth/verify", (req, res) => {
+router2.get("/auth/verify", async (req, res) => {
   const secret2 = process.env.PANEL_SECRET;
   if (!secret2) return res.json({ ok: true, devMode: true });
   const auth = req.headers.authorization ?? "";
@@ -64308,7 +64338,8 @@ router2.get("/auth/verify", (req, res) => {
   if (token && token === makeToken(secret2)) {
     return res.json({ ok: true, devMode: false });
   }
-  if (token && token === makePremiumToken(secret2)) {
+  const premiumCode = await getPremiumCode();
+  if (token && premiumCode && token === makePremiumToken(secret2, premiumCode)) {
     return res.json({ ok: true, devMode: false, premium: true });
   }
   return res.status(401).json({ ok: false });
@@ -65941,13 +65972,7 @@ var embeds_default = router4;
 var import_express5 = __toESM(require_express2(), 1);
 var router5 = (0, import_express5.Router)();
 var KEY = "settings";
-function isOwner(req) {
-  const secret2 = process.env.PANEL_SECRET;
-  if (!secret2) return true;
-  const auth = req.headers.authorization ?? "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  return !!token && token === makeToken(secret2);
-}
+var isOwner = isOwnerRequest;
 var DEFAULT_SETTINGS = {
   botName: "GIAN (Custom)",
   version: "v2.0",
@@ -66111,6 +66136,10 @@ function saveEmojiCache(emojis) {
   }
 }
 router6.get("/discord/debug", async (req, res) => {
+  if (!isOwnerRequest(req)) {
+    res.status(403).json({ error: "Samo vlasnik mo\u017Ee vidjeti ovo." });
+    return;
+  }
   const token = process.env.DISCORD_TOKEN ?? "";
   const result = {
     hasToken: !!token,
