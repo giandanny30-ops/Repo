@@ -65838,10 +65838,148 @@ var DEFAULT_EMBEDS = [
     fields: []
   }
 ];
+var AQUA_ICON_BG = "0b1e22";
+var AQUA_ICON_FG = "22d3ee";
+var EMBED_ICONS = {
+  // Sistem
+  "welcome": "PartyPopper",
+  "leave": "DoorOpen",
+  "dm-welcome": "MailOpen",
+  "boost": "Rocket",
+  "birthday": "Cake",
+  "starboard": "Star",
+  "aotw": "Crown",
+  // Log
+  "log-join": "UserPlus",
+  "log-edit": "FilePenLine",
+  "log-delete": "Trash2",
+  "report": "Siren",
+  // Moderacija
+  "warn": "TriangleAlert",
+  "ban": "Hammer",
+  "mod-kick": "UserMinus",
+  "mod-mute": "VolumeX",
+  "mod-unmute": "Volume2",
+  "mod-timeout": "Clock",
+  "mod-purge": "Eraser",
+  "mod-unban": "LockOpen",
+  // XP
+  "levelup": "TrendingUp",
+  "vatrica-nova": "Flame",
+  "aktivnost": "ChartColumn",
+  "rank": "Medal",
+  "leaderboard-xp": "Trophy",
+  "leaderboard-novac": "Banknote",
+  // Ekonomija
+  "heist": "Landmark",
+  "lottery": "Ticket",
+  "quests": "ScrollText",
+  "giveaway": "Gift",
+  "giveaway-end": "Sparkle",
+  "eco-balance": "Coins",
+  "eco-daily": "Calendar",
+  "eco-work": "Briefcase",
+  "eco-shop": "Store",
+  "eco-buy": "ShoppingBag",
+  "eco-transfer": "Send",
+  "eco-rob": "Skull",
+  // Igre
+  "slots": "Dices",
+  "blackjack": "Spade",
+  "poker-lobby": "Club",
+  "poker-game": "Diamond",
+  "poker-showdown": "PiggyBank",
+  "among-us-lobby": "Bot",
+  "among-us-game": "Search",
+  "among-us-end": "Sword",
+  "kaladont-start": "MessageCircle",
+  "kaladont-active": "MessagesSquare",
+  "kaladont-word": "CheckCircle",
+  "kaladont-win": "Flag",
+  "bingo": "Target",
+  "vjasala": "Pencil",
+  "vjasala-kraj": "Joystick",
+  "toplo-hladno": "Crosshair",
+  "kviz": "HelpCircle",
+  "geografija": "Globe",
+  "mafia-lobby": "Users",
+  "mafia-end": "Gamepad2",
+  "hunt": "Footprints",
+  "zoo": "Cat",
+  "battle": "Swords",
+  "pray": "HandHeart",
+  "vers": "BookOpen",
+  "kompli": "Smile",
+  "fora": "Drama",
+  "muv": "Wand2",
+  "crush": "Heart",
+  "zagrljaj": "HeartHandshake",
+  "poljubac": "Sticker",
+  "mazi": "PawPrint",
+  "tapsi": "Hand",
+  "high5": "Stars",
+  "cudan": "Ghost",
+  "srce": "Gem",
+  "brak": "Wine",
+  "spotify": "Headphones",
+  "invite": "Bookmark",
+  "avatar": "Image",
+  "brojanje-info": "Hash",
+  // Ticketi / Voice
+  "ticket": "Tag",
+  "ticket-otvoren": "TicketCheck",
+  "staff-prijava": "ClipboardList",
+  "private-vc": "Lock",
+  "voice-pravila": "Mic",
+  // Vatrice
+  "vatrice-pup": "Sparkles",
+  "vatrice-start": "Wand",
+  "vatrice-kanal": "Radio",
+  "vatrice-oblik": "Shapes",
+  // Poo pet
+  "poo": "Baby",
+  "poo-zadaci": "ListOrdered",
+  "poo-top": "Sprout",
+  "poo-hrani": "Apple",
+  "poo-info": "CircleHelp",
+  // Backup
+  "backup": "Archive",
+  "backup-restore": "DatabaseBackup",
+  "backup-status": "Server",
+  // Report
+  "report-closed": "CircleCheck",
+  "report-nova": "Megaphone",
+  // Muzika
+  "music-play": "Music",
+  "music-queue": "ListMusic",
+  "music-skip": "SkipForward",
+  "music-pause": "Pause",
+  "music-stop": "Square",
+  "music-lyrics": "Music2",
+  // Verify
+  "verify-panel": "ShieldCheck",
+  "verify-success": "BadgeCheck",
+  "verify-fail": "CircleX",
+  // Poll
+  "poll-create": "Vote",
+  "poll-results": "BarChart3",
+  // Reaction roles
+  "rr-panel": "Bell",
+  "rr-add": "UserCheck",
+  "rr-remove": "XCircle"
+};
+var FALLBACK_ICON = "Sparkles";
+function embedIconName(e) {
+  if (typeof e.icon === "string" && e.icon) return e.icon;
+  return e.name && EMBED_ICONS[e.name] || FALLBACK_ICON;
+}
+function attachIcon(e) {
+  return { ...e, icon: embedIconName(e) };
+}
 var DEFAULT_NAMES = new Set(DEFAULT_EMBEDS.map((e) => e.name));
 async function loadEmbeds() {
   const conn = await getDb2();
-  if (!conn) return DEFAULT_EMBEDS;
+  if (!conn) return DEFAULT_EMBEDS.map(attachIcon);
   const { db: db2, embedsTable: embedsTable2 } = conn;
   const rows = await db2.select().from(embedsTable2);
   const savedMap = new Map(rows.map((r) => [r.name, r.data]));
@@ -65854,14 +65992,14 @@ async function loadEmbeds() {
     (def) => savedMap.get(def.name) ?? def
   );
   const custom = rows.filter((r) => !DEFAULT_NAMES.has(r.name)).map((r) => r.data);
-  return [...defaults2, ...custom];
+  return [...defaults2, ...custom].map(attachIcon);
 }
 router4.get("/embeds", async (req, res) => {
   try {
     res.json(await loadEmbeds());
   } catch (err) {
     req.log.error(err, "Failed to load embeds");
-    res.json(DEFAULT_EMBEDS);
+    res.json(DEFAULT_EMBEDS.map(attachIcon));
   }
 });
 router4.get("/embeds/:name", async (req, res) => {
@@ -65870,15 +66008,15 @@ router4.get("/embeds/:name", async (req, res) => {
     if (conn) {
       const { db: db2, embedsTable: embedsTable2 } = conn;
       const rows = await db2.select().from(embedsTable2).where(eq(embedsTable2.name, req.params.name));
-      if (rows.length > 0) return res.json(rows[0].data);
+      if (rows.length > 0) return res.json(attachIcon(rows[0].data));
     }
     const def = DEFAULT_EMBEDS.find((e) => e.name === req.params.name);
     if (!def) return res.status(404).json({ error: "Embed not found" });
-    return res.json(def);
+    return res.json(attachIcon(def));
   } catch (err) {
     req.log.error(err, "Failed to get embed");
     const def = DEFAULT_EMBEDS.find((e) => e.name === req.params.name);
-    return def ? res.json(def) : res.status(404).json({ error: "Embed not found" });
+    return def ? res.json(attachIcon(def)) : res.status(404).json({ error: "Embed not found" });
   }
 });
 router4.post("/embeds/reset-all", async (req, res) => {
@@ -66641,6 +66779,16 @@ router6.post("/discord/channels/:channelId/send-embed", async (req, res) => {
   if (embedData.thumbnail) discordEmbed.thumbnail = { url: applyVars(embedData.thumbnail) };
   if (embedData.image) discordEmbed.image = { url: applyVars(embedData.image) };
   if (embedData.footer) discordEmbed.footer = { text: applyVars(embedData.footer) };
+  const host2 = req.get("host");
+  const publicBase = (process.env.PUBLIC_BASE_URL || process.env.PANEL_BASE_URL || "").replace(/\/$/, "") || (host2 ? `${req.protocol}://${host2}` : "");
+  if (publicBase) {
+    const lucide = embedIconName(embedData);
+    const iconUrl = `${publicBase}/api/icons/${lucide}?bg=${AQUA_ICON_BG}&color=${AQUA_ICON_FG}`;
+    discordEmbed.author = {
+      name: String(embedData.category ?? "GIAN"),
+      icon_url: iconUrl
+    };
+  }
   if (embedData.fields?.length)
     discordEmbed.fields = embedData.fields.map((f) => ({
       ...f,
