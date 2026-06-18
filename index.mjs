@@ -67758,6 +67758,80 @@ function nextIdx(room, skip = false) {
   if (skip) idx = (idx + room.direction + n) % n;
   return idx;
 }
+function unoBotColor(player) {
+  const counts = { red: 0, green: 0, blue: 0, yellow: 0 };
+  for (const c of player.hand) if (c.color !== "wild") counts[c.color]++;
+  const best = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  return best[0];
+}
+function unoBotMove(room) {
+  const player = room.players[room.currentIdx];
+  const top = room.discard[room.discard.length - 1];
+  let chosenIdx = -1;
+  if (room.drawStack > 0) {
+    chosenIdx = player.hand.findIndex((c) => c.value === "draw2" || c.value === "wild4");
+    if (chosenIdx === -1) {
+      const count2 = room.drawStack;
+      for (let i = 0; i < count2; i++) player.hand.push(drawCard(room));
+      room.drawStack = 0;
+      room.currentIdx = nextIdx(room);
+      room.pendingColor = null;
+      room.lastAction = `\u{1F916} ${player.name} je uzeo/la ${count2} karte`;
+      return;
+    }
+  } else {
+    chosenIdx = player.hand.findIndex(
+      (c) => canPlay(c, top, room.pendingColor) && c.value !== "wild" && c.value !== "wild4"
+    );
+    if (chosenIdx === -1) chosenIdx = player.hand.findIndex((c) => canPlay(c, top, room.pendingColor));
+  }
+  if (chosenIdx === -1) {
+    player.hand.push(drawCard(room));
+    room.currentIdx = nextIdx(room);
+    room.pendingColor = null;
+    room.lastAction = `\u{1F916} ${player.name} je uzeo/la kartu`;
+    return;
+  }
+  const card = player.hand[chosenIdx];
+  player.hand.splice(chosenIdx, 1);
+  room.discard.push(card);
+  room.pendingColor = null;
+  player.saidUno = player.hand.length === 1;
+  if (player.hand.length === 0) {
+    room.state = "finished";
+    room.winner = player.name;
+    room.lastAction = `\u{1F3C6} ${player.name} je pobijedio/la!`;
+    return;
+  }
+  let skip = false;
+  if (card.value === "skip") {
+    skip = true;
+    room.lastAction = `\u{1F916} ${player.name} stavio/la Skip`;
+  } else if (card.value === "reverse") {
+    room.direction = room.direction === 1 ? -1 : 1;
+    if (room.players.length === 2) skip = true;
+    room.lastAction = `\u{1F916} ${player.name} promijenio/la smjer`;
+  } else if (card.value === "draw2") {
+    room.drawStack += 2;
+    room.lastAction = `\u{1F916} ${player.name} stavio/la +2`;
+  } else if (card.value === "wild") {
+    room.pendingColor = unoBotColor(player);
+    room.lastAction = `\u{1F916} ${player.name} odabrao/la ${room.pendingColor}`;
+  } else if (card.value === "wild4") {
+    room.pendingColor = unoBotColor(player);
+    room.drawStack += 4;
+    room.lastAction = `\u{1F916} ${player.name} stavio/la +4 ${room.pendingColor}`;
+  } else {
+    room.lastAction = `\u{1F916} ${player.name} igrao/la ${card.color} ${card.value}`;
+  }
+  room.currentIdx = nextIdx(room, skip);
+}
+function runUnoBots(room) {
+  let guard = 0;
+  while (room.state === "playing" && room.players[room.currentIdx]?.isBot && guard++ < 300) {
+    unoBotMove(room);
+  }
+}
 router15.post("/play/uno", (req, res) => {
   const code = randomBytes(3).toString("hex").toUpperCase();
   const room = {
@@ -67789,6 +67863,17 @@ router15.post("/play/uno/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   res.json({ playerId: id, roomCode: room.code });
 });
+router15.post("/play/uno/:code/add-bot", (req, res) => {
+  const room = unoRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 10) return res.status(400).json({ error: "Soba je puna" });
+  if (room.players.some((p) => p.isBot)) return res.status(400).json({ error: "Robot je ve\u0107 u sobi" });
+  const id = "bot-" + randomBytes(3).toString("hex");
+  room.players.push({ id, name: "\u{1F916} Robot", hand: [], saidUno: false, connected: Date.now(), isBot: true });
+  room.lastAction = "\u{1F916} Robot se pridru\u017Eio";
+  res.json({ ok: true, botId: id });
+});
 router15.post("/play/uno/:code/start", (req, res) => {
   const room = unoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
@@ -67804,8 +67889,13 @@ router15.post("/play/uno/:code/start", (req, res) => {
   } while (first.value === "wild" || first.value === "wild4");
   room.discard = [first];
   room.currentIdx = 0;
+  room.direction = 1;
+  room.drawStack = 0;
+  room.pendingColor = null;
+  room.winner = null;
   room.state = "playing";
   room.lastAction = "Igra je po\u010Dela!";
+  runUnoBots(room);
   res.json({ ok: true });
 });
 router15.get("/play/uno/:code", (req, res) => {
@@ -67849,6 +67939,7 @@ router15.post("/play/uno/:code/action", (req, res) => {
     room.currentIdx = nextIdx(room);
     room.pendingColor = null;
     room.lastAction = `${player.name} je uzeo/la ${count2} kart${count2 === 1 ? "u" : "e"}`;
+    runUnoBots(room);
     return res.json({ ok: true });
   }
   if (action === "play") {
@@ -67881,7 +67972,6 @@ router15.post("/play/uno/:code/action", (req, res) => {
       room.lastAction = `${player.name} promijenio/la smjer`;
     } else if (card.value === "draw2") {
       room.drawStack += 2;
-      skip = true;
       room.lastAction = `${player.name} stavio/la +2`;
     } else if (card.value === "wild") {
       if (!chosenColor) return res.status(400).json({ error: "Odaberi boju" });
@@ -67891,12 +67981,12 @@ router15.post("/play/uno/:code/action", (req, res) => {
       if (!chosenColor) return res.status(400).json({ error: "Odaberi boju" });
       room.pendingColor = chosenColor;
       room.drawStack += 4;
-      skip = true;
       room.lastAction = `${player.name} stavio/la +4 ${chosenColor}`;
     } else {
       room.lastAction = `${player.name} igrao/la ${card.color} ${card.value}`;
     }
     room.currentIdx = nextIdx(room, skip);
+    runUnoBots(room);
     return res.json({ ok: true });
   }
   if (action === "uno") {
@@ -67951,12 +68041,40 @@ router15.post("/play/ludo/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la kao ${color}`;
   res.json({ playerId: id, color, roomCode: room.code });
 });
+router15.post("/play/ludo/:code/add-bot", (req, res) => {
+  const room = ludoRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 4) return res.status(400).json({ error: "Soba je puna (max 4)" });
+  if (room.players.some((p) => p.isBot)) return res.status(400).json({ error: "Robot je ve\u0107 u sobi" });
+  const id = "bot-" + randomBytes(3).toString("hex");
+  const color = LUDO_COLORS[room.players.length];
+  room.players.push({
+    id,
+    name: "\u{1F916} Robot",
+    color,
+    isBot: true,
+    pieces: [
+      { pos: -1, home: true, finished: false },
+      { pos: -1, home: true, finished: false },
+      { pos: -1, home: true, finished: false },
+      { pos: -1, home: true, finished: false }
+    ]
+  });
+  room.lastAction = `\u{1F916} Robot se pridru\u017Eio kao ${color}`;
+  res.json({ ok: true, botId: id, color });
+});
 router15.post("/play/ludo/:code/start", (req, res) => {
   const room = ludoRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno min 2 igra\u010Da" });
   room.state = "playing";
+  room.currentIdx = 0;
+  room.dice = null;
+  room.diceRolled = false;
+  room.winner = null;
   room.lastAction = "Igra je po\u010Dela!";
+  runLudoBots(room);
   res.json({ ok: true });
 });
 router15.get("/play/ludo/:code", (req, res) => {
@@ -67972,84 +68090,160 @@ router15.post("/play/ludo/:code/action", (req, res) => {
   const pIdx = room.players.findIndex((p) => p.id === playerId);
   if (pIdx === -1) return res.status(400).json({ error: "Nisi u sobi" });
   if (pIdx !== room.currentIdx) return res.status(400).json({ error: "Nije tvoj red" });
-  const player = room.players[pIdx];
   if (action === "roll") {
     if (room.diceRolled) return res.status(400).json({ error: "Ve\u0107 si bacio kockicu" });
-    room.dice = Math.floor(Math.random() * 6) + 1;
-    room.diceRolled = true;
-    room.lastAction = `${player.name} bacio/la ${room.dice}`;
-    const canMove = player.pieces.some((p, i) => {
-      if (p.finished) return false;
-      if (p.home) return room.dice === 6;
-      return true;
-    });
-    if (!canMove) {
-      room.diceRolled = false;
-      room.dice = null;
-      room.currentIdx = (room.currentIdx + 1) % room.players.length;
-      room.lastAction += " \u2014 nema mogu\u0107eg poteza, prelazi se red";
-    }
-    return res.json({ ok: true, dice: room.dice });
+    ludoApplyRoll(room);
+    const dice = room.dice;
+    runLudoBots(room);
+    return res.json({ ok: true, dice });
   }
   if (action === "move") {
     if (!room.diceRolled || room.dice === null) return res.status(400).json({ error: "Prvo baci kockicu" });
-    if (pieceIdx === void 0 || pieceIdx < 0 || pieceIdx > 3) return res.status(400).json({ error: "Nevalidna figura" });
-    const piece = player.pieces[pieceIdx];
-    if (piece.finished) return res.status(400).json({ error: "Figura je ve\u0107 zavr\u0161ila" });
-    const dice = room.dice;
-    if (piece.home) {
-      if (dice !== 6) return res.status(400).json({ error: "Treba\u0161 6 za izlazak" });
-      piece.home = false;
-      piece.pos = 0;
-      room.lastAction = `${player.name} izbacio/la figuru ${pieceIdx + 1}`;
+    if (pieceIdx === void 0) return res.status(400).json({ error: "Nevalidna figura" });
+    const result = ludoApplyMove(room, pieceIdx);
+    if (!result.ok) return res.status(400).json({ error: result.error });
+    runLudoBots(room);
+    return res.json({ ok: true });
+  }
+  return res.status(400).json({ error: "Nepoznata akcija" });
+});
+function ludoCanMove(room, player) {
+  const dice = room.dice;
+  if (dice === null) return false;
+  return player.pieces.some((p) => {
+    if (p.finished) return false;
+    if (p.home) return dice === 6;
+    return p.pos + dice <= 56;
+  });
+}
+function ludoApplyRoll(room) {
+  const player = room.players[room.currentIdx];
+  room.dice = Math.floor(Math.random() * 6) + 1;
+  room.diceRolled = true;
+  room.lastAction = `${player.name} bacio/la ${room.dice}`;
+  if (!ludoCanMove(room, player)) {
+    room.diceRolled = false;
+    room.dice = null;
+    room.currentIdx = (room.currentIdx + 1) % room.players.length;
+    room.lastAction += " \u2014 nema mogu\u0107eg poteza, prelazi se red";
+  }
+}
+function ludoApplyMove(room, pieceIdx) {
+  const player = room.players[room.currentIdx];
+  if (room.dice === null) return { ok: false, error: "Prvo baci kockicu" };
+  if (pieceIdx < 0 || pieceIdx > 3) return { ok: false, error: "Nevalidna figura" };
+  const piece = player.pieces[pieceIdx];
+  if (piece.finished) return { ok: false, error: "Figura je ve\u0107 zavr\u0161ila" };
+  const dice = room.dice;
+  if (piece.home) {
+    if (dice !== 6) return { ok: false, error: "Treba\u0161 6 za izlazak" };
+    piece.home = false;
+    piece.pos = 0;
+    room.lastAction = `${player.name} izbacio/la figuru ${pieceIdx + 1}`;
+  } else {
+    const newRel = piece.pos + dice;
+    if (newRel > 56) return { ok: false, error: "Ne mo\u017Ee\u0161 se pomjeriti" };
+    if (newRel === 56) {
+      piece.finished = true;
+      piece.pos = 56;
+      room.lastAction = `${player.name} doveo/la figuru ${pieceIdx + 1} ku\u0107i! \u{1F3E0}`;
     } else {
-      const newRel = piece.pos + dice;
-      if (newRel > 56) return res.status(400).json({ error: "Ne mo\u017Ee\u0161 se pomjeriti" });
+      piece.pos = newRel;
+      const absPos = ludoAbsPos(player.color, newRel);
+      if (newRel < 52 && !SAFE_SQUARES.includes(absPos)) {
+        for (const other of room.players) {
+          if (other.id === player.id) continue;
+          for (const op of other.pieces) {
+            if (!op.home && !op.finished && op.pos < 52) {
+              const otherAbs = ludoAbsPos(other.color, op.pos);
+              if (otherAbs === absPos) {
+                op.home = true;
+                op.pos = -1;
+                room.lastAction = `${player.name} sru\u0161io/la figuru igra\u010Da ${other.name}! \u{1F4A5}`;
+              }
+            }
+          }
+        }
+      }
+      room.lastAction = room.lastAction || `${player.name} pomijerio/la figuru ${pieceIdx + 1}`;
+    }
+  }
+  if (player.pieces.every((p) => p.finished)) {
+    room.state = "finished";
+    room.winner = player.name;
+    room.lastAction = `\u{1F3C6} ${player.name} je pobijedio/la!`;
+    room.diceRolled = false;
+    return { ok: true };
+  }
+  if (dice === 6) {
+    room.diceRolled = false;
+    room.dice = null;
+    room.lastAction += " (baci ponovo \u2014 pao je 6!)";
+  } else {
+    room.diceRolled = false;
+    room.dice = null;
+    room.currentIdx = (room.currentIdx + 1) % room.players.length;
+  }
+  return { ok: true };
+}
+function ludoBotPickPiece(room, player) {
+  const dice = room.dice;
+  if (dice === null) return -1;
+  let best = -1;
+  let bestScore = -Infinity;
+  player.pieces.forEach((p, i) => {
+    if (p.finished) return;
+    let score;
+    if (p.home) {
+      if (dice !== 6) return;
+      score = 40;
+    } else {
+      const newRel = p.pos + dice;
+      if (newRel > 56) return;
       if (newRel === 56) {
-        piece.finished = true;
-        piece.pos = 56;
-        room.lastAction = `${player.name} doveo/la figuru ${pieceIdx + 1} ku\u0107i! \u{1F3E0}`;
+        score = 60;
       } else {
-        piece.pos = newRel;
-        const absPos = ludoAbsPos(player.color, newRel <= 51 ? newRel : newRel);
-        if (newRel < 52 && !SAFE_SQUARES.includes(absPos)) {
-          for (const other of room.players) {
-            if (other.id === player.id) continue;
-            for (const op of other.pieces) {
-              if (!op.home && !op.finished && op.pos < 52) {
-                const otherAbs = ludoAbsPos(other.color, op.pos);
-                if (otherAbs === absPos) {
-                  op.home = true;
-                  op.pos = -1;
-                  room.lastAction = `${player.name} sru\u0161io/la figuru igra\u010Da ${other.name}! \u{1F4A5}`;
+        score = newRel;
+        if (newRel < 52) {
+          const absPos = ludoAbsPos(player.color, newRel);
+          if (!SAFE_SQUARES.includes(absPos)) {
+            for (const other of room.players) {
+              if (other.id === player.id) continue;
+              for (const op of other.pieces) {
+                if (!op.home && !op.finished && op.pos < 52 && ludoAbsPos(other.color, op.pos) === absPos) {
+                  score += 100;
                 }
               }
             }
           }
         }
-        room.lastAction = room.lastAction || `${player.name} pomijerio/la figuru ${pieceIdx + 1}`;
       }
     }
-    if (player.pieces.every((p) => p.finished)) {
-      room.state = "finished";
-      room.winner = player.name;
-      room.lastAction = `\u{1F3C6} ${player.name} je pobijedio/la!`;
-      room.diceRolled = false;
-      return res.json({ ok: true });
+    if (score > bestScore) {
+      bestScore = score;
+      best = i;
     }
-    if (dice === 6) {
-      room.diceRolled = false;
-      room.dice = null;
-      room.lastAction += " (baci ponovo \u2014 pao je 6!)";
-    } else {
+  });
+  return best;
+}
+function runLudoBots(room) {
+  let guard = 0;
+  while (room.state === "playing" && room.players[room.currentIdx]?.isBot && guard++ < 200) {
+    if (!room.diceRolled) {
+      ludoApplyRoll(room);
+      if (!room.diceRolled) continue;
+    }
+    const player = room.players[room.currentIdx];
+    const pick = ludoBotPickPiece(room, player);
+    if (pick === -1) {
       room.diceRolled = false;
       room.dice = null;
       room.currentIdx = (room.currentIdx + 1) % room.players.length;
+      continue;
     }
-    return res.json({ ok: true });
+    ludoApplyMove(room, pick);
   }
-  return res.status(400).json({ error: "Nepoznata akcija" });
-});
+}
 setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of unoRooms) if (v.createdAt < cutoff) unoRooms.delete(k);
@@ -68534,6 +68728,92 @@ function resetRoom(room) {
   room.draw = false;
   room.lastAction = "Nova partija \u2014 crveni igra prvi";
 }
+function landingRow(board, col) {
+  for (let r = ROWS - 1; r >= 0; r--) if (board[r][col] === 0) return r;
+  return -1;
+}
+function botColumn(room) {
+  const board = room.board;
+  const bot = room.players[room.currentIdx];
+  const opp = room.players[(room.currentIdx + 1) % 2];
+  const valid = [];
+  for (let c = 0; c < COLS; c++) if (board[0][c] === 0) valid.push(c);
+  if (!valid.length) return -1;
+  for (const c of valid) {
+    const r = landingRow(board, c);
+    board[r][c] = bot.disc;
+    const w = checkWin(board, bot.disc);
+    board[r][c] = 0;
+    if (w) return c;
+  }
+  for (const c of valid) {
+    const r = landingRow(board, c);
+    board[r][c] = opp.disc;
+    const w = checkWin(board, opp.disc);
+    board[r][c] = 0;
+    if (w) return c;
+  }
+  const safe = valid.filter((c) => {
+    const r = landingRow(board, c);
+    board[r][c] = bot.disc;
+    let oppWins = false;
+    for (let c2 = 0; c2 < COLS && !oppWins; c2++) {
+      const r2 = landingRow(board, c2);
+      if (r2 < 0) continue;
+      board[r2][c2] = opp.disc;
+      if (checkWin(board, opp.disc)) oppWins = true;
+      board[r2][c2] = 0;
+    }
+    board[r][c] = 0;
+    return !oppWins;
+  });
+  const pool2 = safe.length ? safe : valid;
+  const order = [3, 2, 4, 1, 5, 0, 6];
+  for (const c of order) if (pool2.includes(c)) return c;
+  return pool2[0];
+}
+function performDrop(room, pIdx, col) {
+  if (room.state !== "playing") return { ok: false, error: "Igra nije aktivna" };
+  if (pIdx !== room.currentIdx) return { ok: false, error: "Nije tvoj red" };
+  if (col === void 0 || col < 0 || col >= COLS) return { ok: false, error: "Nevalidna kolona" };
+  if (room.board[0][col] !== 0) return { ok: false, error: "Kolona je puna" };
+  const player = room.players[pIdx];
+  let landRow = -1;
+  for (let r = ROWS - 1; r >= 0; r--) {
+    if (room.board[r][col] === 0) {
+      room.board[r][col] = player.disc;
+      landRow = r;
+      break;
+    }
+  }
+  const win = checkWin(room.board, player.disc);
+  if (win) {
+    room.state = "finished";
+    room.winner = player.name;
+    room.winnerDisc = player.disc;
+    room.winningCells = win;
+    room.lastAction = `\u{1F3C6} ${player.name} je spojio/la 4!`;
+    return { ok: true };
+  }
+  if (isBoardFull(room.board)) {
+    room.state = "finished";
+    room.draw = true;
+    room.lastAction = "Nerije\u0161eno \u2014 tabla je puna!";
+    return { ok: true };
+  }
+  room.currentIdx = (room.currentIdx + 1) % 2;
+  const next = room.players[room.currentIdx];
+  room.lastAction = `${player.name} bacio/la disk u kolonu ${col + 1} (red ${landRow + 1}) \u2014 sada igra ${next.name}`;
+  return { ok: true };
+}
+function runBot(room) {
+  let guard = 0;
+  while (room.state === "playing" && room.players[room.currentIdx]?.isBot && guard++ < ROWS * COLS) {
+    const c = botColumn(room);
+    if (c < 0) break;
+    performDrop(room, room.currentIdx, c);
+  }
+}
 router17.post("/play/spoji4", (_req, res) => {
   const code = randomBytes3(3).toString("hex").toUpperCase();
   const room = {
@@ -68565,11 +68845,24 @@ router17.post("/play/spoji4/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, roomCode: room.code, disc });
 });
+router17.post("/play/spoji4/:code/add-bot", (req, res) => {
+  const room = rooms2.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 2) return res.status(400).json({ error: "Soba je puna (max 2)" });
+  if (room.players.some((p) => p.isBot)) return res.status(400).json({ error: "Robot je ve\u0107 u sobi" });
+  const id = "bot-" + randomBytes3(3).toString("hex");
+  const disc = room.players.length === 0 ? 1 : 2;
+  room.players.push({ id, name: "\u{1F916} Robot", disc, isBot: true });
+  room.lastAction = "\u{1F916} Robot se pridru\u017Eio";
+  return res.json({ ok: true, botId: id });
+});
 router17.post("/play/spoji4/:code/start", (req, res) => {
   const room = rooms2.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebna su 2 igra\u010Da" });
   resetRoom(room);
+  runBot(room);
   return res.json({ ok: true });
 });
 router17.get("/play/spoji4/:code", (req, res) => {
@@ -68586,7 +68879,7 @@ router17.get("/play/spoji4/:code", (req, res) => {
     winningCells: room.winningCells,
     draw: room.draw,
     lastAction: room.lastAction,
-    players: room.players.map((p) => ({ id: p.id === playerId ? p.id : "anon" + room.players.indexOf(p), name: p.name, disc: p.disc }))
+    players: room.players.map((p) => ({ id: p.id === playerId ? p.id : "anon" + room.players.indexOf(p), name: p.name, disc: p.disc, isBot: !!p.isBot }))
   });
 });
 router17.post("/play/spoji4/:code/action", (req, res) => {
@@ -68595,45 +68888,16 @@ router17.post("/play/spoji4/:code/action", (req, res) => {
   const { playerId, action, col } = req.body;
   const pIdx = room.players.findIndex((p) => p.id === playerId);
   if (pIdx === -1) return res.status(400).json({ error: "Nisi u sobi" });
-  const player = room.players[pIdx];
   if (action === "rematch") {
     if (room.state !== "finished") return res.status(400).json({ error: "Partija jo\u0161 traje" });
     resetRoom(room);
+    runBot(room);
     return res.json({ ok: true });
   }
   if (action === "drop") {
-    if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
-    if (pIdx !== room.currentIdx) return res.status(400).json({ error: "Nije tvoj red" });
-    if (col === void 0 || col < 0 || col >= COLS)
-      return res.status(400).json({ error: "Nevalidna kolona" });
-    if (room.board[0][col] !== 0)
-      return res.status(400).json({ error: "Kolona je puna" });
-    let landRow = -1;
-    for (let r = ROWS - 1; r >= 0; r--) {
-      if (room.board[r][col] === 0) {
-        room.board[r][col] = player.disc;
-        landRow = r;
-        break;
-      }
-    }
-    const win = checkWin(room.board, player.disc);
-    if (win) {
-      room.state = "finished";
-      room.winner = player.name;
-      room.winnerDisc = player.disc;
-      room.winningCells = win;
-      room.lastAction = `\u{1F3C6} ${player.name} je spojio/la 4!`;
-      return res.json({ ok: true });
-    }
-    if (isBoardFull(room.board)) {
-      room.state = "finished";
-      room.draw = true;
-      room.lastAction = "Nerije\u0161eno \u2014 tabla je puna!";
-      return res.json({ ok: true });
-    }
-    room.currentIdx = (room.currentIdx + 1) % 2;
-    const next = room.players[room.currentIdx];
-    room.lastAction = `${player.name} bacio/la disk u kolonu ${col + 1} (red ${landRow + 1}) \u2014 sada igra ${next.name}`;
+    const result = performDrop(room, pIdx, col);
+    if (!result.ok) return res.status(400).json({ error: result.error });
+    runBot(room);
     return res.json({ ok: true });
   }
   return res.status(400).json({ error: "Nepoznata akcija" });
@@ -68768,6 +69032,19 @@ router18.post("/play/potapanje/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, roomCode: room.code });
 });
+router18.post("/play/potapanje/:code/add-bot", (req, res) => {
+  const room = rooms3.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 2) return res.status(400).json({ error: "Soba je puna (max 2)" });
+  if (room.players.some((p) => p.isBot)) return res.status(400).json({ error: "Robot je ve\u0107 u sobi" });
+  const id = "bot-" + randomBytes4(3).toString("hex");
+  const bot = makeEmptyPlayer(id, "\u{1F916} Robot");
+  bot.isBot = true;
+  room.players.push(bot);
+  room.lastAction = "\u{1F916} Robot se pridru\u017Eio";
+  return res.json({ ok: true, botId: id });
+});
 router18.post("/play/potapanje/:code/start", (req, res) => {
   const room = rooms3.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
@@ -68781,6 +69058,7 @@ router18.post("/play/potapanje/:code/start", (req, res) => {
     p.hitsMade = [];
   }
   room.lastAction = "Postavite svoje brodove!";
+  botPlace(room);
   return res.json({ ok: true });
 });
 router18.get("/play/potapanje/:code", (req, res) => {
@@ -68829,40 +69107,12 @@ router18.post("/play/potapanje/:code/action", (req, res) => {
     return res.json({ ok: true, ships: me.ships.map((s) => ({ size: s.size, cells: s.cells })) });
   }
   if (action === "fire") {
-    if (room.state !== "playing") return res.status(400).json({ error: "Bitka nije aktivna" });
-    if (room.players[room.turnIdx]?.id !== me.id) return res.status(400).json({ error: "Nije tvoj red" });
     const { cell } = req.body;
-    if (cell === void 0 || cell < 0 || cell >= GRID * GRID)
-      return res.status(400).json({ error: "Nevalidno polje" });
-    if (me.shots.includes(cell)) return res.status(400).json({ error: "Ve\u0107 si ga\u0111ao/la to polje" });
-    const enemy = room.players.find((p) => p.id !== me.id);
-    me.shots.push(cell);
-    let hit = false;
-    let sunk = false;
-    for (const s of enemy.ships) {
-      if (s.cells.includes(cell)) {
-        hit = true;
-        if (!s.hits.includes(cell)) s.hits.push(cell);
-        if (s.hits.length >= s.size) sunk = true;
-        break;
-      }
-    }
-    if (hit) {
-      me.hitsMade.push(cell);
-      room.lastAction = sunk ? `${me.name} je POTOPIO/LA brod (${enemy.name})! \u{1F4A5}` : `${me.name} je pogodio/la! \u{1F525}`;
-    } else {
-      room.lastAction = `${me.name} je proma\u0161io/la \u{1F4A7}`;
-    }
-    if (allSunk(enemy)) {
-      room.state = "finished";
-      room.winner = me.name;
-      room.lastAction = `\u{1F3C6} ${me.name} je potopio/la cijelu flotu!`;
-      return res.json({ ok: true, hit, sunk });
-    }
-    if (!hit) {
-      room.turnIdx = (room.turnIdx + 1) % room.players.length;
-    }
-    return res.json({ ok: true, hit, sunk });
+    if (cell === void 0) return res.status(400).json({ error: "Nevalidno polje" });
+    const result = applyFire(room, me, cell);
+    if (!result.ok) return res.status(400).json({ error: result.error });
+    runBot2(room);
+    return res.json({ ok: true, hit: result.hit, sunk: result.sunk });
   }
   if (action === "rematch") {
     if (room.state !== "finished") return res.status(400).json({ error: "Igra nije gotova" });
@@ -68876,10 +69126,113 @@ router18.post("/play/potapanje/:code/action", (req, res) => {
       p.hitsMade = [];
     }
     room.lastAction = "Revan\u0161! Postavite svoje brodove!";
+    botPlace(room);
     return res.json({ ok: true });
   }
   return res.status(400).json({ error: "Nepoznata akcija" });
 });
+function applyFire(room, me, cell) {
+  if (room.state !== "playing") return { ok: false, error: "Bitka nije aktivna" };
+  if (room.players[room.turnIdx]?.id !== me.id) return { ok: false, error: "Nije tvoj red" };
+  if (cell < 0 || cell >= GRID * GRID) return { ok: false, error: "Nevalidno polje" };
+  if (me.shots.includes(cell)) return { ok: false, error: "Ve\u0107 si ga\u0111ao/la to polje" };
+  const enemy = room.players.find((p) => p.id !== me.id);
+  me.shots.push(cell);
+  let hit = false;
+  let sunk = false;
+  for (const s of enemy.ships) {
+    if (s.cells.includes(cell)) {
+      hit = true;
+      if (!s.hits.includes(cell)) s.hits.push(cell);
+      if (s.hits.length >= s.size) sunk = true;
+      break;
+    }
+  }
+  if (hit) {
+    me.hitsMade.push(cell);
+    room.lastAction = sunk ? `${me.name} je POTOPIO/LA brod (${enemy.name})! \u{1F4A5}` : `${me.name} je pogodio/la! \u{1F525}`;
+  } else {
+    room.lastAction = `${me.name} je proma\u0161io/la \u{1F4A7}`;
+  }
+  if (allSunk(enemy)) {
+    room.state = "finished";
+    room.winner = me.name;
+    room.lastAction = `\u{1F3C6} ${me.name} je potopio/la cijelu flotu!`;
+    return { ok: true, hit, sunk };
+  }
+  if (!hit) {
+    room.turnIdx = (room.turnIdx + 1) % room.players.length;
+  }
+  return { ok: true, hit, sunk };
+}
+function botPlace(room) {
+  const bot = room.players.find((p) => p.isBot);
+  if (!bot || room.state !== "placing" || bot.ready) return;
+  bot.ships = randomPlacement();
+  bot.ready = true;
+  if (room.players.length === 2 && room.players.every((p) => p.ready)) {
+    room.state = "playing";
+    room.turnIdx = 0;
+    room.lastAction = `Bitka po\u010Dinje! Na potezu: ${room.players[0].name}`;
+  }
+}
+function botPickCell(bot, enemy) {
+  const N = GRID;
+  const shot = new Set(bot.shots);
+  const sunk = new Set(sunkCells(enemy));
+  const activeHits = bot.hitsMade.filter((c) => !sunk.has(c));
+  const idx = (r, c) => r * N + c;
+  const inB = (r, c) => r >= 0 && r < N && c >= 0 && c < N;
+  if (activeHits.length >= 2) {
+    const rows = new Set(activeHits.map((c) => Math.floor(c / N)));
+    const cols = new Set(activeHits.map((c) => c % N));
+    const cand = [];
+    if (rows.size === 1) {
+      const r = Math.floor(activeHits[0] / N);
+      const cs = activeHits.map((c) => c % N).sort((a, b) => a - b);
+      const left = cs[0] - 1, right = cs[cs.length - 1] + 1;
+      if (inB(r, left) && !shot.has(idx(r, left))) cand.push(idx(r, left));
+      if (inB(r, right) && !shot.has(idx(r, right))) cand.push(idx(r, right));
+    }
+    if (cols.size === 1) {
+      const c = activeHits[0] % N;
+      const rs = activeHits.map((x) => Math.floor(x / N)).sort((a, b) => a - b);
+      const up = rs[0] - 1, down = rs[rs.length - 1] + 1;
+      if (inB(up, c) && !shot.has(idx(up, c))) cand.push(idx(up, c));
+      if (inB(down, c) && !shot.has(idx(down, c))) cand.push(idx(down, c));
+    }
+    if (cand.length) return cand[0];
+  }
+  if (activeHits.length >= 1) {
+    for (const h of activeHits) {
+      const r = Math.floor(h / N), c = h % N;
+      const nb = [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]];
+      for (const [nr, nc] of nb) if (inB(nr, nc) && !shot.has(idx(nr, nc))) return idx(nr, nc);
+    }
+  }
+  const parity = [];
+  const any = [];
+  for (let i = 0; i < N * N; i++) {
+    if (shot.has(i)) continue;
+    any.push(i);
+    const r = Math.floor(i / N), c = i % N;
+    if ((r + c) % 2 === 0) parity.push(i);
+  }
+  const pool2 = parity.length ? parity : any;
+  return pool2[Math.floor(Math.random() * pool2.length)];
+}
+function runBot2(room) {
+  let guard = 0;
+  while (room.state === "playing" && guard++ < 200) {
+    const bot = room.players[room.turnIdx];
+    if (!bot || !bot.isBot) break;
+    const enemy = room.players.find((p) => p.id !== bot.id);
+    if (!enemy) break;
+    const cell = botPickCell(bot, enemy);
+    if (cell === void 0) break;
+    applyFire(room, bot, cell);
+  }
+}
 setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of rooms3) if (v.createdAt < cutoff) rooms3.delete(k);
@@ -69238,6 +69591,18 @@ router20.post("/play/tacke/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la`;
   return res.json({ playerId: id, color, roomCode: room.code });
 });
+router20.post("/play/tacke/:code/add-bot", (req, res) => {
+  const room = tackeRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 4) return res.status(400).json({ error: "Soba je puna (max 4)" });
+  if (room.players.some((p) => p.isBot)) return res.status(400).json({ error: "Robot je ve\u0107 u sobi" });
+  const id = "bot-" + randomBytes6(3).toString("hex");
+  const color = PLAYER_COLORS[room.players.length];
+  room.players.push({ id, name: "\u{1F916} Robot", color, score: 0, isBot: true });
+  room.lastAction = "\u{1F916} Robot se pridru\u017Eio";
+  return res.json({ ok: true, botId: id });
+});
 router20.post("/play/tacke/:code/start", (req, res) => {
   const room = tackeRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
@@ -69245,6 +69610,7 @@ router20.post("/play/tacke/:code/start", (req, res) => {
   room.state = "playing";
   room.currentIdx = 0;
   room.lastAction = "Igra je po\u010Dela!";
+  runBot3(room);
   return res.json({ ok: true });
 });
 router20.get("/play/tacke/:code", (req, res) => {
@@ -69275,37 +69641,33 @@ router20.post("/play/tacke/:code/action", (req, res) => {
     room.winner = null;
     room.lastMove = null;
     room.lastAction = "Nova partija!";
+    runBot3(room);
     return res.json({ ok: true });
   }
-  if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
-  if (pIdx !== room.currentIdx) return res.status(400).json({ error: "Nije tvoj red" });
   if (type !== "h" && type !== "v") return res.status(400).json({ error: "Nevalidan potez" });
-  if (row === void 0 || col === void 0 || row < 0 || col < 0)
-    return res.status(400).json({ error: "Nevalidan potez" });
+  if (row === void 0 || col === void 0) return res.status(400).json({ error: "Nevalidan potez" });
+  const result = applyEdge(room, pIdx, type, row, col);
+  if (!result.ok) return res.status(400).json({ error: result.error });
+  runBot3(room);
+  return res.json({ ok: true });
+});
+function applyEdge(room, pIdx, type, row, col) {
+  if (room.state !== "playing") return { ok: false, error: "Igra nije aktivna" };
+  if (pIdx !== room.currentIdx) return { ok: false, error: "Nije tvoj red" };
+  if (row < 0 || col < 0) return { ok: false, error: "Nevalidan potez" };
   const player = room.players[pIdx];
   if (type === "h") {
-    if (row >= room.rows || col >= room.cols - 1)
-      return res.status(400).json({ error: "Nevalidan potez" });
-    if (room.hLines[row][col]) return res.status(400).json({ error: "Linija je ve\u0107 nacrtana" });
+    if (row >= room.rows || col >= room.cols - 1) return { ok: false, error: "Nevalidan potez" };
+    if (room.hLines[row][col]) return { ok: false, error: "Linija je ve\u0107 nacrtana" };
     room.hLines[row][col] = true;
   } else {
-    if (row >= room.rows - 1 || col >= room.cols)
-      return res.status(400).json({ error: "Nevalidan potez" });
-    if (room.vLines[row][col]) return res.status(400).json({ error: "Linija je ve\u0107 nacrtana" });
+    if (row >= room.rows - 1 || col >= room.cols) return { ok: false, error: "Nevalidan potez" };
+    if (room.vLines[row][col]) return { ok: false, error: "Linija je ve\u0107 nacrtana" };
     room.vLines[row][col] = true;
   }
   room.lastMove = { type, row, col };
   let claimed = 0;
-  const candidates = [];
-  if (type === "h") {
-    if (row - 1 >= 0) candidates.push([row - 1, col]);
-    if (row <= room.rows - 2) candidates.push([row, col]);
-  } else {
-    if (col - 1 >= 0) candidates.push([row, col - 1]);
-    if (col <= room.cols - 2) candidates.push([row, col]);
-  }
-  for (const [br, bc] of candidates) {
-    if (br < 0 || bc < 0 || br >= room.rows - 1 || bc >= room.cols - 1) continue;
+  for (const [br, bc] of edgeBoxes(room, type, row, col)) {
     if (!room.boxes[br][bc] && boxComplete(room, br, bc)) {
       room.boxes[br][bc] = player.id;
       player.score += 1;
@@ -69313,7 +69675,7 @@ router20.post("/play/tacke/:code/action", (req, res) => {
     }
   }
   if (claimed > 0) {
-    room.lastAction = `${player.name} osvojio/la ${claimed} kvadrat${claimed === 1 ? "" : "i\u0107" + (claimed === 1 ? "" : "a")}`;
+    room.lastAction = `${player.name} osvojio/la ${claimed} kvadrat${claimed === 1 ? "" : "i\u0107a"}`;
   } else {
     room.lastAction = `${player.name} povukao/la liniju`;
   }
@@ -69330,13 +69692,75 @@ router20.post("/play/tacke/:code/action", (req, res) => {
       room.winner = sorted[0].name;
       room.lastAction = `\u{1F3C6} ${sorted[0].name} je pobijedio/la!`;
     }
-    return res.json({ ok: true });
+    return { ok: true };
   }
   if (claimed === 0) {
     room.currentIdx = (room.currentIdx + 1) % room.players.length;
   }
-  return res.json({ ok: true });
-});
+  return { ok: true };
+}
+function edgeBoxes(room, type, row, col) {
+  const c = [];
+  if (type === "h") {
+    if (row - 1 >= 0) c.push([row - 1, col]);
+    if (row <= room.rows - 2) c.push([row, col]);
+  } else {
+    if (col - 1 >= 0) c.push([row, col - 1]);
+    if (col <= room.cols - 2) c.push([row, col]);
+  }
+  return c.filter(([br, bc]) => br >= 0 && bc >= 0 && br < room.rows - 1 && bc < room.cols - 1);
+}
+function boxSides(room, br, bc) {
+  let n = 0;
+  if (room.hLines[br][bc]) n++;
+  if (room.hLines[br + 1][bc]) n++;
+  if (room.vLines[br][bc]) n++;
+  if (room.vLines[br][bc + 1]) n++;
+  return n;
+}
+function availableEdges(room) {
+  const out = [];
+  for (let r = 0; r < room.rows; r++) for (let c = 0; c < room.cols - 1; c++) if (!room.hLines[r][c]) out.push({ type: "h", row: r, col: c });
+  for (let r = 0; r < room.rows - 1; r++) for (let c = 0; c < room.cols; c++) if (!room.vLines[r][c]) out.push({ type: "v", row: r, col: c });
+  return out;
+}
+function pickBotEdge(room) {
+  const edges = availableEdges(room);
+  if (!edges.length) return null;
+  let bestComplete = null;
+  let bestCnt = 0;
+  for (const e of edges) {
+    let cnt = 0;
+    for (const [br, bc] of edgeBoxes(room, e.type, e.row, e.col)) if (boxSides(room, br, bc) === 3) cnt++;
+    if (cnt > bestCnt) {
+      bestCnt = cnt;
+      bestComplete = e;
+    }
+  }
+  if (bestComplete) return bestComplete;
+  const safe = edges.filter((e) => edgeBoxes(room, e.type, e.row, e.col).every(([br, bc]) => boxSides(room, br, bc) < 2));
+  if (safe.length) return safe[Math.floor(Math.random() * safe.length)];
+  let least = edges[0];
+  let leastGiven = Infinity;
+  for (const e of edges) {
+    let g = 0;
+    for (const [br, bc] of edgeBoxes(room, e.type, e.row, e.col)) if (boxSides(room, br, bc) === 2) g++;
+    if (g < leastGiven) {
+      leastGiven = g;
+      least = e;
+    }
+  }
+  return least;
+}
+function runBot3(room) {
+  let guard = 0;
+  const maxEdges = room.rows * (room.cols - 1) + (room.rows - 1) * room.cols;
+  while (room.state === "playing" && room.players[room.currentIdx]?.isBot && guard++ < maxEdges + 2) {
+    const e = pickBotEdge(room);
+    if (!e) break;
+    applyEdge(room, room.currentIdx, e.type, e.row, e.col);
+  }
+}
 setInterval(() => {
   const cutoff = Date.now() - 4 * 60 * 60 * 1e3;
   for (const [k, v] of tackeRooms) if (v.createdAt < cutoff) tackeRooms.delete(k);
@@ -69441,11 +69865,24 @@ router21.post("/play/reversi/:code/join", (req, res) => {
   room.lastAction = `${name2.trim()} se pridru\u017Eio/la (${disc === 1 ? "crni" : "bijeli"})`;
   return res.json({ playerId: id, roomCode: room.code, disc });
 });
+router21.post("/play/reversi/:code/add-bot", (req, res) => {
+  const room = reversiRooms.get(req.params.code);
+  if (!room) return res.status(404).json({ error: "Soba ne postoji" });
+  if (room.state !== "waiting") return res.status(400).json({ error: "Igra je ve\u0107 po\u010Dela" });
+  if (room.players.length >= 2) return res.status(400).json({ error: "Soba je puna (max 2)" });
+  if (room.players.some((p) => p.isBot)) return res.status(400).json({ error: "Robot je ve\u0107 u sobi" });
+  const id = "bot-" + randomBytes7(3).toString("hex");
+  const disc = room.players.length === 0 ? 1 : 2;
+  room.players.push({ id, name: "\u{1F916} Robot", disc, isBot: true });
+  room.lastAction = "\u{1F916} Robot se pridru\u017Eio";
+  return res.json({ ok: true, botId: id });
+});
 router21.post("/play/reversi/:code/start", (req, res) => {
   const room = reversiRooms.get(req.params.code);
   if (!room) return res.status(404).json({ error: "Soba ne postoji" });
   if (room.players.length < 2) return res.status(400).json({ error: "Potrebno je 2 igra\u010Da" });
   resetRoom2(room);
+  runBot4(room);
   return res.json({ ok: true });
 });
 router21.get("/play/reversi/:code", (req, res) => {
@@ -69466,7 +69903,7 @@ router21.get("/play/reversi/:code", (req, res) => {
     counts: { black, white },
     legalMoves: moves,
     yourDisc: me?.disc ?? null,
-    players: room.players.map((p) => ({ id: p.id === playerId ? p.id : "anon" + room.players.indexOf(p), name: p.name, disc: p.disc }))
+    players: room.players.map((p) => ({ id: p.id === playerId ? p.id : "anon" + room.players.indexOf(p), name: p.name, disc: p.disc, isBot: !!p.isBot }))
   });
   return;
 });
@@ -69479,38 +69916,68 @@ router21.post("/play/reversi/:code/action", (req, res) => {
   if (action === "rematch") {
     if (room.state !== "finished") return res.status(400).json({ error: "Igra jo\u0161 traje" });
     resetRoom2(room);
+    runBot4(room);
     return res.json({ ok: true });
   }
   if (action === "move") {
-    if (room.state !== "playing") return res.status(400).json({ error: "Igra nije aktivna" });
-    if (me.disc !== room.turn) return res.status(400).json({ error: "Nije tvoj red" });
-    if (row === void 0 || col === void 0 || !inBounds(row, col))
+    if (row === void 0 || col === void 0)
       return res.status(400).json({ error: "Nevalidno polje" });
-    const flips = flipsFor(room.board, row, col, room.turn);
-    if (flips.length === 0) return res.status(400).json({ error: "Nedozvoljen potez" });
-    room.board[row][col] = room.turn;
-    for (const [r, c] of flips) room.board[r][c] = room.turn;
-    room.passed = false;
-    const placedName = me.name;
-    const opp = room.turn === 1 ? 2 : 1;
-    const oppMoves = legalMoves(room.board, opp);
-    if (oppMoves.length > 0) {
-      room.turn = opp;
-      room.lastAction = `${placedName} je odigrao/la i okrenuo/la ${flips.length} \u2022 Red: ${opp === 1 ? "crni" : "bijeli"}`;
-    } else {
-      const myMoves = legalMoves(room.board, room.turn);
-      if (myMoves.length > 0) {
-        room.passed = true;
-        room.lastAction = `${placedName} je okrenuo/la ${flips.length} \u2022 Protivnik nema potez \u2014 ponovo ${room.turn === 1 ? "crni" : "bijeli"}`;
-      } else {
-        finishGame(room);
-        return res.json({ ok: true });
-      }
-    }
+    const result = applyMove(room, me.disc, row, col);
+    if (!result.ok) return res.status(400).json({ error: result.error });
+    runBot4(room);
     return res.json({ ok: true });
   }
   return res.status(400).json({ error: "Nepoznata akcija" });
 });
+function applyMove(room, disc, row, col) {
+  if (room.state !== "playing") return { ok: false, error: "Igra nije aktivna" };
+  if (disc !== room.turn) return { ok: false, error: "Nije tvoj red" };
+  if (!inBounds(row, col)) return { ok: false, error: "Nevalidno polje" };
+  const flips = flipsFor(room.board, row, col, room.turn);
+  if (flips.length === 0) return { ok: false, error: "Nedozvoljen potez" };
+  room.board[row][col] = room.turn;
+  for (const [r, c] of flips) room.board[r][c] = room.turn;
+  room.passed = false;
+  const placedName = room.players.find((p) => p.disc === disc)?.name ?? (disc === 1 ? "Crni" : "Bijeli");
+  const opp = room.turn === 1 ? 2 : 1;
+  const oppMoves = legalMoves(room.board, opp);
+  if (oppMoves.length > 0) {
+    room.turn = opp;
+    room.lastAction = `${placedName} je odigrao/la i okrenuo/la ${flips.length} \u2022 Red: ${opp === 1 ? "crni" : "bijeli"}`;
+  } else {
+    const myMoves = legalMoves(room.board, room.turn);
+    if (myMoves.length > 0) {
+      room.passed = true;
+      room.lastAction = `${placedName} je okrenuo/la ${flips.length} \u2022 Protivnik nema potez \u2014 ponovo ${room.turn === 1 ? "crni" : "bijeli"}`;
+    } else {
+      finishGame(room);
+    }
+  }
+  return { ok: true };
+}
+function runBot4(room) {
+  let guard = 0;
+  while (room.state === "playing" && guard++ < 70) {
+    const bot = room.players.find((p) => p.isBot);
+    if (!bot || room.turn !== bot.disc) break;
+    const moves = legalMoves(room.board, bot.disc);
+    if (moves.length === 0) break;
+    let best = moves[0];
+    let bestScore = -Infinity;
+    for (const [r, c] of moves) {
+      const f = flipsFor(room.board, r, c, bot.disc).length;
+      const corner = (r === 0 || r === 7) && (c === 0 || c === 7) ? 25 : 0;
+      const edge = r === 0 || r === 7 || c === 0 || c === 7 ? 3 : 0;
+      const xSquare = (r === 1 || r === 6) && (c === 1 || c === 6) ? -8 : 0;
+      const score = f + corner + edge + xSquare;
+      if (score > bestScore) {
+        bestScore = score;
+        best = [r, c];
+      }
+    }
+    applyMove(room, bot.disc, best[0], best[1]);
+  }
+}
 function finishGame(room) {
   room.state = "finished";
   const { black, white } = countDiscs(room.board);
