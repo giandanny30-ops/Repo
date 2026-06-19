@@ -64227,6 +64227,9 @@ function makeToken(secret2) {
 function makePremiumToken(secret2, code) {
   return createHash("sha256").update(secret2 + ":gian-premium-readonly-v1:" + code).digest("hex");
 }
+function makePreviewToken(secret2) {
+  return createHash("sha256").update(secret2 + ":gian-preview-readonly-v1").digest("hex");
+}
 function bearer(req) {
   const auth = req.headers.authorization ?? "";
   return auth.startsWith("Bearer ") ? auth.slice(7) : "";
@@ -64271,6 +64274,14 @@ async function authMiddleware(req, res, next) {
   const token = bearer(req);
   if (token && token === makeToken(secret2)) {
     next();
+    return;
+  }
+  if (token && token === makePreviewToken(secret2)) {
+    if (READ_METHODS.has(req.method)) {
+      next();
+      return;
+    }
+    res.status(403).json({ error: "Pregled je samo za gledanje \u2014 izmjene nisu dozvoljene." });
     return;
   }
   if (token) {
@@ -64330,6 +64341,15 @@ router2.post("/auth/premium-login", async (req, res) => {
   req.log.info({ ip: req.ip }, "Premium login success");
   return res.json({ token, devMode: false, premium: true });
 });
+router2.post("/auth/preview-login", (req, res) => {
+  const secret2 = process.env.PANEL_SECRET;
+  if (!secret2) {
+    return res.json({ token: "dev-mode", devMode: true, premium: true });
+  }
+  const token = makePreviewToken(secret2);
+  req.log.info({ ip: req.ip }, "Free preview login");
+  return res.json({ token, devMode: false, premium: true });
+});
 router2.get("/auth/verify", async (req, res) => {
   const secret2 = process.env.PANEL_SECRET;
   if (!secret2) return res.json({ ok: true, devMode: true });
@@ -64337,6 +64357,9 @@ router2.get("/auth/verify", async (req, res) => {
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
   if (token && token === makeToken(secret2)) {
     return res.json({ ok: true, devMode: false });
+  }
+  if (token && token === makePreviewToken(secret2)) {
+    return res.json({ ok: true, devMode: false, premium: true });
   }
   const premiumCode = await getPremiumCode();
   if (token && premiumCode && token === makePremiumToken(secret2, premiumCode)) {
