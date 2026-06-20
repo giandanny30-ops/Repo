@@ -8,8 +8,8 @@ from datetime import datetime, timezone, timedelta
 # ═══════════════════════════════════════════
 #           KONFIGURACIJA
 # ═══════════════════════════════════════════
-BOT_NAME = "GIAN (Custom)"
-VERSION  = "v2.0"
+BOT_NAME = "GIANNI (Custom)"
+VERSION  = "v3.0"
 TOKEN    = os.environ.get("DISCORD_TOKEN")
 
 # ═══════════════════════════════════════════
